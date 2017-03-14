@@ -1,0 +1,33 @@
+{
+  "name": "rss-to-rest-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "cls && nodemon app.js",
+    "lint": "eslint *.js",
+    "test": "xo"
+  },
+  "keywords": [
+    "rss",
+    "rest",
+    "api",
+    "news",
+    "firebase",
+    "koajs"
+  ],
+  "author": "Mladen Ruzicic <ruzicic@gmail.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "firebase-admin": "^4.1.3",
+    "koa": "^2.0.1",
+    "koa-router": "^7.0.1",
+    "node-fetch": "^1.6.3",
+    "xml2js": "^0.4.17"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0",
+    "xo": "^0.17.1"
+  }
+}
