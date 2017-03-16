@@ -9,6 +9,7 @@ const {getProviders,
     saveToFirebase,
     getAvailableProviders,
     isValidRoute,
+	isValidToken,
     getSomeNews} = require('./firebase/main.js');
 
 const port = 3028;
@@ -62,17 +63,21 @@ apiRouter.get('/available', async ctx => {
 });
 
 apiRouter.get('/:provider/:options', async ctx => {
-	ctx.body = await isValidRoute(ctx.params.provider, ctx.params.options) ?
-        await getSomeNews(ctx.params.options) :
-	{
-		error: 'No available data for your input'
-	};
+	let isValidPath = await isValidRoute(ctx.params.provider, ctx.params.options);
+	let token = await isValidToken(ctx.header.authorization);
+
+	if (isValidPath.status && token) {
+		ctx.body = await getSomeNews(ctx.params.options);
+	} else {
+		ctx.body = {
+			isValidToken: token ? true : false,
+			isValidPath: isValidPath.message
+		}
+	}
 });
 
 // Everything else, not covered by apiRouter.routes()
-app.use(async ctx => {
-	ctx.status = await 401;
-});
+app.use(ctx => ctx.status = 401);
 
 app.on('error', (err, ctx) => {
 	console.error('Internal error :(', err, ctx);

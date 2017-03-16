@@ -11,10 +11,19 @@ const init = () => {
 
 	const btnLogin = document.getElementById('btnLogin');
 	const btnLogout = document.getElementById('btnLogout');
+	const userToken = document.getElementById('userToken');
+
+	const getUserToken = () => {
+		return firebase.auth().currentUser.getToken(true)
+			.catch(err => {
+				console.error('Error getting user token');
+				console.error(err);
+			});
+	}
 
 	firebase.auth().onAuthStateChanged(user => {
 		if (user) {
-            // User is signed in.
+			// User is signed in.
 			btnLogout.classList.remove('hidden-sm-up');
 			btnLogin.classList.add('hidden-sm-up');
 			const displayName = user.displayName;
@@ -23,24 +32,29 @@ const init = () => {
 			const photoURL = user.photoURL;
 			const uid = user.uid;
 			const providerData = user.providerData;
+			console.log(user);
 			user.getToken().then(function (accessToken) {
-				document.getElementById('sign-in-status').textContent = 'Signed in';
-				document.getElementById('sign-in').textContent = 'Sign out';
-				document.getElementById('account-details').textContent = JSON.stringify({
-					displayName: displayName,
-					email: email,
-					emailVerified: emailVerified,
-					photoURL: photoURL,
-					uid: uid,
-					accessToken: accessToken,
-					providerData: providerData
-				}, null, '  ');
+				document.getElementById('sign-in-status').textContent = 'Signed in as ';
+				document.getElementById('sign-in-name').textContent = displayName || email;
+				// document.getElementById('account-details').textContent = JSON.stringify({
+				// 	displayName: displayName,
+				// 	email: email,
+				// 	emailVerified: emailVerified,
+				// 	photoURL: photoURL,
+				// 	uid: uid,
+				// 	// accessToken: accessToken,
+				// 	providerData: providerData
+				// }, null, '  ');
+			});
+
+			// Display user token
+			getUserToken().then(token => {
+				userToken.value = token;
 			});
 		} else {
-            // User is signed out.
-			document.getElementById('sign-in-status').textContent = 'Signed out';
-			document.getElementById('sign-in').textContent = 'Sign in';
-			document.getElementById('account-details').textContent = 'null';
+			// User is signed out.
+			document.getElementById('sign-in-status').textContent = 'Signed out ';
+			document.getElementById('sign-in-name').textContent = '';
 			btnLogout.classList.add('hidden-sm-up');
 			btnLogin.classList.remove('hidden-sm-up');
 		}
@@ -48,7 +62,7 @@ const init = () => {
 		console.log(err);
 	});
 
-    // logout
+	// logout
 	btnLogout.addEventListener('click', () => {
 		firebase.auth().signOut();
 	});
@@ -57,35 +71,40 @@ const init = () => {
 		window.location.href = '/auth.html';
 	});
 
-    // const preObject = document.getElementById('object');
-    // const ulList = document.getElementById('list');
+	/** 
+	 * Copy to clipboard
+	 * 
+	 */
+	const copy = e => {
+		// find target
+		const clickTarget = e.target;
+		const hasCopytarget = clickTarget.dataset.copytarget;
+		const inputVal = hasCopytarget ? document.querySelector(hasCopytarget) : null;
 
-    // // DB References
-    // // ref() = database root
-    // const dbRefObject = firebase.database().ref().child('object');
-    // const dbRefList = dbRefObject.child('tata');
+		// Is element selectable?
+		if (inputVal && inputVal.select) {
 
-    // // Sync
-    // dbRefObject.on('value', snap => {
-    //     preObject.innerText = JSON.stringify(snap.val(), null, 3);
-    // });
+			// select text
+			inputVal.select();
 
-    // dbRefList.on('child_added', snap => {
-    //     const li = document.createElement('li');
-    //     li.innerText = snap.val();
-    //     li.id = snap.key;
-    //     ulList.appendChild(li);
-    // });
+			try {
+				// copy text
+				document.execCommand('copy');
+				inputVal.blur();
 
-    // dbRefList.on('child_changed', snap => {
-    //     const liChanged = document.getElementById(snap.key);
-    //     liChanged.innerText = snap.val();
-    // });
+				// copied notification animation
+				clickTarget.classList.add('copied');
+				setTimeout(() => clickTarget.classList.remove('copied'), 1500);
 
-    // dbRefList.on('child_removed', snap => {
-    //     const liToRemove = document.getElementById(snap.key);
-    //     liToRemove.remove();
-    // });
+			} catch (err) {
+				alert('Please press CTRL/CMD+C to copy');
+			}
+		}
+	};
+
+	document.body.addEventListener('click', copy, true);
+
+
 };
 
 window.addEventListener('load', () => {

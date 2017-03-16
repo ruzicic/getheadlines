@@ -55,11 +55,11 @@ const getLastAddedByProvider = async provider => {
 			return snap;
 		});
 
-        // Check if there are any
+		// Check if there are any
 		if (lastAddedItem.val() === null) {
 			return null;
 		}
-        // naci kako se lakse izvuce key() is firebase objekta
+		// naci kako se lakse izvuce key() is firebase objekta
 		let itemTitle = Object.getOwnPropertyNames(lastAddedItem.val())[0];
 		return new Date(itemTitle).getTime();
 	} catch (err) {
@@ -100,10 +100,10 @@ const saveToFirebase = async (provider, data) => {
 			let date = new Date(data[item].pubDate);
 			itemCounter++;
 
-            // Check if item was already added
+			// Check if item was already added
 			if (lastAddedDate && (lastAddedDate > date.getTime())) {
 				duplicateItemCounter++;
-                // console.log(`Item already exist? ${data[item].title}. - saved previously on ${lastAddedDate}`);
+				// console.log(`Item already exist? ${data[item].title}. - saved previously on ${lastAddedDate}`);
 				return;
 			}
 
@@ -114,9 +114,9 @@ const saveToFirebase = async (provider, data) => {
 					guid: data[item].guid,
 					description: data[item].description
 				})
-                .catch(err => {
-	console.error(`Save to firebase error ${err}`);
-});
+				.catch(err => {
+					console.error(`Save to firebase error ${err}`);
+				});
 		});
 
 		let totalAdded = itemCounter - duplicateItemCounter;
@@ -139,16 +139,40 @@ const getAvailableProviders = async () => {
 
 const isValidRoute = async (route, subroute) => {
 	try {
-		return await dbRef(dbRefs.routes).once('value', snap => {
+		let msg = {
+			status: true
+		};
+		await dbRef(dbRefs.routes).once('value', snap => {
 			let validRoute = snap.hasChild(route);
 			let validSubRoute = snap.hasChild(`${route}/${subroute}`);
 
-			return validRoute && validSubRoute;
+			if (!validRoute) {
+				msg.status = false;
+				msg.message = 'Route provided is not a valid route.';
+				return;
+			}
+			if (!validSubRoute) {
+				msg.status = false;
+				msg.message = 'Subroute provided is not a valid subroute.'
+				return;
+			}
 		});
+		return msg;
 	} catch (err) {
 		console.error('Error isValidRoute');
 	}
 };
+
+const isValidToken = async token => {
+	try {
+		return await firebase.auth().verifyIdToken(token)
+			.then(decodedToken => decodedToken.uid)
+			.catch(err => false);
+	} catch (err) {
+		console.error('Error isValidToken');
+		console.error(err);
+	}
+}
 
 const getSomeNews = async path => {
 	try {
@@ -166,5 +190,6 @@ module.exports = {
 	saveToFirebase,
 	getAvailableProviders,
 	isValidRoute,
+	isValidToken,
 	getSomeNews
 };

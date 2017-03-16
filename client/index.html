@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Firebase test</title>
     <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
         crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
@@ -15,21 +16,48 @@
 </head>
 
 <body>
-    <div class="container d-flex flex-column">
-        <h1 style="text-align: center">Rss To Rest</h1>
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        <a class="navbar-brand" href="#">getHeadlines test</a>
 
-        <div class="row">
-            <h2>Sign in status: <span id="sign-in-status"></span></h2>
-            <div id="sign-in"></div>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <!--<li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>-->
+                <!--<li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Disabled</a>
+                    </li>-->
+            </ul>
+            <p class="top-user-status"><span id="sign-in-status"></span><span id="sign-in-name"></span></p>
             <button id="btnLogin" class="btn btn-primary mr-2">Log in</button>
             <button id="btnLogout" class="btn btn-danger">Logout</button>
-            <div style="word-break: break-all;" id="account-details"></div>
         </div>
+    </nav>
+    <div class="container d-flex flex-column">
 
-        <div class="form-group d-flex flex-column justify-content-center">
-            <div class="d-flex flex-row mt-3">
-                
-            </div>
+        <!--<div class="row">
+            <div style="word-break: break-all;" id="account-details"></div>
+        </div>-->
+
+        <div class="row">
+            <nav class="navbar navbar-light bg-faded token-field">
+                <form class="form-inline">
+                    <div class="input-group" style="width: 100%">
+                        <span class="input-group-addon" id="basic-addon1">TOKEN</span>
+                        <input id="userToken" type="text" class="form-control" placeholder="Login to generate token" aria-describedby="basic-addon1">
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="button" data-copytarget="#userToken">Copy to clipboard</button>
+                        </span>
+                    </div>
+                </form>
+            </nav>
         </div>
     </div>
 
