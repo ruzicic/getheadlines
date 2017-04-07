@@ -84,6 +84,5 @@ app.on('error', (err, ctx) => {
 });
 
 app.listen(port, () => {
-	console.log('\u001b[2J\u001b[0;0H'); // Clear console
 	console.log(`app started on port ${port}`);
 });
