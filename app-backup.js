@@ -10,7 +10,9 @@ const {getProviders,
     getAvailableProviders,
     isValidRoute,
 	isValidToken,
-    getSomeNews} = require('./firebase/main.js');
+	getSomeNews} = require('./firebase');
+	
+const logger = require("./logger");
 
 const port = 3028;
 const app = new Koa();
