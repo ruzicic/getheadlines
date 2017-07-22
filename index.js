@@ -16,5 +16,5 @@ app.use(apiRouter.allowedMethods());
 initializeApp();
 
 app.listen(port, () => {
-    logger.info(`App started on port ${port}`)
+    logger.info(`App running on port ${port}`)
 });

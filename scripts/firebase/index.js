@@ -1,5 +1,6 @@
-const { firebase, db } = require('./config');
 const logger = require('../logger');
+const { firebase, db } = require('./config');
+const { addMinutesToDate } = require('../helpers');
 
 // Returns reference to firebase database
 const getRef = name => firebase.database().ref(name);
@@ -34,16 +35,96 @@ const getActiveProviders = async () => {
     }
 }
 
-const getFetchUri = async (provider) => {
+// Returns lastRefresh and nextRefresh timestamps
+const getFetchLogs = async (provider) => {
+    try {
+        return await getRef(db.refreshTracking)
+            .child(provider)
+            .once('value', snapshot => {
+                return snapshot;
+            });
+    } catch (err) {
+        logger.error(`Error getting fetch logs (timestamps)`);
+        logger.error(err);
+    }
+}
+
+const getProviderDetails = async (provider) => {
     try {
         return await getRef(db.providers)
             .child(provider)
-            .once('value', snap => {
-                // console.log(snap.val().uri);
-                return snap.val().uri;
+            .once('value', snapshot => {
+                return snapshot;
             });
     } catch (err) {
         logger.error(`Error fetching uri for ${provider}`);
+        logger.error(err);
+    }
+}
+
+const saveFeed = async (provider, data) => {
+    let duplicatePosts = 0;
+    let newPosts = 0;
+
+    try {
+        const lastPost = await getRef(db.feeds)
+            .child(provider)
+            .limitToLast(1)
+            .once('value', snap => {
+                return snap;
+            });
+
+        const lastPostDate = Object.keys(lastPost.val())[0] || null;
+
+        Object.keys(data.items).forEach(async item => {
+            newPosts += 1;
+            let postPubDate = data.items[item].pubdate || data.items[item].pubDate;
+            let post = {
+                title: data.items[item].title,
+                link: data.items[item].link,
+                description: data.items[item].description,
+                image: data.items[item].enclosure.url
+            }
+
+            // If current post date is older than last post
+            // it is saved to database during previous job
+            const older = postPubDate < lastPostDate;
+            if (older) {
+                duplicatePosts += 1;
+                newPosts -= 1;
+                return
+            }
+
+            await getRef(db.feeds)
+                .child(provider)
+                .child(postPubDate)
+                .set(post)
+                .catch(err => {
+                    logger.error(`Save to Firebase error!`);
+                    logger.error(err);
+                });
+        });
+
+        logger.info(`[${provider}] ${newPosts} new posts (${duplicatePosts} duplicates)`);
+    } catch (err) {
+        logger.error(`Error saving feed for ${provider}`);
+        logger.error(err);
+    }
+}
+
+const updateRefreshRecords = async (data) => {
+    try {
+        const { provider, jobTime, refreshRate } = data;
+        const next = addMinutesToDate(jobTime, refreshRate);
+
+        await getRef(db.refreshTracking)
+            .child(data.provider)
+            .update({
+                lastRefresh: jobTime,
+                nextRefresh: next
+            })
+    } catch (err) {
+        logger.error(`Error updating refresh records`);
         logger.error(err);
     }
 }
@@ -66,48 +147,11 @@ const createRoutes = async (providers) => {
     }
 }
 
-// Returns timestamp of last fetched item for provider
-const lastFetchTimestamp = async (provider) => {
-    try {
-        await getRef(db.refreshTracking)
-            .child(provider)
-            .once('value', snap => {
-                return snap.val().lastRefresh;
-            })
-    } catch (err) {
-        logger.error(`Error getting last fetch timestamp for ${provider}`);
-        logger.error(err);
-    }
-}
-
-// Returns refresh rate for provider
-const providerRefreshRate = async (provider) => {
-    try {
-        return await getRef(db.providers)
-            .child(provider)
-            .once('value', snap => {
-                return snap.val().refreshRate;
-            })
-    } catch (err) {
-        logger.error(`Error getting provider refresh rate for ${provider}`);
-        logger.error(err);
-    }
-}
-
-// Save timestamp of last fetch for provider
-const logFetchDetails = async () => {
-    try {
-        //
-    } catch (err) {
-        logger.error(`Error logging fetch details`);
-        logger.error(err);
-    }
-}
-
 module.exports = {
     getActiveProviders,
+    getFetchLogs,
+    getProviderDetails,
+    saveFeed,
+    updateRefreshRecords,
     createRoutes,
-    getFetchUri,
-    lastFetchTimestamp,
-    providerRefreshRate
 }
