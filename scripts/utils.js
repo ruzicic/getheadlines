@@ -1,8 +1,8 @@
 const parser = require('rss-parser');
 
-const logger = require('./logger');
+const {logger} = require('./logger');
 
-const fetchFeed = async url => {
+const fetchFeed = url => {
 	return new Promise((resolve, reject) => {
 		parser.parseURL(url, (err, parsed) => {
 			if (err) {

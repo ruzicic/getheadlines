@@ -1,8 +1,5 @@
-const logger = require('../logger');
-const {firebase, db} = require('./config');
-
-// Returns reference to firebase database
-const getRef = name => firebase.database().ref(name);
+const {logger} = require('../logger');
+const {db, getRef} = require('./db');
 
 // Returns all active feed providers from firebase database
 const getActiveProviders = async () => {
@@ -10,21 +7,21 @@ const getActiveProviders = async () => {
 
 	try {
 		await getRef(db.providers)
-            .orderByKey()
-            .once('value', snapshot => {
-	snapshot.forEach(provider => {
-                    // Return only active providers
-		if (!provider.val().active) {
-			return;
-		}
-		activeProviders[provider.key] = {
-			active: Boolean(provider.val().active),
-			uri: provider.val().uri,
-			refreshRate: provider.val().refreshRate,
-			category: provider.val().category
-		};
-	});
-});
+			.orderByKey()
+			.once('value', snapshot => {
+				snapshot.forEach(provider => {
+					// Return only active providers
+					if (!provider.val().active) {
+						return;
+					}
+					activeProviders[provider.key] = {
+						active: Boolean(provider.val().active),
+						uri: provider.val().uri,
+						refreshRate: provider.val().refreshRate,
+						category: provider.val().category
+					};
+				});
+			});
 
 		return activeProviders;
 	} catch (err) {
@@ -58,7 +55,7 @@ const getProviderDetails = provider => {
 };
 
 const saveFeed = (provider, data) => {
-	logger.info(`[${provider}] saving ${data.length} posts`);
+	logger.info(`[FIREBASE]: ${provider} saving ${data.length} posts`);
 
 	try {
 		data.forEach(async entry => {

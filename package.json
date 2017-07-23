@@ -1,7 +1,7 @@
 {
-  "name": "rss-to-rest-test",
+  "name": "get-headlines-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "Automates XML/RSS feed parsing into JSON and exposes data via REST API",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
@@ -19,11 +19,12 @@
     "firebase-admin": "^4.1.3",
     "koa": "^2.0.1",
     "koa-router": "^7.0.1",
-    "rss-parser": "^2.10.1"
+    "koa-morgan": "^1.0.1",
+    "rss-parser": "^2.10.1",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
     "nodemon": "^1.11.0",
-    "winston": "^2.3.1",
     "xo": "^0.17.1"
   }
 }

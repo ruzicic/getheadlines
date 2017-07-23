@@ -1,6 +1,6 @@
 const Cron = require('cron').CronJob;
 
-const logger = require('./logger');
+const {logger} = require('./logger');
 const {addMinutesToDate} = require('./helpers');
 const {fetchFeed} = require('./utils');
 const {getFetchLogs,
@@ -49,7 +49,7 @@ const scheduleJobs = async providers => {
 };
 
 function scheduleNextCronJob(data) {
-	logger.info(`[CRON][${data.provider}] next refresh scheduled for: ${data.jobTime}`);
+	logger.debug(`[CRON][${data.provider}] next refresh scheduled for: ${data.jobTime}`);
 
 	try {
 		return new Cron({
@@ -84,4 +84,3 @@ function fetchAndSaveFeed(data) {
 module.exports = {
 	scheduleJobs
 };
-

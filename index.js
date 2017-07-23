@@ -1,7 +1,7 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 
-const logger = require('./scripts/logger');
+const {logger, morgan} = require('./scripts/logger');
 const {initializeApp} = require('./scripts/main');
 
 const port = 3028;
@@ -12,6 +12,10 @@ const apiRouter = new Router({
 
 app.use(apiRouter.routes());
 app.use(apiRouter.allowedMethods());
+
+// Logging middleware
+logger.debug(`Setting up Morgan logger`);
+app.use(morgan);
 
 initializeApp();
 
