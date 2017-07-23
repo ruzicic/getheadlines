@@ -1,9 +1,9 @@
 const firebase = require('firebase-admin');
-const serviceAccount = require('./rss-to-rest-test-firebase-adminsdk-u8new-15c022041d.json');
+const serviceAccount = require('./getheadlines-16e96-firebase-adminsdk-uw9yt-22fbcb74eb.json');
 
 firebase.initializeApp({
 	credential: firebase.credential.cert(serviceAccount),
-	databaseURL: 'https://rss-to-rest-test.firebaseio.com'
+	databaseURL: 'https://getheadlines-16e96.firebaseio.com'
 });
 
 // Firebase Database reference names
