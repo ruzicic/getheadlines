@@ -17,7 +17,7 @@ const logger = new winston.Logger({
 			colorize: false
 		}),
 		new winston.transports.Console({
-			level: 'debug',
+			level: 'silly',
 			handleExeptions: true,
 			json: false,
 			// https://nodejs.org/api/tty.html#tty_tty
