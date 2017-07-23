@@ -1,78 +1,87 @@
 const Cron = require('cron').CronJob;
 
 const logger = require('./logger');
-const { addMinutesToDate } = require('./helpers');
-const { fetchFeed } = require('./utils');
-const { getFetchLogs,
+const {addMinutesToDate} = require('./helpers');
+const {fetchFeed} = require('./utils');
+const {getFetchLogs,
     getProviderDetails,
     saveFeed,
-    updateRefreshRecords } = require('./firebase');
+    updateRefreshRecords} = require('./firebase');
 
-const scheduleJobs = async (providers) => {
-    try {
-        Object.keys(providers).forEach(async providerName => {
-            let recordsSnap = await getFetchLogs(providerName);
-            let providerDetailsSnap = await getProviderDetails(providerName);
+const scheduleJobs = async providers => {
+	try {
+		Object.keys(providers).forEach(async providerName => {
+            // Get lastRefresh time for current provider
+			const recordsSnap = await getFetchLogs(providerName);
+			const records = Object.assign({}, recordsSnap.val());
+			const lastRefresh = records.lastRefresh ? records.lastRefresh : null;
 
-            let lastRefresh = new Date(recordsSnap.val().lastRefresh);
-            let nextRefresh = new Date(recordsSnap.val().nextRefresh);
-            let providerUri = providerDetailsSnap.val().uri;
-            let providerRefreshRate = providerDetailsSnap.val().refreshRate;
+            // Get provider details
+			const providerDetailsSnap = await getProviderDetails(providerName);
+			const providerUri = providerDetailsSnap.val().uri;
+			const providerRefreshRate = providerDetailsSnap.val().refreshRate;
 
-            // If not defined elsewhere, next job is in 1 minute
-            let nextJob = addMinutesToDate(new Date(), 1);
+            // If not defined elsewhere, schedule job in 1 minute
+			let nextJob = addMinutesToDate(new Date(), 1);
 
-            if (nextRefresh && nextRefresh > nextJob) {
-                // Next job for this provider is already scheduled
-                logger.info(`Job for ${providerName} already scheduled ^^`);
-                nextJob = nextRefresh;
-            }
+            // Check if lastRefresh value exist and it's a valid Date
+			if (lastRefresh && Date.parse(lastRefresh)) {
+				const suggestedTime = addMinutesToDate(new Date(lastRefresh), providerRefreshRate);
 
-            const jobData = {
-                provider: providerName,
-                uri: providerUri,
-                jobTime: nextJob,
-                refreshRate: providerRefreshRate
-            }
+				if (suggestedTime > new Date()) {
+					nextJob = suggestedTime;
+				}
+			}
 
-            scheduleNextCronJob(jobData);
-        });
-    } catch (err) {
-        logger.error(`Error scheduling jobs`);
-        logger.error(err);
-    }
-}
+			let jobData = {
+				provider: providerName,
+				uri: providerUri,
+				jobTime: nextJob,
+				refreshRate: providerRefreshRate
+			};
+
+			await scheduleNextCronJob(jobData);
+		});
+	} catch (err) {
+		logger.error(`Error scheduling jobs`);
+		logger.error(err);
+	}
+};
 
 function scheduleNextCronJob(data) {
-    try {
-        const task = new Cron({
-            cronTime: data.jobTime,
-            onTick: fetchAndSaveFeed(data),
-            start: false
-        });
-        logger.info(`[${data.provider}] next refresh scheduled for: ${data.jobTime}`);
+	logger.info(`[CRON][${data.provider}] next refresh scheduled for: ${data.jobTime}`);
 
-        return task.start();
-    } catch (err) {
-        logger.error(`Error scheduling next cron job`);
-        logger.error(err);
-    }
+	try {
+		return new Cron({
+			cronTime: data.jobTime,
+			onTick: fetchAndSaveFeed(data),
+			start: true
+		});
+	} catch (err) {
+		logger.error(`Error scheduling next cron job`);
+		logger.error(err);
+	}
 }
 
+// Returns a function to prevent Cron Job immediate invoke.
+// Will fetches XML feed from URL, parse it to JSON and save to Firebase
 function fetchAndSaveFeed(data) {
-    return async () => {
-        const parser = await fetchFeed(data.uri);
+	return async () => {
+		const jsonData = await fetchFeed(data.uri);
+		await saveFeed(data.provider, jsonData.feed.entries);
+		await updateRefreshRecords(data);
 
-        parser.on('end', async () => {
-            const jsonData = parser.done();
-            await saveFeed(data.provider, jsonData);
-            await updateRefreshRecords(data);
-        });
-    }
+		const providerDetails = Object.assign({}, {
+			[data.provider]: {
+				uri: data.uri,
+				refreshRate: data.refreshRate
+			}
+		});
+		await scheduleJobs(providerDetails);
+	};
 }
-
 
 module.exports = {
-    scheduleJobs
-}
+	scheduleJobs
+};
 

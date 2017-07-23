@@ -1,13 +1,12 @@
-const { getActiveProviders,
-    createRoutes } = require('./firebase');
-const { scheduleJobs } = require('./jobs');
+const {getActiveProviders, createRoutes} = require('./firebase');
+const {scheduleJobs} = require('./jobs');
 
-const initializeApp = () => {
-    getActiveProviders()
-        .then(createRoutes)
-        .then(scheduleJobs);
-}
+const initializeApp = async () => {
+	const activeProviders = await getActiveProviders();
+	await createRoutes(activeProviders);
+	await scheduleJobs(activeProviders);
+};
 
 module.exports = {
-    initializeApp
-}
+	initializeApp
+};

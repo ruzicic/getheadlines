@@ -1,22 +1,22 @@
-const fetch = require('node-fetch');
-const FeedMe = require('feedme');
-const parser = new FeedMe(true);
+const parser = require('rss-parser');
 
 const logger = require('./logger');
 
-// Fetch RSS feed and parse it
-const fetchFeed = async (uri) => {
-    try {
-        const data = await fetch(uri);
-        data.body.pipe(parser);
+const fetchFeed = async url => {
+	return new Promise((resolve, reject) => {
+		parser.parseURL(url, (err, parsed) => {
+			if (err) {
+				logger.error(`Error fetching feed ${url}`);
+				logger.error(err);
 
-        return parser;
-    } catch (err) {
-        logger.error(`Error fetching feed from: ${uri}`);
-        logger.error(err);
-    }
-}
+				reject(err);
+			}
+
+			resolve(parsed);
+		});
+	});
+};
 
 module.exports = {
-    fetchFeed
-}
+	fetchFeed
+};
