@@ -1,3 +1,7 @@
+/**
+ * PRIVATE methods that will be used by APP itself
+ */
+
 const {logger} = require('../logger');
 const {db, getRef} = require('./db');
 
@@ -75,10 +79,10 @@ const updateRefreshRecords = data => {
 
 	try {
 		return getRef(db.refreshTracking)
-            .child(provider)
-            .update({
-	lastRefresh: jobTime
-});
+			.child(provider)
+			.update({
+				lastRefresh: jobTime
+			});
 	} catch (err) {
 		logger.error(`Error updating refresh records`);
 		logger.error(err);
@@ -91,9 +95,9 @@ const createRoutes = async providers => {
 	try {
 		Object.keys(providers).forEach(async provider => {
 			await getRef(`${db.routes}/${providers[provider].category}/${provider}`)
-                .set({
-	name: providers[provider].uri
-});
+				.set({
+					name: providers[provider].uri
+				});
 		});
 	} catch (err) {
 		logger.error(`Error creating routes`);
