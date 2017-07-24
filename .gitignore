@@ -1,4 +1,5 @@
 node_modules
 .vscode
 *.log
-yarn.lockscripts/firebase/getheadlines-16e96-firebase-adminsdk-uw9yt-22fbcb74eb.json
+yarn.lock
+scripts/firebase/getheadlines-16e96-firebase-adminsdk-uw9yt-22fbcb74eb.json
