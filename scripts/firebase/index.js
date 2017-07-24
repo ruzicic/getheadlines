@@ -93,8 +93,15 @@ const updateRefreshRecords = data => {
 // Example route: 'routes/blic/blic-najnovije/'
 const createRoutes = async providers => {
 	try {
+		const routesRef = await getRef(db.routes);
+
+		// Clear old routes
+		await routesRef.ref.remove();
+
+		// Save new routes
 		Object.keys(providers).forEach(async provider => {
-			await getRef(`${db.routes}/${providers[provider].category}/${provider}`)
+			await routesRef
+				.child(`${providers[provider].category}/${provider}`)
 				.set({
 					name: providers[provider].uri
 				});
