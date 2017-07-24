@@ -33,3 +33,10 @@ Check out `package.json` for more available commands.
 
 ### APIs
 Use [Postman](https://www.getpostman.com/) or similar tool to play with routes. Example: `GET http://localhost/api/providers/`
+
+## Support
+Please [open an issue](https://github.com/cedevita/getheadlines/issues/new) for support.
+
+## Contributing
+Please contribute using [Github Flow](https://guides.github.com/introduction/flow/).
+
