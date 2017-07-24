@@ -1,4 +1,4 @@
-const {getRoutes} = require('../firebase/api-services');
+const {validateUserToken, getRoutes} = require('../firebase/api-services');
 
 // Check if route /feeds/:provider/:category exist
 const validateFeedRoute = async (ctx, next) => {
@@ -30,6 +30,37 @@ const validateFeedRoute = async (ctx, next) => {
     await next();
 }
 
+const validateToken = async (ctx, next) => {
+    const authHeader = ctx.request.header.authorization;
+
+    if (typeof authHeader === 'undefined') {
+        ctx.response.status = 403;
+        ctx.body = {
+            error: 'FORBIDDEN',
+            message: `Authorization header not found`
+        }
+        return;
+    }
+
+    const isValidToken = await validateUserToken(authHeader);
+
+    // Uncomment block below, after adding web app signup
+
+    // if (!isValidToken) {
+    //     ctx.response.status = 403;
+    //     ctx.body = {
+    //         error: 'FORBIDDEN',
+    //         message: `Bad token provided`
+    //     }
+    //     return;
+    // }
+
+    console.info(`Provided token validation: ${isValidToken}`);
+
+    await next();
+}
+
 module.exports = {
-    validateFeedRoute
+    validateFeedRoute,
+    validateToken
 };

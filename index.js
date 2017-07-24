@@ -5,7 +5,7 @@ const helmet = require('koa-helmet');
 const {logger, morgan} = require('./scripts/logger');
 const {initializeApp} = require('./scripts/main');
 
-const {validateFeedRoute} = require('./scripts/middlewares');
+const {validateFeedRoute, validateToken} = require('./scripts/middlewares');
 const {ProvidersHandler, FeedsHandler} = require('./scripts/handlers');
 
 const port = 3028;
@@ -22,8 +22,8 @@ app.use(apiRouter.allowedMethods());
 initializeApp();
 
 // API Router
-apiRouter.get('/providers', ProvidersHandler.getAll);
-apiRouter.get('/feeds/:provider/:category', validateFeedRoute, FeedsHandler.get);
+apiRouter.get('/providers', validateToken, ProvidersHandler.getAll);
+apiRouter.get('/feeds/:provider/:category', validateToken, validateFeedRoute, FeedsHandler.get);
 
 // Everything else, not covered by apiRouter.routes()
 app.use(ctx => ctx.status = 401);
