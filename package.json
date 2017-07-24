@@ -1,33 +1,31 @@
 {
-  "name": "rss-to-rest-test",
+  "name": "get-headlines-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "description": "Automates XML/RSS feed parsing into JSON and exposes data via REST API",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "lint": "eslint *.js",
-    "test": "xo"
+    "start": "nodemon index.js",
+    "lint": "xo"
   },
   "keywords": [
-    "rss",
-    "rest",
-    "api",
-    "news",
     "firebase",
     "koajs"
   ],
   "author": "Mladen Ruzicic <ruzicic@gmail.com>",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.16.1",
+    "cron": "^1.2.1",
     "firebase-admin": "^4.1.3",
     "koa": "^2.0.1",
+    "koa-helmet": "^3.2.0",
+    "koa-morgan": "^1.0.1",
     "koa-router": "^7.0.1",
-    "node-fetch": "^1.6.3",
-    "nodemon": "^1.11.0",
-    "xml2js": "^0.4.17"
+    "rss-parser": "^2.10.1",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
+    "nodemon": "^1.11.0",
     "xo": "^0.17.1"
   }
 }

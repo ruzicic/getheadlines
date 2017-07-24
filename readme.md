@@ -1,11 +1,11 @@
-# get headlines - rss to rest
+# getHeadlines App
 
-## getting started
+Automates XML/RSS feed parsing into JSON and exposes data via REST API
 
-git clone, npm install, npm start
+## How does it work
 
-## testing
-
-- available providers: localhost:3028/api/available
-- provider: localhost:3028/api/kurir/kurir-najnovije
-- unauthorized: localhost:3028/
+1. Gets feed provider URL from Firebase database
+2. Fetches data from URL
+3. Parses it into JSON object
+4. Saves optimized data to Firebase
+5. Dynamically exposes API routes for all providers
