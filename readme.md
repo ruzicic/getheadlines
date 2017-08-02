@@ -20,7 +20,8 @@ $ yarn install
 ```
 
 ### Firebase
-Add the Firebase Admin SDK to Your Server [link](https://firebase.google.com/docs/admin/setup)
+Add the Firebase Admin SDK to Your Server (See [step-by-step](https://firebase.google.com/docs/admin/setup))
+
 After you download your `serviceAccountKey.json` place it inside `/scripts/firebase/`,
 and require it inside `/scripts/firebase/config.js`.
 
