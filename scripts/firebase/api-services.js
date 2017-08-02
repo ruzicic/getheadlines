@@ -25,7 +25,8 @@ const getFeeds = async (category, params) => {
             await getRef(db.feeds)
                 .child(category)
                 .limitToLast(Number(limit))
-                .once('value', snapshot => {
+                .once('value')
+                .then(snapshot => {
                     snapshot.forEach(snap => {
                         feeds.push(snap.val());
                     });
@@ -41,7 +42,8 @@ const getFeeds = async (category, params) => {
             await getRef(db.feeds)
                 .child(category)
                 .limitToFirst(limit)
-                .once('value', snapshot => {
+                .once('value')
+                .then(snapshot => {
                     snapshot.forEach(snap => {
                         feeds.push(snap.val());
                     });
