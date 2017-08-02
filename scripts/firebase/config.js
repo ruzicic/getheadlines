@@ -1,20 +1,34 @@
+const fs = require('fs');
+const path = require('path');
 const firebase = require('firebase-admin');
-const serviceAccount = require('./getheadlines-16e96-firebase-adminsdk-uw9yt-8dcc39279a.json');
+
+// Firebase Service Account cofiguration (download your own at Firebase Console)
+const firebaseConfig = path.join(__dirname, 'serviceAccountKey.json');
+
+// Firebase database name
+const databaseURL = 'https://getheadlines-16e96.firebaseio.com';
+
+// Will be assigned config file path, after validating it exists
+let serviceAccount;
+
+// Check if Firebase Service Account config exist
+try {
+	fs.statSync(firebaseConfig);
+	serviceAccount = require(firebaseConfig);
+} catch(err) {
+	console.error('Firebase serviceAccountKey.json NOT FOUND.');
+	console.error('Go to https://firebase.google.com/docs/admin/setup for more info');
+	console.error(err);	
+}
 
 firebase.initializeApp({
 	credential: firebase.credential.cert(serviceAccount),
-	databaseURL: 'https://getheadlines-16e96.firebaseio.com'
+	databaseURL: databaseURL
 });
 
-// Firebase Database reference names
-const db = {
-	providers: '/providers',
-	routes: '/routes',
-	feeds: '/feeds',
-	refreshTracking: '/tracking/updates'
-};
+// For DEBUG only
+// firebase.database.enableLogging(true);
 
 module.exports = {
-	firebase,
-	db
+	firebase
 };

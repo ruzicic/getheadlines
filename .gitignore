@@ -2,5 +2,4 @@ node_modules
 .vscode
 *.log
 yarn.lock
-scripts/firebase/getheadlines-16e96-firebase-adminsdk-uw9yt-22fbcb74eb.json
-scripts/firebase/getheadlines-16e96-firebase-adminsdk-uw9yt-8dcc39279a.json
+scripts/firebase/serviceAccountKey.json
