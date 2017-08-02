@@ -12,9 +12,9 @@ const getActiveProviders = async () => {
 	try {
 		await getRef(db.providers)
 			.orderByKey()
-			.once('value', snapshot => {
+			.once('value')
+			.then(snapshot => {
 				snapshot.forEach(provider => {
-					// Return only active providers
 					if (!provider.val().active) {
 						return;
 					}
@@ -32,7 +32,7 @@ const getActiveProviders = async () => {
 		logger.error(`Error getting providers`);
 		logger.error(err);
 	}
-};
+}
 
 // Returns lastRefresh and nextRefresh timestamps
 const getFetchLogs = provider => {
@@ -89,7 +89,7 @@ const updateRefreshRecords = data => {
 	}
 };
 
-// Exposes/ Saves routes to Firebase
+// Exposes / Saves routes to Firebase
 // Example route: 'routes/blic/blic-najnovije/'
 const createRoutes = async providers => {
 	try {
