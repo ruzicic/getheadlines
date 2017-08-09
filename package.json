@@ -11,6 +11,10 @@
     "firebase",
     "koajs"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:cedevita/getheadlines.git"
+  },
   "author": "Mladen Ruzicic <ruzicic@gmail.com>",
   "license": "MIT",
   "dependencies": {
