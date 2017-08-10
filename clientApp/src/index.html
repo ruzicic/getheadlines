@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Content-Language" content="en">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>getHeadlines | RSS Feed to JSON parser</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
+  />
+  <meta class="description" name="description" content="Automates XML/RSS feed parsing into JSON and exposes data via REST API">
+
+  <!-- Disable tap highlight on IE -->
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <style>
+    body {
+      transition: opacity ease-in 0.2s;
+    }
+
+    body[unresolved] {
+      opacity: 0;
+    }
+  </style>
+</head>
+
+<body unresolved>
+  <div class="container-fluid">
+    <div class="row purpleGradient">
+      <div class="container">
+
+        <!-- HEADER: Navigation -->
+        <nav class="row justify-content-end align-items-center pt-5 pb-5">
+          <a class="navbar-brand mr-auto text-white" href="#">getHeadlines</a>
+          <a class="nav-item nav-link text-white mr-3" href="#">Providers</a>
+          <a class="nav-item nav-link text-white mr-3" href="#">Documentation</a>
+          <a class="nav-item nav-link text-white flatButton" href="#">Log in</a>
+        </nav>
+
+        <!-- HEADER: Intro -->
+        <section class="pt-5 pb-5">
+          <div class="container">
+            <div class="row">
+              <div class="col text-center text-white">
+                <h1 class="p-2">Get headlines from 50+ news providers
+                  <h1>
+                    <h4>We automate parsing XML/RSS feeds into JSON and expose it to you via REST api</h4>
+              </div>
+            </div>
+            <div class="row mt-5 mb-5">
+              <div class="col d-flex justify-content-center">
+                <a href="#" class="flatButton main">Get started</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- <section class="row">
+      <div class="col p-5">
+        <h2 class="subTitle text-center h6 mb-3">FEATURES</h2>
+        <h3 class="subTitleMsg text-center h2 mb-5">Developers first</h3>
+        <p>SPEED UP DEVELOPMENT</p>
+        <p>A responsive and ready to use component library to start with. Reducing the amount of decisions that developers need
+          to make when writing code, helping them to focus on logic rather than on semantics and formatting.</p>
+        <p>DETAILED API DOCUMENTATION</p>
+        <p>Propeller’s component library contains detailed documentation as well as specific code examples to help new users
+          get started. We are also open to feedback and can answer specific questions you may have about Propeller.</p>
+      </div>
+    </section> -->
+
+
+    <!-- SECTION: FEATURES -->
+    <section class="row features pt-5 pb-5">
+      <div class="decoratorTop">
+        <img src="assets/images/webpack.png" alt="Decorator image" height="50px" width="50px">
+      </div>
+      <div class="container">
+
+        <div class="row mb-5">
+          <div class="col text-center">
+            <h2 class="subTitle text-center h6 mb-3">FEATURES</h2>
+            <h3 class="subTitleMsg text-center h2 mb-5">Developers first</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- SECTION: GETTING STARTED -->
+    <section class="row pt-5 pb-5">
+      <div class="container">
+
+        <div class="row mb-5">
+          <div class="col text-center">
+            <h2 class="subTitle text-center h6 mb-3">GETING STARTED</h2>
+            <h3 class="subTitleMsg text-center h2 mb-5">How can you use it?</h3>
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- STEP 1: Sign up -->
+          <div class="col-md-4">
+            <div class="sCard">
+              <div class="icon-wrapper">image</div>
+              <div class="description text-center">Sign up description</div>
+            </div>
+          </div>
+
+          <!-- STEP 2: Choose provider -->
+          <div class="col-md-4">
+            <div class="sCard">
+              <div class="icon-wrapper">image</div>
+              <div class="description text-center">See list of available providers and filtering options</div>
+            </div>
+          </div>
+
+          <!-- STEP 3: Request -->
+          <div class="col-md-4">
+            <div class="sCard">
+              <div class="icon-wrapper">image</div>
+              <div class="description text-center">Using your API key make request for provider of your choice</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="row">
+      <div class="col-12 p-5">
+        <h2 class="subTitle text-center h6 mb-3">ROADMAP</h2>
+        <h3 class="subTitleMsg text-center h2">Future plans</h3>
+      </div>
+
+      <figure class="col-4 text-center chart">
+        <svg x="0px" y="0px" viewBox="0 0 337.222 337.222" width="64px" height="64px">
+          <g>
+            <path d="M168.611,0C75.489,0,0,75.489,0,168.611s75.489,168.611,168.611,168.611   s168.611-75.489,168.611-168.611S261.733,0,168.611,0z 
+                          M168.611,304.588c-74.978,0-135.977-60.999-135.977-135.977   S93.633,32.634,168.611,32.634s135.977,60.999,135.977,135.977S243.588,304.588,168.611,304.588z"
+              fill="#B9ABFC"></path>
+            <path d="M166.299,46.64v121.971H288.27C288.27,101.248,233.662,46.64,166.299,46.64z M200.277,144.543" fill="#7860FE"></path>
+          </g>
+        </svg>
+        <figcaption class="mt-3">
+          <h6>NEAR TERM</h6>
+          <p>Bugfixing, more feed providers, improving performance (server caching)</p>
+        </figcaption>
+      </figure>
+
+      <figure class="col-4 text-center chart">
+        <svg x="0px" y="0px" width="64px" height="64px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+          <g>
+            <path fill="#B9ABFC" d="M32,0C14.327,0,0,14.327,0,32c0,17.674,14.327,32,32,32c17.674,0,32-14.326,32-32C64,14.327,49.674,0,32,0z M32,57.807C17.77,57.807,6.193,46.23,6.193,32C6.193,17.77,17.771,6.194,32,6.194S57.807,17.771,57.807,32
+                            C57.807,46.23,46.23,57.807,32,57.807z"></path>
+            <path fill="#7860FE" d="M31.69,8.852V32c0,0,0.018,2.961-0.001,23.148c12.784,0,23.149-10.363,23.149-23.148 C54.839,19.216,44.475,8.852,31.69,8.852z"></path>
+          </g>
+        </svg>
+        <figcaption class="mt-3">
+          <h6>MID TERM</h6>
+          <p>Firebase database model improvement, client analytics dashboard</p>
+        </figcaption>
+      </figure>
+
+      <figure class="col-4 text-center chart">
+        <svg x="0px" y="0px" width="64px" height="64px" viewBox="0 0 381.232 381.232" xml:space="preserve">
+          <g>
+            <path d="M190.616,0C85.34,0,0,85.34,0,190.616c0,105.276,85.34,190.616,190.616,190.616c105.275,0,190.616-85.34,190.616-190.616   C381.232,85.34,295.892,0,190.616,0z 
+                          M190.616,344.339c-84.764,0-153.723-68.959-153.723-153.723S105.853,36.894,190.616,36.894   s153.723,68.959,153.723,153.723S275.38,344.339,190.616,344.339z"
+              fill="#B9ABFC"></path>
+            <path d="M188.772,52.729v137.888H50.875c0,76.153,61.735,137.889,137.891,137.889c76.152,0,137.894-61.735,137.894-137.889   C326.66,114.464,264.926,52.729,188.772,52.729z 
+                          M186.908,274.72c-2.501,0-4.525,2.906-4.525,6.497v4.239" fill="#7860FE"></path>
+          </g>
+        </svg>
+        <figcaption class="mt-3">
+          <h6>LONG TERM</h6>
+          <p>Enable requests for Custom Feed providers, Add real time updates (Web hooks, sockets)</p>
+        </figcaption>
+      </figure>
+    </section>
+
+
+    <footer class="row">
+      <article class="container d-flex">
+
+        <div class="col-6 p-5 m-2 footerCard">
+          <h3 class="cardTitle">Found any bug?</h3>
+          <p class="cardBody">Post them on GitHub</p>
+        </div>
+        <div class="col-6 p-5 m-2 footerCard">
+          <h3 class="cardTitle">Have feedback, suggestions or Questions?</h3>
+          <p class="cardBody">Post them on Trello / Come to Gitter</p>
+        </div>
+
+      </article>
+
+      <article class="col-12 pt-5 pb-5 text-center footerShare">
+        <h2>We'd love to hear from you</h2>
+        <h4>Like getHeadlines? Please help us spread the word.</h4>
+        <p>Facebook, Twitter, LinkedIn, Email</p>
+      </article>
+
+      <div class="container pt-5 pb-4">
+        <p class="text-muted">getHeadlines - From Serbia with heart</p>
+      </div>
+    </footer>
+
+  </div>
+</body>
+
+</html>

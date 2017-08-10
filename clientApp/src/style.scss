@@ -1,0 +1,107 @@
+@import './styles/customizations.scss';
+$white: #fff;
+$purple: #7860FE;
+$purpleLight: #BDABFD;
+$weirdBlue: #45d9ef;
+$weirdBlueLight: #47E2FA;
+$subTitleColor: #797E85;
+$subTitleMsgColor: #303337;
+
+$btnShadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+$btnShadowHover: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
+
+$boxShadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+$boxShadowHover: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+
+// COLORS: http://chir.ag/projects/name-that-color/
+$catskillWhite: #F4FAFA;
+
+.nav-item {
+  text-transform: uppercase;
+}
+
+.purpleGradient {
+  background: $purple;
+  background: -webkit-linear-gradient(to right, $purpleLight, $purple);
+  background: linear-gradient(to right, $purpleLight, $purple);
+}
+
+section {
+  &.features {
+    background-color: $catskillWhite;
+  }
+}
+
+.flatButton {
+  color: $white;
+  background-color: $weirdBlue;
+  border-radius: 4px;
+  border: none;
+  white-space: nowrap;
+  box-shadow: $btnShadow;
+  text-transform: uppercase;
+  transition: all .15s ease;
+  will-change: transform;
+  padding: 0 1.5rem;
+  line-height: 50px;
+  
+  &:hover {
+    color: $white;
+    box-shadow: $btnShadowHover;
+    background-color: $weirdBlueLight;
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+}
+
+.subTitle {
+  text-transform: uppercase;
+  color: $subTitleColor;
+}
+
+.subTitleMsg {
+  color: $subTitleMsgColor;
+  font-weight: 300;
+}
+
+.footerCard {
+  background-color: $white;
+  border-radius: 4px;
+  box-shadow: $boxShadow;
+  transition-property: color,background-color,box-shadow,transform;
+  transition-duration: .15s;
+  
+  &:hover {
+    color: #32325d;
+    transform: translateY(-4px);
+    box-shadow: $boxShadowHover;
+  }
+}
+
+.cardTitle {
+  color: $purple;
+}
+
+footer {
+  position: relative;
+  background: transparent;
+  overflow: hidden;
+  padding-top: 500px;
+  margin-top: -480px;
+  pointer-events: none;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 600px;
+    height: 2000px;
+    background: #f6f9fc;
+    transform: skew(0,-12deg);
+  }
+}
+
+.footerShare {
+  border-bottom: 2px solid rgba(207,215,223,.25);
+}
