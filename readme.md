@@ -1,6 +1,18 @@
 # Get Headlines App
 
+
+<p align="center">
 Automates XML/RSS feed parsing into JSON and exposes data via REST API
+</p>
+
+<p align="center">
+  <a href="#">
+    <img src="https://img.shields.io/badge/made%20with-love-E760A4.svg" alt="Made with love">
+  </a>
+  <a href="https://opensource.org/licenses/MIT" target="_blank">
+    <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
+  </a>
+</p>
 
 ## How does it work
 
