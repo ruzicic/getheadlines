@@ -1,5 +1,6 @@
-# Get Headlines App
-
+<h1 align="center">
+Get Headlines App
+</h1>
 
 <p align="center">
 Automates XML/RSS feed parsing into JSON and exposes data via REST API
