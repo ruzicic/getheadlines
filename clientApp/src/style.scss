@@ -199,7 +199,7 @@ footer {
 }
 
 .headerWrap {
-  // min-height: 680px;
+  min-height: 100vh;
 }
 
 .introTitle {
@@ -296,6 +296,11 @@ footer {
   .introTitle {
     font-size: 3.5rem;
   }
+
+  .headerWrap {
+    min-height: 0;
+  }
+  
   section {
     &.roadmap {
       padding-bottom: 3rem;
