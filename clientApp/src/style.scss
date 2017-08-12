@@ -181,6 +181,10 @@ footer {
     background: $bluish;
     transform: skew(0,-12deg);
   }
+
+  .footerMsg {
+    text-align: center;
+  }
 }
 
 .footerShare {
@@ -295,6 +299,12 @@ footer {
   section {
     &.roadmap {
       padding-bottom: 3rem;
+    }
+  }
+
+  footer {
+    .footerMsg {
+      text-align: left;
     }
   }
 
