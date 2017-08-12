@@ -41,6 +41,16 @@ section {
   }
 }
 
+// Equal height columns fix
+.row.display-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+.row.display-flex > [class*='col-'] {
+  display: flex;
+  flex-grow: 1;
+}
+
 .flatButton {
   color: $white;
   background-color: $cyanBlue;
@@ -79,7 +89,7 @@ h3.subTitleMsg {
 
 // SECTION: FEATURES
 .featureCard {
-  min-height: 200px;
+  width: 100%;
   box-shadow: $featureCardShadow;
   background-color: $white;
 
@@ -94,7 +104,6 @@ h3.subTitleMsg {
 // SECTION: GETTING STARTED
 .getStartedCard {
   position: relative;
-  min-height: 400px;
   background-color: $white;
   color: $mediumGray;
 
@@ -116,9 +125,10 @@ h3.subTitleMsg {
 }
 
 .footerCard {
+  width: 100%;
   position: relative;
   overflow: hidden;
-  min-height: 280px;
+  min-height: 220px;
   background-color: $white;
   border-radius: $defaultBorderRadius;
   box-shadow: $cardShadow;
