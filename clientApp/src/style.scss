@@ -1,85 +1,141 @@
 @import './styles/customizations.scss';
-$white: #fff;
-$purple: #7860FE;
-$purpleLight: #BDABFD;
-$weirdBlue: #45d9ef;
-$weirdBlueLight: #47E2FA;
-$subTitleColor: #797E85;
-$subTitleMsgColor: #303337;
-
-$btnShadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
-$btnShadowHover: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
-
-$boxShadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
-$boxShadowHover: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
-
-// COLORS: http://chir.ag/projects/name-that-color/
-$catskillWhite: #F4FAFA;
+@import './styles/shared.scss';
 
 .nav-item {
   text-transform: uppercase;
 }
 
+.plainLink {
+  color: $purple;
+  text-decoration: none;
+  border-bottom: 1px solid $purple;
+  will-change: transform;
+  transition: all .15s ease;
+
+  &:hover {
+    text-decoration: none;
+    color: $purpleLight;
+    border-bottom: 1px solid $purpleLight;
+  }
+}
+
 .purpleGradient {
   background: $purple;
-  background: -webkit-linear-gradient(to right, $purpleLight, $purple);
-  background: linear-gradient(to right, $purpleLight, $purple);
+  background: -webkit-linear-gradient($purpleGradient);
+  background: linear-gradient($purpleGradient);
 }
 
 section {
+  position: relative;
+
   &.features {
-    background-color: $catskillWhite;
+    background-color: $whiteBluish;
   }
 }
 
 .flatButton {
   color: $white;
-  background-color: $weirdBlue;
-  border-radius: 4px;
+  background-color: $cyanBlue;
+  border-radius: $defaultBorderRadius;
   border: none;
   white-space: nowrap;
-  box-shadow: $btnShadow;
+  box-shadow: $primaryButtonShadow;
   text-transform: uppercase;
   transition: all .15s ease;
   will-change: transform;
-  padding: 0 1.5rem;
+  padding: 0.25rem 2rem;
   line-height: 50px;
+
+  &.nav-link {
+    line-height: 1.75rem;
+  }
   
   &:hover {
     color: $white;
-    box-shadow: $btnShadowHover;
-    background-color: $weirdBlueLight;
+    box-shadow: $primaryButtonShadowHover;
+    background-color: $cyanBlueLighter;
     text-decoration: none;
     transform: translateY(-1px);
   }
 }
 
-.subTitle {
+h2.subTitle {
   text-transform: uppercase;
   color: $subTitleColor;
 }
 
-.subTitleMsg {
+h3.subTitleMsg {
   color: $subTitleMsgColor;
   font-weight: 300;
 }
 
-.footerCard {
+// SECTION: FEATURES
+.featureCard {
+  min-height: 200px;
+  box-shadow: $featureCardShadow;
   background-color: $white;
-  border-radius: 4px;
-  box-shadow: $boxShadow;
-  transition-property: color,background-color,box-shadow,transform;
-  transition-duration: .15s;
-  
-  &:hover {
-    color: #32325d;
-    transform: translateY(-4px);
-    box-shadow: $boxShadowHover;
+
+  .icon-wrapper {
+    // when icons arrive
+  }
+
+  .description {
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: $purple;
   }
 }
 
-.cardTitle {
-  color: $purple;
+// SECTION: GETTING STARTED
+.getStartedCard {
+  position: relative;
+  min-height: 400px;
+  background-color: $white;
+  color: $mediumGray;
+
+  .title {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 8px;
+    width: 94%;
+    left: 3%;
+    bottom: -8px;
+    background-color: $purpleLight;
+  }
+}
+
+.footerCard {
+  position: relative;
+  overflow: hidden;
+  min-height: 230px;
+  background-color: $white;
+  border-radius: $defaultBorderRadius;
+  box-shadow: $cardShadow;
+  pointer-events: auto;
+
+  .thumb {
+    display: block;
+    position: absolute;
+    left: -20px;
+    top: calc(50% - 65px);
+    height: 120px;
+    width: auto;
+  }
+
+  .body {
+    margin-left: 100px;
+  }
+ 
+  .cardTitle {
+    color: $purple;
+  }
 }
 
 footer {
@@ -97,11 +153,115 @@ footer {
     right: 0;
     top: 600px;
     height: 2000px;
-    background: #f6f9fc;
+    background: $bluish;
     transform: skew(0,-12deg);
   }
 }
 
 .footerShare {
-  border-bottom: 2px solid rgba(207,215,223,.25);
+  border-bottom: 1px solid $bluishDarken;
+  color: $mediumGray;
+  pointer-events: auto;
+
+  h2 {
+    color: $purpleLight;
+    font-weight: 100;
+  }
+}
+
+.headerWrap {
+  min-height: 680px;
+}
+
+.introTitle {
+  font-size: 3.5rem;
+  font-weight: bold;
+}
+
+.introDescription {
+  font-size: 1.75rem;
+}
+
+.featureCard {
+  padding: 3rem;
+}
+
+// Decorators
+.decor {
+  display: block;
+  position: absolute;
+}
+
+.headerHalfGrid {
+  top: 60px;
+  left: 30px;
+  height: 90px;
+  width: auto;
+}
+
+.headerHalfSquare {
+  height: 80px;
+  width: auto;
+
+  &.left {
+    top: 280px;
+    left: 0;
+    transform: rotate(180deg);
+  }
+  
+  &.right {
+    top: 500px;
+    right: 0;
+  }
+}
+
+.headerLeftGrid {
+  top: 450px;
+  left: 50px;
+  height: 200px;
+  widows: auto;
+}
+
+.headerRightGrid {
+  right: 10px;
+  top: 180px;
+  height: 180px;
+  width: auto;
+}
+
+.featuresTopCircle {
+  top: 0;
+  left: 0;
+  height: 300px;
+  width: auto;
+  transform: rotate(180deg);
+}
+
+.featuresBotCircle {
+  bottom: 0;
+  right: 0;
+  height: 300px;
+  width: auto;
+}
+
+// Getting started
+.getStartedHalfGrid {
+  top: 20px;
+  left: 20px;
+  height: 90px;
+  width: auto;
+}
+
+.getStartedSquare {
+  top: 80px;
+  right: 80px;
+  height: 90px;
+  width: auto;
+}
+
+.getStartedGrid {
+  bottom: 80px;
+  right: 20px;
+  height: 180px;
+  width: auto;
 }
