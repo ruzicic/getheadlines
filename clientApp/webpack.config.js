@@ -20,8 +20,7 @@ const cssProd = ExtractTextPlugin.extract({
 	use: [
 		{ loader: 'css-loader' },
 		{ loader: 'sass-loader' }
-	],
-	publicPath: '/public'
+	]
 });
 
 const cssConfig = isProduction ? cssProd : cssDev;
@@ -33,8 +32,11 @@ module.exports = {
 		bootstrap: bootstrapConfig
 	},
 	output: {
-		path: path.join(__dirname, 'public'),
-		filename: '[name].bundle.js'
+		// TODO
+		// path: path.join(__dirname, 'public'), // BUILD (+require in app.js)
+		path: __dirname + "/public/assets/", // START (dev)
+
+		filename: "[name].bundle.js",
 	},
 	module: {
 		rules: [
@@ -71,6 +73,7 @@ module.exports = {
 		contentBase: path.join(__dirname, 'public'),
 		compress: true,
 		port: 9000,
+		host: '0.0.0.0',
 		stats: 'errors-only',
 		hot: true // Hot module replacement
 	},
