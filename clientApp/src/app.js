@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
         panel: mainElem,
         menu: menuElem,
         padding: 256,
-        tolerance: 70,
+        tolerance: 110,
         side: 'right',
         easing: 'cubic-bezier(.32,2,.55,.27)'
     });
