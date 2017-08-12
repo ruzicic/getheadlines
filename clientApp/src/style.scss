@@ -148,14 +148,14 @@ h3.subTitleMsg {
   .thumb {
     display: block;
     position: absolute;
-    left: -20px;
+    left: -10px;
     top: calc(50% - 30px);
     height: 60px;
     width: auto;
   }
 
   .body {
-    margin-left: 20px;
+    margin-left: 30px;
   }
  
   .cardTitle {
@@ -199,7 +199,7 @@ footer {
 }
 
 .headerWrap {
-  min-height: 680px;
+  // min-height: 680px;
 }
 
 .introTitle {
@@ -310,6 +310,7 @@ footer {
 
   .footerCard {
     .thumb {
+      left: -20px;
       top: calc(50% - 60px);
       height: 120px;
     }
