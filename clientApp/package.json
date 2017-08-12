@@ -55,6 +55,7 @@
     "bootstrap"
   ],
   "dependencies": {
-    "firebase": "^4.2.0"
+    "firebase": "^4.2.0",
+    "slideout": "^1.0.1"
   }
 }
