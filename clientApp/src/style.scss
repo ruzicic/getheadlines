@@ -1,5 +1,13 @@
 @import './styles/customizations.scss';
 @import './styles/shared.scss';
+@import './styles/mobileMenu.scss';
+
+* {
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
 
 .nav-item {
   text-transform: uppercase;
@@ -75,10 +83,6 @@ h3.subTitleMsg {
   box-shadow: $featureCardShadow;
   background-color: $white;
 
-  .icon-wrapper {
-    // when icons arrive
-  }
-
   .description {
     font-size: 1rem;
     text-transform: uppercase;
@@ -114,7 +118,7 @@ h3.subTitleMsg {
 .footerCard {
   position: relative;
   overflow: hidden;
-  min-height: 230px;
+  min-height: 280px;
   background-color: $white;
   border-radius: $defaultBorderRadius;
   box-shadow: $cardShadow;
@@ -124,7 +128,7 @@ h3.subTitleMsg {
     display: block;
     position: absolute;
     left: -20px;
-    top: calc(50% - 65px);
+    top: calc(50% - 60px);
     height: 120px;
     width: auto;
   }
