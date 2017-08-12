@@ -1,0 +1,7 @@
+{
+  "name": "getHeadlines",
+  "version": "1.0.0",
+  "description": "Automates XML/RSS feed parsing into JSON and exposes data via REST API",
+  "title": "getHeadlines | API Documentation",
+  "url" : "https://getheadlines.io/api"
+}
