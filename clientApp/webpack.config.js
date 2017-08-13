@@ -28,15 +28,14 @@ const bootstrapConfig = isProduction ? bootstrapEntryPoints.prod : bootstrapEntr
 
 module.exports = {
 	entry: {
-		app: './src/app.js',
+		app: './src/assets/js/app.js',
+		home: './src/assets/js/home.js',
 		bootstrap: bootstrapConfig
 	},
 	output: {
-		// TODO
-		// path: path.join(__dirname, 'public'), // BUILD (+require in app.js)
-		path: __dirname + "/public/assets/", // START (dev)
-
-		filename: "[name].bundle.js",
+		path: path.join(__dirname, 'public'),
+		publicPath: '/',
+		filename: '[name].bundle.js',
 	},
 	module: {
 		rules: [
@@ -70,7 +69,7 @@ module.exports = {
 		]
 	},
 	devServer: {
-		contentBase: path.join(__dirname, 'public'),
+		contentBase: path.join(__dirname, 'src'),
 		compress: true,
 		port: 9000,
 		host: '0.0.0.0',
@@ -79,7 +78,27 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
+			filename: 'index.html',
 			template: './src/index.html',
+			chunks: ['app', 'home', 'bootstrap'],
+			hash: true,
+			minify: {
+				collapseWhitespace: false
+			}
+		}),
+		new HtmlWebpackPlugin({
+			filename: 'dashboard.html',
+			template: './src/dashboard.html',
+			chunks: ['app', 'bootstrap'],
+			hash: true,
+			minify: {
+				collapseWhitespace: false
+			}
+		}),
+		new HtmlWebpackPlugin({
+			filename: '404.html',
+			template: './src/404.html',
+			chunks: ['bootstrap'],
 			hash: true,
 			minify: {
 				collapseWhitespace: false

@@ -6,8 +6,8 @@
   "scripts": {
     "cleardist": "rimraf ./public/*",
     "lint": "xo *.js",
-    "start": "node_modules/.bin/webpack-dev-server",
     "build": "yarn cleardist && NODE_ENV=production webpack -p",
+    "start": "node_modules/.bin/webpack-dev-server",
     "start:firebase": "firebase serve --only hosting"
   },
   "author": "Mladen Ruzicic <ruzicic@gmail.com>",
