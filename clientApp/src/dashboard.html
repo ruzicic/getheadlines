@@ -29,10 +29,9 @@
 
     <nav class="navbar navbar-inverse fixed-top bg-inverse d-flex flex-row">
         <a class="navbar-brand mr-auto" href="https://getheadlines.io/">getHeadlines</a>
-        <div class="d-flex align-content-start">
+        <div class="d-flex align-content-start hidden-xs-down">
             <div id="userName" class="text-white d-flex align-items-center">User info</div>
             <img id="userAvatar" class="rounded-circle ml-4 mr-4" height="38px" width="38px" alt="User avatar">
-
             <button id="signOut" class="btn btn-outline-danger my-2 my-sm-0">Sign out</button>
         </div>
     </nav>
@@ -66,9 +65,13 @@
                 <section class="row placeholders">
                     <div class="col">
                         <div class="card">
-                            <div class="card-header d-flex">
-                                <span class="mr-auto">Your profile</span>
-                                <span class="text-muted">User ID: <span id="userID"></span></span>
+                            <div class="card-header d-flex flex-wrap align-items-center">
+                                <div class="mr-auto">
+                                    <h6 class="m-0">Your profile</h6>
+                                </div>
+                                <div class="userID text-muted">
+                                    <p class="m-0">User ID: <span id="userID"></span></p>
+                                </div>
                             </div>
                             <div class="card-block">
                                 <p id="userEmail" class="card-text"><span class="text-muted"></span></p>
