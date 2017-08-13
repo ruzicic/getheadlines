@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "lint": "xo",
-    "build:apidoc": "apidoc -i ./ -o clientApp/public/documentation -e node_modules/"
+    "lint": "xo"
   },
   "keywords": [
     "firebase",
