@@ -1,2 +1,2 @@
-require('../styles/main.scss');
-require.context('../images/', false); // true for subfolders
+import '../styles/main.scss';
+require.context('../images/', false, /\.(png|jpe?g|svg)$/);
