@@ -30,6 +30,8 @@ module.exports = {
 	entry: {
 		app: './src/assets/js/app.js',
 		home: './src/assets/js/home.js',
+		dashboard: './src/assets/js/dashboard.js',
+		auth: './src/assets/js/auth.js',
 		bootstrap: bootstrapConfig
 	},
 	output: {
@@ -89,7 +91,16 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			filename: 'dashboard.html',
 			template: './src/dashboard.html',
-			chunks: ['app', 'bootstrap'],
+			chunks: ['bootstrap', 'dashboard'],
+			hash: true,
+			minify: {
+				collapseWhitespace: false
+			}
+		}),
+		new HtmlWebpackPlugin({
+			filename: 'auth.html',
+			template: './src/auth.html',
+			chunks: ['auth'],
 			hash: true,
 			minify: {
 				collapseWhitespace: false
