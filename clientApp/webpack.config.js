@@ -109,7 +109,7 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			filename: '404.html',
 			template: './src/404.html',
-			chunks: ['bootstrap'],
+			chunks: [],
 			hash: true,
 			minify: {
 				collapseWhitespace: false
