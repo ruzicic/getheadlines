@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>getHeadlines | Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no"
+    />
+    <meta class="description" name="description" content="Automates XML/RSS feed parsing into JSON and exposes data via REST API">
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <style>
+        body {
+            transition: opacity ease-in 0.2s;
+        }
+
+        body[unresolved] {
+            opacity: 0;
+        }
+
+        body {
+            padding-top: 50px;
+        }
+
+        .sidebar {
+            position: fixed!important;
+            top: 51px;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            padding: 20px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            border-right: 1px solid #eee;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .sidebar .nav-link {
+            border-radius: 0!important;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            padding-bottom: 9px;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+
+<body unresolved>
+
+    <nav class="navbar navbar-inverse fixed-top bg-inverse d-flex flex-row">
+        <a class="navbar-brand mr-auto" href="https://getheadlines.io/">getHeadlines</a>
+        <div class="d-flex align-content-start">
+            <div id="userName" class="text-white d-flex align-items-center">User info</div>
+            <img id="userAvatar" class="rounded-circle ml-4 mr-4" height="38px" width="38px" src="https://api.adorable.io/avatars/40/abott@adorable.png"
+                alt="User avatar">
+
+            <button id="signOut" class="btn btn-outline-danger my-2 my-sm-0">Sign out</button>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Sidebar -->
+            <!-- https://v4-alpha.getbootstrap.com/examples/dashboard/ -->
+            <nav class="col-sm-3 col-md-2 hidden-xs-down bg-faded sidebar p-0">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Overview <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Reports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Analytics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Export</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main -->
+            <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+                <h1>Dashboard</h1>
+
+                <section class="row placeholders">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header d-flex">
+                                <span class="mr-auto">Your profile</span>
+                                <span class="text-muted">User ID: <span id="userID"></span></span>
+                            </div>
+                            <div class="card-block">
+                                <p id="userEmail" class="card-text"><span class="text-muted"></span></p>
+                                <p class="card-text text-muted">Verified: <span id="userEmailVerified"></span></p>
+
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="apiKeyLabel">API KEY</span>
+                                    <input id="userToken" type="text" class="form-control" aria-describedby="apiKeyLabel" readonly>
+                                    <span class="input-group-btn">
+                                        <button id="apiKeyCopy" class="btn btn-secondary" type="button"
+                                            data-clipboard-target="#userToken">Copy</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="sign-in-status"></div>
+                        <div id="sign-in"></div>
+                        <div id="account-details"></div>
+                    </div>
+                </section>
+            </main>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
