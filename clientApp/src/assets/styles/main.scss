@@ -1,6 +1,6 @@
-@import './styles/customizations.scss';
-@import './styles/shared.scss';
-@import './styles/mobileMenu.scss';
+@import './customizations.scss';
+@import './_shared.scss';
+@import './_mobileMenu.scss';
 
 * {
   font-kerning: normal;
