@@ -1,3 +1,4 @@
+import '../styles/auth.scss';
 import { firebase, FBApp } from './firebaseApp.js';
 const firebaseui = require('firebaseui');
 
