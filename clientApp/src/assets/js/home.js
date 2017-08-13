@@ -1,7 +1,5 @@
 const Slideout = require('slideout');
 
-import FBApp from './app.js';
-
 document.addEventListener('DOMContentLoaded', function () {
     document.body.removeAttribute('unresolved');
 
@@ -37,5 +35,3 @@ document.addEventListener('DOMContentLoaded', function () {
             mainElem.removeEventListener('click', close);
         });
 });
-
-console.log(FBApp);
