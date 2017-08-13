@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const PurifyCSSPlugin = require('purifycss-webpack');
 
 const bootstrapEntryPoints = require('./webpack.bootstrap.config');
@@ -165,8 +166,16 @@ module.exports = {
 		new webpack.HotModuleReplacementPlugin(),
 		// Prints more readable module names in the browser
 		new webpack.NamedModulesPlugin(),
-		new PurifyCSSPlugin({
-			paths: glob.sync(path.join(__dirname, 'src/*.html'))
+
+		// TODO: 
+		// PurifyCSSPlugin removes TOO much :)
+		// new PurifyCSSPlugin({
+		// 	paths: glob.sync(path.join(__dirname, 'src/*.html')),
+		// 	minimize: isProduction
+		// }),
+
+		new UglifyJSPlugin({
+			parallel: true
 		})
 	]
 };
