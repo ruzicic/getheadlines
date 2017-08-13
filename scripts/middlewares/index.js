@@ -22,7 +22,7 @@ const validateFeedRoute = async (ctx, next) => {
         ctx.response.status = 404;
         ctx.body = {
             error: 'NOT_FOUND',
-            message: `Category '${category}' in '${provider}' does not exist.`
+            message: `Category '${category}' for '${provider}' does not exist.`
         }
         return;
     }
@@ -42,7 +42,7 @@ const validateToken = async (ctx, next) => {
         return;
     }
 
-    const isValidToken = await validateUserToken(authHeader);
+    // const isValidToken = await validateUserToken(authHeader);
 
     // Uncomment block below, after adding web app signup
 
@@ -55,7 +55,7 @@ const validateToken = async (ctx, next) => {
     //     return;
     // }
 
-    console.info(`Provided token validation: ${isValidToken}`);
+    // console.info(`Provided token validation: ${isValidToken}`);
 
     await next();
 }

@@ -1,0 +1,135 @@
+@import './shared.scss';
+
+.slideout-menu {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 256px;
+  min-height: 100vh;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  z-index: 0;
+  display: none;
+}
+
+.slideout-menu-left {
+  left: 0;
+}
+
+.slideout-menu-right {
+  right: 0;
+}
+
+.slideout-panel {
+  position: relative;
+  z-index: 1;
+  will-change: transform;
+  background-color: #FFF; /* A background-color is required */
+  min-height: 100vh;
+}
+
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel {
+  overflow: hidden;
+}
+
+.slideout-open .slideout-menu {
+  display: block;
+  background: $darkGray;
+}
+
+// Menu style
+.slideout-menu {
+  .navList {
+    
+  }
+}
+
+$hamburgerSize: 40px;
+$hamburgerInner: 30px;
+
+// Hamburger menu
+span.hamburger {
+  display: block;
+  width: $hamburgerSize;
+  height: $hamburgerSize;
+  margin: 0 auto;
+  border-radius: 5px;
+  position: relative;
+  cursor: pointer;
+  -webkit-transition: all .2s linear;                
+  -webkit-box-shadow: 0px 0px 0px 3px #ddd;
+}
+
+span.hamburger span {
+  display: block;
+  width: $hamburgerInner;
+  top: 50%;
+  margin-top: -2px;
+  margin-left: 5px;
+  position: absolute;
+  background: #ddd;
+  -webkit-transition: all .2s linear;                
+}
+
+span.hamburger span.line {
+  display: block;
+  width: $hamburgerInner;
+  height: 3px;
+  top: 50%;
+  margin-top: -2px;
+  margin-left: 5px;
+  position: absolute;
+  background: #ddd;
+  -webkit-transition: all .2s linear;                
+}
+
+
+span.hamburger span:before,
+span.hamburger span:after {
+  content:'';
+  width: $hamburgerInner;
+  height: 3px; 
+  background: #ddd;       
+  position: absolute;
+  margin-top: -8px;
+  -webkit-transition: all .2s linear;                
+}
+
+span.hamburger span:after {
+  margin-top: 8px;
+}
+
+span.hamburger:hover{
+  -webkit-transform: scale(1.1);
+  -webkit-box-shadow: 0px 0px 0px 3px lightblue;
+}
+
+span.hamburger:hover span,
+span.hamburger:hover span:before,
+span.hamburger:hover span:after {
+  background: lightblue;
+}  
+
+span.hamburger.hamburgerActive {
+  -webkit-box-shadow: 0px 0px 0px 3px $cyanBlue;        
+} 
+
+span.hamburger.hamburgerActive span,
+span.hamburger.hamburgerActive span:before,
+span.hamburger.hamburgerActive span:after {
+  background: $cyanBlue;
+}     
+span.hamburger.hamburgerActive span.line {
+  opacity: 0;
+} 
+
+span.hamburger.hamburgerActive span:before {
+  margin-top: 0px;
+  -webkit-transform: rotate(45deg);
+}
+span.hamburger.hamburgerActive span:after {
+  margin-top: 0px;
+  -webkit-transform: rotate(-45deg);
+}   
