@@ -10,6 +10,21 @@
   -webkit-overflow-scrolling: touch;
   z-index: 0;
   display: none;
+
+  .menuItem {
+    border-bottom: 1px solid $mediumGray;
+
+    &:first-of-type {
+      border-top: 1px solid $mediumGray;
+    }
+  }
+
+  .flatButton {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 0;
+  }
 }
 
 .slideout-menu-left {
