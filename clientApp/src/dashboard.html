@@ -22,34 +22,6 @@
         body[unresolved] {
             opacity: 0;
         }
-
-        body {
-            padding-top: 50px;
-        }
-
-        .sidebar {
-            position: fixed!important;
-            top: 51px;
-            bottom: 0;
-            left: 0;
-            z-index: 1000;
-            padding: 20px;
-            overflow-x: hidden;
-            overflow-y: auto;
-            border-right: 1px solid #eee;
-            padding-left: 0;
-            padding-right: 0;
-        }
-
-        .sidebar .nav-link {
-            border-radius: 0!important;
-        }
-
-        h1 {
-            margin-bottom: 20px;
-            padding-bottom: 9px;
-            border-bottom: 1px solid #eee;
-        }
     </style>
 </head>
 
@@ -59,8 +31,7 @@
         <a class="navbar-brand mr-auto" href="https://getheadlines.io/">getHeadlines</a>
         <div class="d-flex align-content-start">
             <div id="userName" class="text-white d-flex align-items-center">User info</div>
-            <img id="userAvatar" class="rounded-circle ml-4 mr-4" height="38px" width="38px" src="https://api.adorable.io/avatars/40/abott@adorable.png"
-                alt="User avatar">
+            <img id="userAvatar" class="rounded-circle ml-4 mr-4" height="38px" width="38px" alt="User avatar">
 
             <button id="signOut" class="btn btn-outline-danger my-2 my-sm-0">Sign out</button>
         </div>
