@@ -56,7 +56,9 @@
     "bootstrap"
   ],
   "dependencies": {
+    "clipboard": "^1.7.1",
     "firebase": "^4.2.0",
+    "firebaseui": "^2.3.0",
     "slideout": "^1.0.1"
   }
 }
