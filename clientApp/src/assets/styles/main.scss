@@ -29,8 +29,7 @@
 
 .purpleGradient {
   background: $purple;
-  background: -webkit-linear-gradient($purpleGradient);
-  background: linear-gradient($purpleGradient);
+  background-image: $purpleRadialGradient;
 }
 
 section {

@@ -22,6 +22,7 @@ $primaryButtonShadowHover: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.0
 // GRADIENTS
 $purpleGradient: to right, $purpleLight, $purple;
 $cyanGradient: to right, #36d1dc, #5b86e5;
+$purpleRadialGradient: radial-gradient(ellipse farthest-corner at top right,#7860fe 0%,#bdabfd 100%);
 
 // BORDERS
 $defaultBorderRadius: 4px;
