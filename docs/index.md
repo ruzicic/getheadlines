@@ -1,16 +1,30 @@
-# getHeadlines - API Documentation
-Automates XML/RSS feed parsing into JSON and exposes data via REST API
+# getHeadlines - API Reference
+
+The getHeadlines REST API offers access and control over all getHeadlines data, such as providers and feeds.
+
+## Prerequisites
+
+In order to access the getHeadlines API, there are some things you first need to know.
+
+Read the sections below before you start using the getHeadlines API.
 
 ---
 
-Authorization
------
+### Authentication
 
-In order to use getHeadlines service you need to [Sign up](https://getheadlines.io) and get your API key.
+Most API resources are protected with HTTP Basic authentication. You first need to [register](https://getheadlines.io/auth). Upon registration, you will be receive your personal API KEY, that allow you to authenticate against the API.
 
-getHeadlines expects for the API key to be included in all API requests to the server in a header that looks like the following:
+This authentication key is permanent (it will never expire). Though, it will get flushed when the account password is changed, for security reasons. You can consider it safe for long-term purposes.
 
-`Authorization: <Your-Unique-API-Key>`
+Once you have your private authentication key, you can use it to authenticate your HTTP requests to the API. You can do so by adding an Authorization header to all your HTTP calls. The Authorization header is formatted as such: 
+
+    Authorization: BASE64(key)
+
+Replace BASE64(key) with your Base64 string.
+
+### Security Reports
+
+If you find any security hole in the getHeadlines API, you are more than welcome to [report it](ruzicic@gmail.com) directly.
 
 ---
 
@@ -23,9 +37,9 @@ Get a list of all available feed providers
 
 **[GET]** `https://getheadlines.io/api/providers`
 
-Example usage:
+Headers:
 
-    `curl --header "Authorization: YOUR-API-KEY" https://getheadlines.io/api/blic/zabava`
+    Content-Type: application/json
 
 **Success 200**
 
@@ -44,9 +58,9 @@ Get all feeds for *provider* and its *category*
 
 **[GET]** `https://getheadlines.io/api/feeds/:provider/:category`
 
-Example usage:
+Headers:
 
-    `curl --header "Authorization: YOUR-API-KEY" https://getheadlines.io/api/blic/zabava`
+    Content-Type: application/json
 
 **Success 200**
 
@@ -64,13 +78,15 @@ Errors
 
 **Error 4xx**
 
-| Code  | Name      | Message                           |
-| :---: | :-------: | --------------------------------- |
-| 403   | FORBIDDEN | Authorization header not found    |
-| 403   | FORBIDDEN | Bad token provided                |
+| Code  | Name              | Message                           |
+| :---: | ----------------- | --------------------------------- |
+| 400   | BAD_REQUEST       | Bad request query                 |
+| 403   | FORBIDDEN         | Authorization header not found    |
+| 403   | FORBIDDEN         | Bad token provided                |
+| 429   | TOO_MANY_REQUESTS | Too Many Requests                 |
 
 **Error 5xx**
 
 | Code  | Name      | Message                   |
-| :---: | :-------: | ------------------------- |
+| :---: | --------- | ------------------------- |
 | 500   | ERROR     | Internal Server Error     |
