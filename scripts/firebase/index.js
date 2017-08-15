@@ -5,7 +5,7 @@
 const {logger} = require('../logger');
 const {db, getRef} = require('./db');
 
-// Returns all active feed providers from firebase database
+// Returns all active feed providers
 const getActiveProviders = async () => {
 	let activeProviders = {};
 
@@ -19,7 +19,6 @@ const getActiveProviders = async () => {
 						return;
 					}
 					activeProviders[provider.key] = {
-						// provider state not needed after check above
 						// active: Boolean(provider.val().active),
 						uri: provider.val().uri,
 						refreshRate: provider.val().refreshRate,
@@ -47,18 +46,6 @@ const getFetchLogs = provider => {
 	}
 };
 
-// Returns provider details: active, category, refreshRate, uri
-// const getProviderDetails = provider => {
-// 	try {
-// 		return getRef(db.providers)
-//             .child(provider)
-//             .once('value');
-// 	} catch (err) {
-// 		logger.error(`Error fetching uri for ${provider}`);
-// 		logger.error(err);
-// 	}
-// };
-
 const saveFeed = (providerName, data) => {
 	logger.info(`[FIREBASE]: ${providerName} saving ${data.length} posts`);
 
@@ -77,8 +64,6 @@ const saveFeed = (providerName, data) => {
 };
 
 const updateRefreshRecords = (providerName, lastJobTime) => {
-	// const {provider, jobTime} = data;
-
 	try {
 		return getRef(db.refreshTracking)
 			.child(providerName)
@@ -91,7 +76,7 @@ const updateRefreshRecords = (providerName, lastJobTime) => {
 	}
 };
 
-// Exposes / Saves routes to Firebase
+// Saves routes to Firebase
 // Example route: 'routes/blic/blic-najnovije/'
 const createRoutes = async providers => {
 	try {
