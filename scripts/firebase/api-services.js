@@ -5,7 +5,6 @@
 const {logger} = require('../logger');
 const {db, getRef} = require('./db');
 
-// Returns lastRefresh and nextRefresh timestamps
 const getRoutes = () => {
 	try {
 		return getRef(db.routes).once('value');
@@ -20,7 +19,6 @@ const getFeeds = async (category, params) => {
     let feeds = [];
 
     if (sort.toUpperCase() === 'ASC') {
-
         try {
             await getRef(db.feeds)
                 .child(category)
@@ -37,7 +35,6 @@ const getFeeds = async (category, params) => {
         }
 
     } else {
-
         try {
             await getRef(db.feeds)
                 .child(category)
