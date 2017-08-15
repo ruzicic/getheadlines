@@ -19,7 +19,8 @@ const getActiveProviders = async () => {
 						return;
 					}
 					activeProviders[provider.key] = {
-						active: Boolean(provider.val().active),
+						// provider state not needed after check above
+						// active: Boolean(provider.val().active),
 						uri: provider.val().uri,
 						refreshRate: provider.val().refreshRate,
 						category: provider.val().category
@@ -34,7 +35,7 @@ const getActiveProviders = async () => {
 	}
 }
 
-// Returns lastRefresh and nextRefresh timestamps
+// Returns lastRefresh
 const getFetchLogs = provider => {
 	try {
 		return getRef(db.refreshTracking)
@@ -47,41 +48,42 @@ const getFetchLogs = provider => {
 };
 
 // Returns provider details: active, category, refreshRate, uri
-const getProviderDetails = provider => {
-	try {
-		return getRef(db.providers)
-            .child(provider)
-            .once('value');
-	} catch (err) {
-		logger.error(`Error fetching uri for ${provider}`);
-		logger.error(err);
-	}
-};
+// const getProviderDetails = provider => {
+// 	try {
+// 		return getRef(db.providers)
+//             .child(provider)
+//             .once('value');
+// 	} catch (err) {
+// 		logger.error(`Error fetching uri for ${provider}`);
+// 		logger.error(err);
+// 	}
+// };
 
-const saveFeed = (provider, data) => {
-	logger.info(`[FIREBASE]: ${provider} saving ${data.length} posts`);
+const saveFeed = (providerName, data) => {
+	logger.info(`[FIREBASE]: ${providerName} saving ${data.length} posts`);
 
 	try {
 		data.forEach(async entry => {
 			await getRef(db.feeds)
-                .child(provider)
+				.child(providerName)
+				// FIXME: format date to UTC
                 .child(entry.pubDate)
                 .set(entry);
 		});
 	} catch (err) {
-		logger.error(`Error saving feed for ${provider}`);
+		logger.error(`Error saving feed for ${providerName}`);
 		logger.error(err);
 	}
 };
 
-const updateRefreshRecords = data => {
-	const {provider, jobTime} = data;
+const updateRefreshRecords = (providerName, lastJobTime) => {
+	// const {provider, jobTime} = data;
 
 	try {
 		return getRef(db.refreshTracking)
-			.child(provider)
+			.child(providerName)
 			.update({
-				lastRefresh: jobTime
+				lastRefresh: lastJobTime
 			});
 	} catch (err) {
 		logger.error(`Error updating refresh records`);
@@ -114,9 +116,8 @@ const createRoutes = async providers => {
 
 module.exports = {
 	getActiveProviders,
-	getFetchLogs,
-	getProviderDetails,
 	saveFeed,
+	getFetchLogs,
 	updateRefreshRecords,
 	createRoutes
 };
