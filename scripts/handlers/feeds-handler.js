@@ -3,7 +3,7 @@ const {getFeeds} = require('../firebase/api-services');
 const DEFAULT_LIMIT = 20; 
 const DEFAULT_SORT = 'ASC';
 
-const get = async (ctx) => {
+const get = async ctx => {
     const {provider, category} = ctx.params;
     const {limit, sort} = ctx.query;
 
