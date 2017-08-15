@@ -13,6 +13,9 @@ const initAuth = () => {
     const userTokenInput = document.getElementById('userToken');
     const signOutButton = document.getElementById('signOut');
 
+    const usersRef = firebase.database().ref('users');
+
+    // Firebase database, users table reference
     firebase.auth().onAuthStateChanged(user => {
         if (user) {
             // Reveal content if user is signed in
@@ -35,8 +38,19 @@ const initAuth = () => {
             signOutButton.addEventListener('click', () => signOut());
 
             // Get and display user token
+            // if getIdToken(true) will force refresh?
             user.getIdToken().then(accessToken => {
                 userTokenInput.value = accessToken;
+
+                // Save user data to Database
+                usersRef.child(user.uid).set({
+                    name: user.displayName,
+                    email: user.email,
+                    emailVerified: user.emailVerified,
+                    photoURL: user.photoURL,
+                    provider: user.providerData
+                });
+
             });
         } else {
             // User is not signed in
