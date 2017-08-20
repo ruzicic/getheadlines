@@ -25,7 +25,9 @@
     "koa-helmet": "^3.2.0",
     "koa-morgan": "^1.0.1",
     "koa-router": "^7.0.1",
+    "node-readability": "^3.0.0",
     "rss-parser": "^2.10.1",
+    "sanitize-html": "^1.14.1",
     "winston": "^2.3.1"
   },
   "devDependencies": {
