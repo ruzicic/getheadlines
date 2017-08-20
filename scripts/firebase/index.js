@@ -67,11 +67,13 @@ const saveFeed = (providerName, data) => {
 };
 
 const updateRefreshRecords = (providerName, lastJobTime) => {
+	const timeUTC = new Date(lastJobTime).toUTCString();
+
 	try {
 		return getRef(db.refreshTracking)
 			.child(providerName)
 			.update({
-				lastRefresh: lastJobTime
+				lastRefresh: timeUTC
 			});
 	} catch (err) {
 		logger.error(`Error updating refresh records`);
