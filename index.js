@@ -7,6 +7,7 @@ const {initializeApp} = require('./scripts/main');
 
 const {validateFeedRoute, validateToken} = require('./scripts/middlewares');
 const {ProvidersHandler, FeedsHandler} = require('./scripts/handlers');
+const {tryUrl} = require('./scripts/testing.js');
 
 const port = process.env.PORT || 3028;
 
@@ -23,47 +24,22 @@ const app = new Koa()
 initializeApp();
 
 /**
- * @api {get} /providers Get All Providers
- * @apiVersion 1.0.0
- * @apiName Providers
- * @apiGroup Providers
- * 
- * @apiDescription Get a list of all available feed providers
- * 
- * @apiExample Example usage:
- * curl --header "Authorization: YOUR-API-KEY" https://getheadlines.io/api/blic/zabava
- * 
- * @apiHeader {String} Authorization Authorization token - Your personal API key
- * 
- * @apiError NoToken 403 Authorization header not found
- * @apiError BadToken 403 Bad token provided
- * 
- * @apiSuccess {Object[]} providers List of all active providers
+ * [GET] Get All Providers
+ * Example usage: https://getheadlines.io/api/providers
  */
 apiRouter.get('/providers', validateToken, ProvidersHandler.getAll);
 
-/**
- * @api {get} /feeds/:provider/:category Get feeds
- * @apiVersion 1.0.0
- * @apiName GetFeeds
- * @apiGroup Feeds
- * 
- * @apiDescription Get all feeds for provider and its category
- * 
- * @apiExample Example usage:
- * curl --header "Authorization: YOUR-API-KEY" https://getheadlines.io/api/blic/zabava
- * 
- * @apiHeader {String} Authorization Authorization token - Your personal API key
- * 
- * @apiError NoToken 403 Authorization header not found
- * @apiError BadToken 403 Bad token provided
- * 
- * @apiSuccess {String} provider Provider name
- * @apiSuccess {String} category Category of provider
- * @apiSuccess {Object[]} query Query for which request is returned
- * @apiSuccess {Object[]} data List of feeds
+/** 
+ * [GET] Get all feeds for provider and its category
+ * Example usage: https://getheadlines.io/api/blic/zabava
  */
 apiRouter.get('/feeds/:provider/:category', validateToken, validateFeedRoute, FeedsHandler.get);
+
+/** 
+ * [POST] Test route
+ * Example usage: https://getheadlines.io/api/test
+ */
+apiRouter.get('/test', tryUrl);
 
 // Everything else, not covered by API Router
 app.use(ctx => ctx.status = 401);
