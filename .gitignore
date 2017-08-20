@@ -4,3 +4,4 @@ node_modules
 yarn.lock
 scripts/firebase/serviceAccountKey.json
 clientApp/public
+clientApp/package-lock.json
