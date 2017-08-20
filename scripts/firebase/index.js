@@ -88,8 +88,6 @@ const createRoutes = async providers => {
 		// Clear old routes
 		await routesRef.ref.remove();
 
-		await getProviderThumbnail();
-
 		// Save new routes
 		Object.keys(providers).forEach(async provider => {
 			await routesRef
