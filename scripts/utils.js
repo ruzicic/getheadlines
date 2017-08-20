@@ -1,7 +1,7 @@
 const parser = require('rss-parser');
 const read = require('node-readability');
 
-const { logger } = require('./logger');
+const {logger} = require('./logger');
 
 const fetchFeed = url => {
 	if (!url) {
