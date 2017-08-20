@@ -15,14 +15,18 @@ const getActiveProviders = async () => {
 			.once('value')
 			.then(snapshot => {
 				snapshot.forEach(provider => {
-					if (!provider.val().active) {
+					const {active, uri, refreshRate, category, language} = provider.val();
+
+					// Skip providers which are not active at the moment
+					if (!active) {
 						return;
 					}
+
 					activeProviders[provider.key] = {
-						// active: Boolean(provider.val().active),
-						uri: provider.val().uri,
-						refreshRate: provider.val().refreshRate,
-						category: provider.val().category
+						uri,
+						refreshRate,
+						category,
+						language
 					};
 				});
 			});
@@ -38,8 +42,8 @@ const getActiveProviders = async () => {
 const getFetchLogs = provider => {
 	try {
 		return getRef(db.refreshTracking)
-            .child(provider)
-            .once('value');
+			.child(provider)
+			.once('value');
 	} catch (err) {
 		logger.error(`Error getting fetch logs (timestamps)`);
 		logger.error(err);
@@ -53,9 +57,8 @@ const saveFeed = (providerName, data) => {
 		data.forEach(async entry => {
 			await getRef(db.feeds)
 				.child(providerName)
-				// FIXME: format date to UTC
-                .child(entry.pubDate)
-                .set(entry);
+				.child(entry.timeUTC)
+				.set(entry);
 		});
 	} catch (err) {
 		logger.error(`Error saving feed for ${providerName}`);
@@ -85,12 +88,16 @@ const createRoutes = async providers => {
 		// Clear old routes
 		await routesRef.ref.remove();
 
+		await getProviderThumbnail();
+
 		// Save new routes
 		Object.keys(providers).forEach(async provider => {
 			await routesRef
 				.child(`${providers[provider].category}/${provider}`)
 				.set({
-					name: providers[provider].uri
+					// name: provider,
+					sourceUrl: providers[provider].uri,
+					language: providers[provider].language
 				});
 		});
 	} catch (err) {
