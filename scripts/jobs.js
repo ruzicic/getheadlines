@@ -2,7 +2,7 @@ const Cron = require('cron').CronJob;
 
 const {logger} = require('./logger');
 const {addMinutesToDate} = require('./helpers');
-const {fetchFeed} = require('./utils');
+const {fetchFeed, prepareFeedsForSave} = require('./utils');
 const {saveFeed, 
 	getFetchLogs,
 	updateRefreshRecords} = require('./firebase');
@@ -50,7 +50,9 @@ const scheduleJobs = async providersArr => {
 };
 
 function scheduleNextCronJob(jobData) {
-	logger.debug(`[CRON][${jobData.providerName}] next refresh scheduled for: ${jobData.jobTime}`);
+	const friendlyDate = new Date(jobData.jobTime).toUTCString();
+
+	logger.debug(`[CRON][${jobData.providerName}] next refresh scheduled for: ${friendlyDate}`);
 
 	try {
 		return new Cron({
@@ -74,7 +76,9 @@ function scheduleNextCronJob(jobData) {
 function fetchAndSaveFeed(jobData) {
 	return async () => {
 		const jsonData = await fetchFeed(jobData.provider.uri);
-		await saveFeed(jobData.providerName, jsonData.feed.entries);
+		const preparedFeed = prepareFeedsForSave(jsonData.feed.entries);
+
+		await saveFeed(jobData.providerName, preparedFeed);
 		await updateRefreshRecords(jobData.providerName, jobData.jobTime);
 
 		const providerDetails = Object.assign({}, {
