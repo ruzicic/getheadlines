@@ -14,7 +14,7 @@ const get = async ctx => {
         ctx.response.status = 400;
         ctx.body = {
             error: 'BAD_REQUEST',
-            message: `Provider '${provider}' does not exist.`
+            message: `Unknown sort type ${sort}. Allowed types: ASC or DESC`
         }
         return;
     }
