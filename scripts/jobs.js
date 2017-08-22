@@ -2,10 +2,16 @@ const Cron = require('cron').CronJob;
 
 const {logger} = require('./logger');
 const {addMinutesToDate} = require('./helpers');
-const {fetchFeed, prepareFeedsForSave} = require('./utils');
-const {saveFeed, 
+const {
+	fetchFeed, 
+	getFullArticles, 
+	prepareFeedsForSave
+} = require('./utils');
+const {
+	saveFeed, 
 	getFetchLogs,
-	updateRefreshRecords} = require('./firebase');
+	updateRefreshRecords
+} = require('./firebase');
 	
 /**
  * Receives single OR array of Provider objects
@@ -77,8 +83,9 @@ function fetchAndSaveFeed(jobData) {
 	return async () => {
 		const jsonData = await fetchFeed(jobData.provider.uri);
 		const preparedFeed = prepareFeedsForSave(jsonData.feed.entries);
+		const feedsWithArticles = await getFullArticles(preparedFeed);
 
-		await saveFeed(jobData.providerName, preparedFeed);
+		await saveFeed(jobData.providerName, feedsWithArticles);
 		await updateRefreshRecords(jobData.providerName, jobData.jobTime);
 
 		const providerDetails = Object.assign({}, {
