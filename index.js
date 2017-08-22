@@ -36,7 +36,7 @@ apiRouter.get('/providers', validateToken, ProvidersHandler.getAll);
 apiRouter.get('/feeds/:provider/:category', validateToken, validateFeedRoute, FeedsHandler.get);
 
 /** 
- * [POST] Test route
+ * [GET] Test route
  * Example usage: https://getheadlines.io/api/test
  */
 apiRouter.get('/test', tryUrl);
