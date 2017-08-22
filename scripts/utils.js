@@ -2,6 +2,7 @@ const parser = require('rss-parser');
 const read = require('node-readability');
 
 const {logger} = require('./logger');
+const {cleanHTML} = require('./helpers');
 
 const fetchFeed = url => {
 	if (!url) {
@@ -23,19 +24,48 @@ const fetchFeed = url => {
 	});
 };
 
-const getArticleContent = async url => {
-	if (!url) {
-		logger.error(`URL not provided to node-readability.`);
-		process.exit(1);
+// Call getArticleContent for list/array of feeds
+// Add article content to existing object
+const getFullArticles = async feeds => {
+	if (!feeds || feeds.length === 0) {
+		return new Array(0);
 	}
 
+	let feedsWithArticle = [];
+	for (let feed of feeds) {
+		const {title, description, link, pubDate, author, timeUTC} = feed;
+		const content = await getArticleContent(link);
+
+		feedsWithArticle.push({
+			title,
+			description,
+			link,
+			pubDate,
+			author,
+			timeUTC,
+			content: cleanHTML(content)
+		});
+	}
+
+	return feedsWithArticle;
+}
+
+// Fetch article content from url
+const getArticleContent = url => {
 	return new Promise((resolve, reject) => {
+		// Do not throw error if bad url was provided
+		if (!url) {
+			logger.error('URL not provided to node-readability.');
+			resolve(null);
+		}
+
 		read(url, (err, article, meta) => {
 			if (err) {
 				logger.error(`Error getting article content for url: ${url}`);
 				logger.error(err);
 
-				reject(err);
+				// reject(err);
+				resolve(null);
 			}
 
 			resolve(article.content);
@@ -79,5 +109,6 @@ const prepareFeedsForSave = feeds => {
 module.exports = {
 	fetchFeed,
 	getArticleContent,
-	prepareFeedsForSave
+	prepareFeedsForSave,
+	getFullArticles
 };
