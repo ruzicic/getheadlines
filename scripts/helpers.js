@@ -1,3 +1,4 @@
+const {logger} = require('./logger');
 const sanitizeHtml = require('sanitize-html');
 
 /**
@@ -12,22 +13,24 @@ const addMinutesToDate = (date = new Date(), add = 60) => {
 
 // Sanitize HTML
 const cleanHTML = data => {
-	if (!data) {
-		logger.error(`Data not provided to sanitize-html.`);
-		process.exit(1);
-	}
+	// if (!data) {
+	// 	logger.error(`Data not provided to sanitize-html.`);
+	// 	process.exit(1);
+	// }
 
 	const config = {
-		allowedTags: ['h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'a', 'ul', 'ol',
-			'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br',
-			'pre'],
+		allowedTags: ['p', 'b', 'strong', 'i', 'img', 'ul', 'ol', 'li', 'br'],
 		allowedAttributes: {
-			a: ['href', 'name', 'target'],
+			a: ['href', 'target'],
 			img: ['src', 'alt']
 		},
-		selfClosing: ['img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta'],
+		selfClosing: ['img', 'br'],
 		allowedSchemes: ['http', 'https', 'mailto'],
-		allowProtocolRelative: true
+		allowProtocolRelative: true,
+		// Replace multiple spaces with single
+		textFilter: text => {
+			return text.replace(/\s+/, ' ');
+		  }
 	}
 
 	return sanitizeHtml(data, config);
