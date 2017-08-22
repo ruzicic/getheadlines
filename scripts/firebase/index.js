@@ -45,7 +45,7 @@ const getFetchLogs = provider => {
 			.child(provider)
 			.once('value');
 	} catch (err) {
-		logger.error(`Error getting fetch logs (timestamps)`);
+		logger.error(`Error getting fetch logs for ${provider}`);
 		logger.error(err);
 	}
 };
