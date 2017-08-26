@@ -20,8 +20,8 @@ $primaryButtonShadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
 $primaryButtonShadowHover: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
 
 // GRADIENTS
-$purpleGradient: to right, $purpleLight, $purple;
-$cyanGradient: to right, #36d1dc, #5b86e5;
+$purpleGradient: linear-gradient(to right, $purpleLight, $purple);
+$cyanGradient: linear-gradient(to right, #36d1dc, #5b86e5);
 $purpleRadialGradient: radial-gradient(ellipse farthest-corner at top right,#7860fe 0%,#bdabfd 100%);
 
 // BORDERS
@@ -30,5 +30,6 @@ $defaultBorderRadius: 4px;
 // OTHER
 $cardShadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
 $cardShadowHover: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
+$cardShadowMinimal: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 
 $featureCardShadow: 12px 12px 20px 0px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);

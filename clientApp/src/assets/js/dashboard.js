@@ -23,7 +23,7 @@ const initAuth = () => {
 
             userName.textContent = user.displayName;
             userEmail.textContent = user.email;
-            userEmailVerified.textContent = user.emailVerified;
+            userEmailVerified.textContent = user.emailVerified ? 'Email verified' : 'Email not verified';
             userID.textContent = user.uid;
 
             // Check if user has image
