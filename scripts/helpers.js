@@ -1,17 +1,19 @@
 const {logger} = require('./logger');
 const sanitizeHtml = require('sanitize-html');
 
-/**
- * @method addMinutesToDate
- * @param {Date} date - Date object. Default NOW
- * @param {number} add - increment. Number of minutes. Default 60
- * @return {Date} - Incremented date object. Default 60 minutes from now
- */
+ // Increment current date for number of minutes
 const addMinutesToDate = (date = new Date(), add = 60) => {
 	return new Date(date.getTime() + (add * 60000));
 };
 
-// Sanitize HTML
+// Return date in history (now - offset) in UTC format
+const daysAgo = (offset = 3) => {
+	let date = new Date();
+	let past = new Date().setDate((date.getDate() - offset));
+	return new Date(past).toUTCString();
+};
+
+// Sanitize HTML - remove unallowed tags
 const cleanHTML = data => {
 	// if (!data) {
 	// 	logger.error(`Data not provided to sanitize-html.`);
@@ -36,7 +38,9 @@ const cleanHTML = data => {
 	return sanitizeHtml(data, config);
 }
 
+
 module.exports = {
 	addMinutesToDate,
-	cleanHTML
+	cleanHTML,
+	daysAgo
 };

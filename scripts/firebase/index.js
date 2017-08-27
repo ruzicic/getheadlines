@@ -4,6 +4,7 @@
 
 const {logger} = require('../logger');
 const {db, getRef} = require('./db');
+const {daysAgo} = require('../helpers');
 
 // Returns all active feed providers
 const getActiveProviders = async () => {
@@ -51,7 +52,7 @@ const getFetchLogs = provider => {
 };
 
 const saveFeed = (providerName, data) => {
-	logger.info(`[FIREBASE]: ${providerName} saving ${data.length} posts`);
+	logger.info(`[FIREBASE: add]: ${providerName} saving ${data.length} posts`);
 
 	try {
 		data.forEach(async entry => {
@@ -106,10 +107,53 @@ const createRoutes = async providers => {
 	}
 };
 
+const clearOldEntries = async (category, entriesArr) => {
+	const numberOfEntries = entriesArr.length;
+	logger.info(`[FIREBASE: delete] ${numberOfEntries} items in ${category}`);
+
+	try {
+		entriesArr.forEach(async entry => {
+			await getRef(db.feeds)
+				.child(category)
+				.child(entry)
+				.remove();
+		});
+	} catch (err) {
+		logger.error(`Error deleting entry ${entryKey}`);
+		logger.error(err);
+	}
+}
+
+const getOldEntries = async category => {
+	let threeDaysAgo = daysAgo();
+	let keys = [];
+
+	try {
+		await getRef(db.feeds)
+			.child(category)
+			.once('value', feedsSnapshot => {
+				feedsSnapshot.forEach(snap => {
+					if (threeDaysAgo > snap.key) {
+						return;
+					}
+
+					keys.push(snap.key);
+				});
+			});
+
+		return keys;
+	} catch (err) {
+		logger.error(`Error clearing feeds`);
+		logger.error(err);
+	}
+}
+
 module.exports = {
 	getActiveProviders,
 	saveFeed,
 	getFetchLogs,
 	updateRefreshRecords,
-	createRoutes
+	createRoutes,
+	getOldEntries,
+	clearOldEntries
 };
