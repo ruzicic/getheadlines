@@ -2,6 +2,7 @@ node_modules
 .vscode
 *.log
 yarn.lock
+app.yaml
 scripts/firebase/serviceAccountKey.json
 clientApp/public
 clientApp/package-lock.json
