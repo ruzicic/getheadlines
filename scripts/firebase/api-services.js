@@ -3,7 +3,17 @@
  */
 
 const {logger} = require('../logger');
-const {db, getRef} = require('./db');
+const {db, getRef, firebase} = require('./db');
+
+const verifyToken = async token => {
+    try {
+        const userToken = await firebase.auth().verifyIdToken(token);
+        return Boolean(userToken.uid);
+    } catch (err) {
+        logger.error(`Error verifying token ${token}`);
+        logger.error(err);
+    }
+}
 
 const getRoutes = () => {
 	try {
@@ -55,6 +65,7 @@ const getFeeds = async (category, params) => {
 }
 
 module.exports = {
+    verifyToken,
     getRoutes,
     getFeeds
 };
