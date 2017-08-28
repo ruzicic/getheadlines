@@ -1,4 +1,4 @@
-const {validateUserToken} = require('../firebase/api-services');
+const {verifyToken} = require('../firebase/api-services');
 
 const validateToken = async (ctx, next) => {
     const authHeader = ctx.request.header.authorization;
@@ -12,18 +12,16 @@ const validateToken = async (ctx, next) => {
         return;
     }
 
-    // const isValidToken = await validateUserToken(authHeader);
+    const isValidToken = await verifyToken(authHeader);
 
-    // if (!isValidToken) {
-    //     ctx.response.status = 403;
-    //     ctx.body = {
-    //         error: 'FORBIDDEN',
-    //         message: `Bad token provided`
-    //     }
-    //     return;
-    // }
-
-    // console.info(`Provided token validation: ${isValidToken}`);
+    if (!isValidToken) {
+        ctx.response.status = 403;
+        ctx.body = {
+            error: 'FORBIDDEN',
+            message: `Bad token provided`
+        }
+        return;
+    }
 
     await next();
 }
