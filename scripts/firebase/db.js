@@ -22,5 +22,6 @@ const getRef = name => {
 
 module.exports = {
     db,
-    getRef
+    getRef,
+    firebase
 };
