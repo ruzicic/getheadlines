@@ -35,11 +35,10 @@
     "winston": "^2.3.1"
   },
   "devDependencies": {
-    "apidoc": "^0.17.6",
     "nodemon": "^1.11.0",
     "xo": "^0.17.1"
   },
-  "engines": { 
-    "node" : ">=8.1.4" 
+  "engines": {
+    "node": ">=8.1.4"
   }
 }
