@@ -11,35 +11,35 @@ const {tryUrl} = require('./scripts/testing.js');
 
 const port = process.env.PORT || 3028;
 
-const apiRouter = new Router({
-	prefix: '/api'
+const v1 = new Router({
+	prefix: '/v1'
 });
 
 const app = new Koa()
 	.use(helmet())
 	.use(morgan)
-	.use(apiRouter.routes())
-	.use(apiRouter.allowedMethods());
+	.use(v1.routes())
+	.use(v1.allowedMethods());
 
 initializeApp();
 
 /**
  * [GET] Get All Providers
- * Example usage: https://getheadlines.io/api/providers
+ * Example usage: https://api.getheadlines.io/v1/providers
  */
-apiRouter.get('/providers', validateToken, ProvidersHandler.getAll);
+v1.get('/providers', validateToken, ProvidersHandler.getAll);
 
 /** 
  * [GET] Get all feeds for provider and its category
- * Example usage: https://getheadlines.io/api/blic/zabava
+ * Example usage: https://api.getheadlines.io/v1/blic/zabava
  */
-apiRouter.get('/feeds/:provider/:category', validateToken, validateFeedRoute, FeedsHandler.get);
+v1.get('/feeds/:provider/:category', validateToken, validateFeedRoute, FeedsHandler.get);
 
 /** 
  * [GET] Test route
- * Example usage: https://getheadlines.io/api/test
+ * Example usage: https://api.getheadlines.io/v1/test
  */
-apiRouter.get('/test', tryUrl);
+v1.get('/test', tryUrl);
 
 // Everything else, not covered by API Router
 app.use(ctx => ctx.status = 401);
