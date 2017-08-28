@@ -35,7 +35,7 @@ Providers
 
 Get a list of all available feed providers
 
-**[GET]** `https://getheadlines.io/api/providers`
+**[GET]** `https://api.getheadlines.io/v1/providers`
 
 Headers:
 
@@ -56,7 +56,7 @@ Feeds
 
 Get all feeds for *provider* and its *category*
 
-**[GET]** `https://getheadlines.io/api/feeds/:provider/:category`
+**[GET]** `https://api.getheadlines.io/v1/feeds/:provider/:category`
 
 Headers:
 
