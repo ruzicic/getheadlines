@@ -1,0 +1,18 @@
+{
+	"extends": "airbnb-base",
+	"plugins": [
+		"import"
+	],
+	"env": {
+		"browser": false,
+		"node": true
+	},
+	"rules": {
+		"indent": [
+			2,
+			"tab"
+        ],
+        "no-tabs": 0,
+        "import/prefer-default-export": 0
+	}
+}

@@ -1,9 +1,5 @@
 node_modules
+dist
 .vscode
 *.log
-yarn.lock
-app.yaml
-scripts/firebase/serviceAccountKey.json
-clientApp/public
-clientApp/package-lock.json
-scripts/testing.js
+package-lock.*
