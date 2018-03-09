@@ -1,0 +1,26 @@
+{
+	"development": {
+		"username": "developer",
+		"password": "developer",
+		"database": "get_headlines_dev",
+		"host": "127.0.0.1",
+		"port": 5432,
+		"dialect": "postgres"
+	},
+	"test": {
+		"username": "developer",
+		"password": "developer",
+		"database": "get_headlines_test",
+		"host": "127.0.0.1",
+		"port": 5432,
+		"dialect": "postgres"
+	},
+	"production": {
+		"username": "root",
+		"password": null,
+		"database": "get_headlines_prod",
+		"host": "127.0.0.1",
+		"port": 5432,
+		"dialect": "postgres"
+	}
+}

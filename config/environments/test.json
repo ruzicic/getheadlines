@@ -1,0 +1,9 @@
+{
+	"info": "Test config loaded",
+    "db": {
+        "database": "get_headlines_test",
+        "host": "localhost",
+        "username": "developer",
+        "password": "developer"
+    }
+}
