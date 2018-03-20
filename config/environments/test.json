@@ -1,8 +1,9 @@
 {
-	"info": "Test config loaded",
+	"validate": "Test config loaded",
     "db": {
         "database": "get_headlines_test",
-        "host": "localhost",
+		"host": "localhost",
+		"port": 5432,
         "username": "developer",
         "password": "developer"
     }
