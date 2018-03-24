@@ -1,3 +1,10 @@
 {
-	"validate": "Development config loaded"
+	"validate": "Development config loaded",
+    "db": {
+        "database": "getheadlines_dev",
+		"host": "localhost",
+		"port": 5432,
+        "username": "developer",
+        "password": "developer"
+    }
 }

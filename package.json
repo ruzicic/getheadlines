@@ -10,7 +10,7 @@
 		"build": "npm run clean && babel src -d dist/ --copy-files",
 		"prod": "NODE_CONFIG_DIR=config/environments NODE_ENV=production node bin/www",
 		"lint": "eslint src lib bin",
-		"test": "NODE_CONFIG_DIR=config/environments NODE_ENV=test mocha --require babel-core/register src/**/**.spec.js --recursive --timeout 5000"
+		"test": "NODE_CONFIG_DIR=config/environments NODE_ENV=development mocha --require babel-core/register src/**/**.spec.js --recursive --timeout 5000"
 	},
 	"repository": {
 		"type": "git",

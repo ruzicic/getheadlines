@@ -1,15 +1,14 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-// const routes = require('./src/routes');
+const routes = require('./src/routes');
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.disable('x-powered-by');
 
 // Routes
-// app.use(routes);
+app.use('/api', routes);
 
 // 404
 app.use((req, res) => {
