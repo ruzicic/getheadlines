@@ -56,7 +56,7 @@ const addSource = async (source) => {
 			VALUES
 				($1, $2, $3, $4, $5, $6, $7, $8, $9)
 			RETURNING
-				slug as id, name, description, homepage, language, country, category
+				id, name, description, slug, homepage, language, country, category
 		`, [source.name,
 			source.description,
 			source.slug,

@@ -6,41 +6,41 @@ const sourceSchema = {
 	type: 'object',
 	properties: {
 		name: {
-			type: ['string'],
+			type: 'string',
 		},
 		description: {
-			type: ['string'],
+			type: 'string',
 		},
 		slug: {
-			type: ['string'],
+			type: 'string',
 			lowercase: true,
 		},
 		homepage: {
-			type: ['string'],
+			type: 'string',
 			format: 'url',
 		},
 		url: {
-			type: ['string'],
+			type: 'string',
 			format: 'url',
 		},
 		image: {
-			type: ['string'],
+			type: 'string',
 		},
 		language: {
-			type: ['string'],
+			type: 'string',
 			enum: ['en', 'sr'],
 			lowercase: true,
 			minLength: 2,
 			maxLength: 2,
 		},
 		country: {
-			type: ['string'],
+			type: 'string',
 			lowercase: true,
 			minLength: 2,
 			maxLength: 2,
 		},
 		category: {
-			type: ['string'],
+			type: 'string',
 			enum: [
 				'business',
 				'entertainment',
@@ -52,6 +52,9 @@ const sourceSchema = {
 			],
 			lowercase: true,
 		},
+		period: {
+			type: 'number',
+		},
 	},
 	required: [
 		'name',
@@ -61,6 +64,7 @@ const sourceSchema = {
 		'language',
 		'country',
 		'category',
+		'period',
 	],
 };
 
