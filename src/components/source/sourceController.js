@@ -1,79 +1,89 @@
+import { pool } from '../../utils/database';
 import logger from '../../../lib/logger';
-import * as SourceStatus from './sourceStatus';
-import * as SourceSchema from './source';
-import * as SourceHandler from './sourceHandler';
 
-const getAll = async (req, res) => {
+/**
+ * Check if Source with URL already exist in database
+ *
+ * @method checkSourceExist
+ * @param {String} url
+ * @return {Boolean}
+ */
+const checkSourceExist = async (url) => {
 	try {
-		const sources = await SourceHandler.getSources();
-		return res
-			.status(200)
-			.json({
-				status: 'ok',
-				sources,
-			})
-			.end();
+		const result = await pool.query(
+			'SELECT exists( SELECT true FROM sources WHERE url = ($1))',
+			[url],
+		);
+
+		return result.rows[0].exists;
 	} catch (err) {
-		logger.error(`[source] getAll: ${err}`);
-		return res
-			.status(500)
-			.json({
-				status: 'error',
-				code: 'unexpectedError',
-			})
-			.end();
+		logger.error('[checkSourceExist]', err);
+	}
+
+	return false;
+};
+
+/**
+ * Get All Sources
+ *
+ * @method getSources
+ * @return {Array} List of all available sources
+ */
+const getSources = async () => {
+	let result = [];
+
+	try {
+		result = await pool.query(`
+			SELECT slug as id, name, description, homepage, language, country, category
+			FROM sources
+			`);
+
+		return result.rows;
+	} catch (err) {
+		logger.error('[getSources]', err);
+	}
+
+	return result;
+};
+
+/**
+ * Add new Source
+ *
+ * @method addSource
+ * @param {Object} source
+ * @return {Object} Created source
+ */
+const addSource = async (source) => {
+	try {
+		const result = await pool.query(`
+			INSERT INTO sources
+				(name, description, slug, homepage, url, image, language, country, category)
+			VALUES
+				($1, $2, $3, $4, $5, $6, $7, $8, $9)
+			RETURNING
+				id, name, description, slug, homepage, language, country, category
+		`, [source.name,
+			source.description,
+			source.slug,
+			source.homepage,
+			source.url,
+			source.image,
+			source.language,
+			source.country,
+			source.category,
+		]);
+
+		logger.info('[addSource]', result.rows[0]);
+
+		return result.rows[0];
+	} catch (err) {
+		logger.error('[addSource]', err);
+		throw new Error(`Could not add source ${source}`);
 	}
 };
 
-const add = async (req, res) => {
-	const valid = SourceSchema.validate(req.body);
-
-	// Validate request body using JSON schema
-	if (!valid) {
-		return res
-			.status(422)
-			.json({
-				status: 'error',
-				code: 'invalidSourceObject',
-				// TODO: https://github.com/epoberezkin/ajv-errors
-				message: SourceSchema.validate.errors,
-			})
-			.end();
-	}
-
-	// Check if source with provided url already exist
-	const sourceExist = await SourceHandler.checkSourceExist(req.body.url);
-	if (sourceExist) {
-		return res
-			.status(409)
-			.json({
-				status: 'error',
-				code: 'sourceAlreadyExist',
-				message: `Source "${req.body.name}" already exist. Id and URL must be unique.`,
-			})
-			.end();
-	}
-
-	try {
-		const source = await SourceHandler.addSource(req.body);
-		await SourceStatus.setInitialSourceStatus(source, req.body.period);
-
-		return res.status(201).json({
-			status: 'ok',
-			message: {
-				id: source.slug,
-			},
-		}).end();
-	} catch (err) {
-		logger.error(`[source] getAll: ${err}`);
-		return res
-			.status(500)
-			.json({
-				status: 'error',
-				code: 'unexpectedError',
-			})
-			.end();
-	}
+export {
+	checkSourceExist,
+	getSources,
+	addSource,
 };
-
-export { getAll, add };

@@ -1,12 +1,12 @@
 import express from 'express';
-import * as SourceController from './sourceController';
+import * as SourceHandler from './sourceHandler';
 
 const sourceRouter = new express.Router();
 
 // Get All Sources
-sourceRouter.get('/', SourceController.getAll);
+sourceRouter.get('/', SourceHandler.getAll);
 
 // Add New Source
-sourceRouter.post('/', SourceController.add);
+sourceRouter.post('/', SourceHandler.add);
 
 export { sourceRouter };
