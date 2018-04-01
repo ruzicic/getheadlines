@@ -1,6 +1,6 @@
-const read = require('node-readability');
-const { isValidUrl, cleanHTML } = require('../utils');
-const logger = require('../../lib/logger');
+import read from 'node-readability';
+import { isValidUrl, cleanHTML } from '../utils';
+import logger from '../../lib/logger';
 
 /**
  * Article Object
@@ -49,4 +49,4 @@ const getArticleContent = async (url) => {
 	return null;
 };
 
-module.exports = { getArticleContent };
+export { getArticleContent };

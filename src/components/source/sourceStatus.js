@@ -1,6 +1,6 @@
-const { pool } = require('../../utils/database');
-const { getCurrentDatetime } = require('../../utils');
-const logger = require('../../../lib/logger');
+import { pool } from '../../utils/database';
+import { getCurrentDatetime } from '../../utils';
+import logger from '../../../lib/logger';
 
 /**
  * Set default values and refresh interval for a source
@@ -34,6 +34,4 @@ const setInitialSourceStatus = async ({ id, slug }, period) => {
 	}
 };
 
-module.exports = {
-	setInitialSourceStatus,
-};
+export { setInitialSourceStatus };

@@ -1,5 +1,5 @@
-const { pool } = require('../../utils/database');
-const logger = require('../../../lib/logger');
+import { pool } from '../../utils/database';
+import logger from '../../../lib/logger';
 
 /**
  * Check if Source with URL already exist in database
@@ -82,7 +82,7 @@ const addSource = async (source) => {
 	}
 };
 
-module.exports = {
+export {
 	checkSourceExist,
 	getSources,
 	addSource,

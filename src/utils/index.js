@@ -1,6 +1,6 @@
-const moment = require('moment');
-const { URL } = require('url');
-const sanitizeHtml = require('sanitize-html');
+import moment from 'moment';
+import { URL } from 'url';
+import sanitizeHtml from 'sanitize-html';
 
 /**
  * Return Current DateTime in specific format
@@ -70,7 +70,7 @@ const cleanHTML = (data) => {
 	return sanitizeHtml(data, config);
 };
 
-module.exports = {
+export {
 	getCurrentDatetime,
 	isValidUrl,
 	cleanHTML,

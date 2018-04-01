@@ -1,10 +1,12 @@
-const express = require('express');
-const Source = require('./source-controller');
+import express from 'express';
+import * as SourceController from './sourceController';
 
-const router = new express.Router();
+const sourceRouter = new express.Router();
 
-// SOURCE ROUTES
-router.get('/', Source.getAll);
-router.post('/', Source.add);
+// Get All Sources
+sourceRouter.get('/', SourceController.getAll);
 
-module.exports = router;
+// Add New Source
+sourceRouter.post('/', SourceController.add);
+
+export { sourceRouter };

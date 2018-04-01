@@ -1,8 +1,8 @@
-const express = require('express');
-const sourceProvider = require('../components/source');
+import express from 'express';
+import { sourceRouter } from '../components/source';
 
 const router = new express.Router();
 
-router.use('/sources', sourceProvider);
+router.use('/sources', sourceRouter);
 
-module.exports = router;
+export { router };

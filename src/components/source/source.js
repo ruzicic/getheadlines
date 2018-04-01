@@ -1,4 +1,4 @@
-const Ajv = require('ajv');
+import Ajv from 'ajv';
 
 const ajv = Ajv({ allErrors: true });
 
@@ -70,4 +70,4 @@ const sourceSchema = {
 
 const validate = ajv.compile(sourceSchema);
 
-module.exports = validate;
+export { validate };

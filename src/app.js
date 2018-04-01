@@ -1,8 +1,8 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const helmet = require('helmet');
-const compression = require('compression');
-const routes = require('./src/routes');
+import express from 'express';
+import bodyParser from 'body-parser';
+import helmet from 'helmet';
+import compression from 'compression';
+import { router } from './routes';
 
 const app = express();
 
@@ -13,7 +13,7 @@ app.use(compression());
 app.disable('x-powered-by');
 
 // Routes
-app.use('/api', routes);
+app.use('/api', router);
 
 // 404
 app.use((req, res) => {
@@ -35,4 +35,4 @@ app.use((err, req, res) => {
 	});
 });
 
-module.exports = app;
+export { app };

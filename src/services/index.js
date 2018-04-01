@@ -1,7 +1,7 @@
-const { fetchFeed } = require('./fetchFeed');
-const { getArticleContent } = require('./getArticleContent');
+import { fetchFeed } from './fetchFeed';
+import { getArticleContent } from './getArticleContent';
 
-module.exports = {
+export {
 	fetchFeed,
 	getArticleContent,
 };

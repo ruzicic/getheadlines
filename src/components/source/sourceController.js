@@ -1,11 +1,11 @@
-const logger = require('../../../lib/logger');
-const Source = require('./source-handler');
-const SourceStatus = require('./source-status');
-const validateSource = require('./source');
+import logger from '../../../lib/logger';
+import * as SourceStatus from './sourceStatus';
+import * as SourceSchema from './source';
+import * as SourceHandler from './sourceHandler';
 
 const getAll = async (req, res) => {
 	try {
-		const sources = await Source.getSources();
+		const sources = await SourceHandler.getSources();
 		return res
 			.status(200)
 			.json({
@@ -26,7 +26,7 @@ const getAll = async (req, res) => {
 };
 
 const add = async (req, res) => {
-	const valid = validateSource(req.body);
+	const valid = SourceSchema.validate(req.body);
 
 	// Validate request body using JSON schema
 	if (!valid) {
@@ -36,13 +36,13 @@ const add = async (req, res) => {
 				status: 'error',
 				code: 'invalidSourceObject',
 				// TODO: https://github.com/epoberezkin/ajv-errors
-				message: validateSource.errors,
+				message: SourceSchema.validate.errors,
 			})
 			.end();
 	}
 
 	// Check if source with provided url already exist
-	const sourceExist = await Source.checkSourceExist(req.body.url);
+	const sourceExist = await SourceHandler.checkSourceExist(req.body.url);
 	if (sourceExist) {
 		return res
 			.status(409)
@@ -55,7 +55,7 @@ const add = async (req, res) => {
 	}
 
 	try {
-		const source = await Source.addSource(req.body);
+		const source = await SourceHandler.addSource(req.body);
 		await SourceStatus.setInitialSourceStatus(source, req.body.period);
 
 		return res.status(201).json({
@@ -76,4 +76,4 @@ const add = async (req, res) => {
 	}
 };
 
-module.exports = { getAll, add };
+export { getAll, add };

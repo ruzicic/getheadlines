@@ -1,6 +1,6 @@
-const Parser = require('rss-parser');
-const { isValidUrl } = require('../utils');
-const logger = require('../../lib/logger');
+import Parser from 'rss-parser';
+import { isValidUrl } from '../utils';
+import logger from '../../lib/logger';
 
 const parser = new Parser();
 
@@ -44,4 +44,4 @@ const fetchFeed = async (url) => {
 	}
 };
 
-module.exports = { fetchFeed };
+export { fetchFeed };

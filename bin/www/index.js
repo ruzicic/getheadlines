@@ -1,7 +1,10 @@
 const http = require('http');
 const config = require('config');
-const app = require('../../app');
 const logger = require('../../lib/logger');
+
+// TODO: FIX FOR PRODUCTION
+// After build, app is in /dist, instead /src
+const { app } = require('../../src/app');
 const { initializeApp } = require('../../src/main');
 
 /**
