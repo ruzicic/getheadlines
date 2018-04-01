@@ -2,6 +2,7 @@ const http = require('http');
 const config = require('config');
 const app = require('../../app');
 const logger = require('../../lib/logger');
+const { initializeApp } = require('../../src/main');
 
 /**
  * Normalize a port into a number, string, or false.
@@ -81,6 +82,9 @@ function onListening() {
 	} else {
 		logger.warn('JSON config failed to load.');
 	}
+
+	// Initialize App after Express start
+	initializeApp();
 }
 
 /**
