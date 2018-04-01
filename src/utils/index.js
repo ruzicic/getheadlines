@@ -1,5 +1,14 @@
 const moment = require('moment');
+const { URL } = require('url');
+const sanitizeHtml = require('sanitize-html');
 
+/**
+ * Return Current DateTime in specific format
+ *
+ * @method getCurrentDatetime
+ * @param {String} format - Output format
+ * @return {Number} Unix Timestamp
+ */
 const getCurrentDatetime = (format = 'seconds') => {
 	let now;
 
@@ -20,7 +29,49 @@ const getCurrentDatetime = (format = 'seconds') => {
 	return now;
 };
 
+/**
+ * Check if provided string is a valid URL
+ *
+ * @param {String} string
+ * @return {Boolean}
+ */
+const isValidUrl = (string) => {
+	try {
+		return Boolean(new URL(string));
+	} catch (_) {
+		return false;
+	}
+};
+
+/**
+ * Sanitize HTML
+ * https://github.com/punkave/sanitize-html
+ *
+ * @method cleanHtml
+ * @param {String} data (Dirty) HTML
+ * @returns {String} safe HTML
+ */
+const cleanHTML = (data) => {
+	const config = {
+		allowedTags: ['p', 'b', 'strong', 'i', 'img', 'ul', 'ol', 'li', 'br'],
+		allowedAttributes: {
+			a: ['href', 'target', 'title', 'aria-label'],
+			img: ['src', 'alt', 'title'],
+		},
+		selfClosing: ['img', 'br'],
+		allowedSchemes: ['http', 'https', 'mailto'],
+		allowProtocolRelative: true,
+
+		// Replace multiple spaces with single
+		textFilter: text =>
+			text.replace(/\s+/, ' '),
+	};
+
+	return sanitizeHtml(data, config);
+};
 
 module.exports = {
 	getCurrentDatetime,
+	isValidUrl,
+	cleanHTML,
 };
