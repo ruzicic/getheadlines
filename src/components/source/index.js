@@ -3,7 +3,7 @@ const Source = require('./source-controller');
 
 const router = new express.Router();
 
-// PROVIDER ROUTES
+// SOURCE ROUTES
 router.get('/', Source.getAll);
 router.post('/', Source.add);
 

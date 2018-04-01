@@ -3,6 +3,7 @@ const logger = require('../../../lib/logger');
 
 /**
  * Check if Source with URL already exist in database
+ *
  * @method checkSourceExist
  * @param {String} url
  * @return {Boolean}
@@ -13,9 +14,10 @@ const checkSourceExist = async (url) => {
 			'SELECT exists( SELECT true FROM sources WHERE url = ($1))',
 			[url],
 		);
+
 		return result.rows[0].exists;
 	} catch (err) {
-		logger.error('checkSourceExist', err);
+		logger.error('[checkSourceExist]', err);
 	}
 
 	return false;
@@ -23,6 +25,7 @@ const checkSourceExist = async (url) => {
 
 /**
  * Get All Sources
+ *
  * @method getSources
  * @return {Array} List of all available sources
  */
@@ -34,6 +37,7 @@ const getSources = async () => {
 			SELECT slug as id, name, description, homepage, language, country, category
 			FROM sources
 			`);
+
 		return result.rows;
 	} catch (err) {
 		logger.error('[getSources]', err);
@@ -44,6 +48,7 @@ const getSources = async () => {
 
 /**
  * Add new Source
+ *
  * @method addSource
  * @param {Object} source
  * @return {Object} Created source

@@ -3,10 +3,11 @@ const { getCurrentDatetime } = require('../../utils');
 const logger = require('../../../lib/logger');
 
 /**
- * Set default values and Refresh Interval for a Source
+ * Set default values and refresh interval for a source
+ *
  * @method setInitialSourceStatus
  * @param {Object} source
- * @param {Integer} period Source refresh interval
+ * @param {Number} period Source refresh interval
  * @return {Object} Source Status
  */
 const setInitialSourceStatus = async ({ id, slug }, period) => {
