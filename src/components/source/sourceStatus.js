@@ -1,5 +1,5 @@
 import { pool } from '../../utils/database';
-import { formatDateTime } from '../../utils';
+import { getCurrentTime } from '../../utils';
 import logger from '../../../lib/logger';
 
 /**
@@ -11,7 +11,7 @@ import logger from '../../../lib/logger';
  * @return {Object} Source Status
  */
 const setInitialSourceStatus = async ({ id, slug }, period) => {
-	const now = formatDateTime();
+	const now = getCurrentTime();
 
 	try {
 		const result = await pool.query(`
@@ -41,7 +41,7 @@ const setInitialSourceStatus = async ({ id, slug }, period) => {
  * @return {Object} Source Status
  */
 const updateSourceStatus = async ({ id, period, active }) => {
-	const now = formatDateTime();
+	const now = getCurrentTime();
 
 	if (!id || period || active) {
 		throw new Error('[updateSourceStatus] requires ID, period and active properties');
@@ -73,7 +73,7 @@ const updateSourceStatus = async ({ id, period, active }) => {
  * @return {Object} Source Status
  */
 const refreshSourceStatus = async (id, lastFetch) => {
-	const now = formatDateTime();
+	const now = getCurrentTime();
 
 	try {
 		const result = await pool.query(`

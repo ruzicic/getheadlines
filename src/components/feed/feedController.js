@@ -1,7 +1,7 @@
 import { pool } from '../../utils/database';
 import logger from '../../../lib/logger';
 import * as SourceStatus from '../source/sourceStatus';
-import { formatDateTime } from '../../utils';
+import { getCurrentTime } from '../../utils';
 
 /**
  * Save Feeds
@@ -15,19 +15,19 @@ import { formatDateTime } from '../../utils';
  * @return {Object} Created source
  */
 const saveFeeds = async (source, feeds) => {
-	const friendlyDate = formatDateTime(new Date(), 'detailed');
+	const now = getCurrentTime();
 	let lastFetch;
 	let insertResult;
 
-	logger.info(`[saveFeeds][${source.slug}] Total: ${feeds.length} feeds. @${friendlyDate}`);
+	logger.info(`[saveFeeds][${source.slug}] Total: ${feeds.length} feeds. @${now}`);
 
 	const rows = [...feeds].map(feed => ({
 		source_id: source.id,
 		url: feed.link || feed.guid,
 		excerpt: feed.content || feed.contentSnippet,
-		updated: formatDateTime(),
+		updated: now,
 		title: feed.title,
-		pub_date: formatDateTime(feed.pubDate),
+		pub_date: new Date(feed.pubDate).getTime(),
 		description: feed.content,
 		content: feed.articleContent,
 		author: feed.author,
@@ -66,7 +66,7 @@ const saveFeeds = async (source, feeds) => {
 	// Save feeds
 	try {
 		insertResult = await pool.query(queryText, values);
-		lastFetch = formatDateTime(new Date(), 'seconds');
+		lastFetch = getCurrentTime();
 	} catch (err) {
 		logger.error('[saveFeeds] Could not save feeds', err);
 		throw err;

@@ -1,33 +1,14 @@
-import moment from 'moment';
+// import moment from 'moment';
 import { URL } from 'url';
 import sanitizeHtml from 'sanitize-html';
 
 /**
- * Return DateTime in choosen format
+ * Get current time as UNIX timestamp
  *
- * @method formatDateTime
- * @param {Date} d Date object. Default new Date().
- * @param {String} f Output format. Default UNIX timestamp in seconds
+ * @method getCurrentTime
  * @return {Number} Unix Timestamp
  */
-const formatDateTime = (d = new Date(), f = 'seconds') => {
-	const now = moment(d);
-
-	switch (f) {
-	case 'seconds':
-		return now.format('X');
-
-	case 'miliseconds':
-		return now.format('x');
-
-	// Example: "Sunday, February 14th 2010, 3:25:50 pm"
-	case 'detailed':
-		return now.format('dddd, MMMM Do YYYY, h:mm:ss a');
-
-	default:
-		return now.format('X');
-	}
-};
+const getCurrentTime = () => new Date().getTime();
 
 /**
  * Check if provided string is a valid URL
@@ -103,7 +84,7 @@ const getCronePattern = (period = 5) => {
 };
 
 export {
-	formatDateTime,
+	getCurrentTime,
 	isValidUrl,
 	cleanHTML,
 	getCronePattern,
