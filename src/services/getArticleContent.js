@@ -1,4 +1,5 @@
 import read from 'node-readability';
+// import scrapeIt from 'scrape-it';
 import { isValidUrl, cleanHTML } from '../utils';
 import logger from '../../lib/logger';
 
@@ -21,16 +22,16 @@ import logger from '../../lib/logger';
  * @param {String} url Valid URL
  * @returns {Promise.<Article>} Promise that returns an Article Content if resolved
  */
-const getArticle = url => new Promise((resolve) => {
+const getArticle = url => new Promise((resolve, reject) => {
 	if (!isValidUrl(url)) {
-		logger.error(`[getArticle] Invalid URL provided ${url}.`);
-		resolve();
+		// logger.error(`[getArticle] Invalid URL provided ${url}.`);
+		reject(new Error(`[getArticle] Invalid URL provided ${url}.`));
 	}
 
 	read(url, (err, article) => {
 		if (err) {
-			logger.error(`[getArticle] Error getting article content for url: ${url}`, err);
-			resolve();
+			logger.error(`[getArticle] Error getting article content for url: ${url}`);
+			reject(err);
 		}
 
 		resolve(article);
@@ -39,14 +40,24 @@ const getArticle = url => new Promise((resolve) => {
 
 // Gets Article Content for URL and sanitizes response HTML
 const getArticleContent = async (url) => {
-	const article = await getArticle(url);
-	const { content } = article;
+	try {
+		const article = await getArticle(url);
 
-	if (content) {
-		return cleanHTML(content);
+		// In case of error article.content will be false
+		if (!article || !article.content) {
+			return null;
+		}
+
+		return cleanHTML(article.content);
+	} catch (err) {
+		logger.error(`[getArticleContent] Error ${url}`, err);
+		return null;
 	}
 
-	return null;
+	// TODO: Try another tool if first one failed?
+	// or make a map which tool for which provider? save in db?
+	// const test = await scrapeIt(url);
+	// return test.data;
 };
 
 export { getArticleContent };

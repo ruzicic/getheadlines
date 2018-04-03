@@ -34,7 +34,7 @@ const getSources = async () => {
 
 	try {
 		result = await pool.query(`
-			SELECT slug as id, name, description, homepage, language, country, category
+			SELECT id, name, description, slug, homepage, url, language, country, category
 			FROM sources
 			`);
 
@@ -45,6 +45,34 @@ const getSources = async () => {
 
 	return result;
 };
+
+/**
+ * Get All Sources with status
+ *
+ * @method getSourcesWithStatus
+ * @return {Array} List of all available sources with their status
+ */
+const getSourcesWithStatus = async () => {
+	let result = [];
+
+	try {
+		result = await pool.query(`
+			SELECT
+				sources.id, sources.name, sources.slug, sources.url,
+				source_status.period, source_status.active, source_status.last_fetch, source_status.updated
+			FROM sources
+			INNER JOIN source_status
+			ON source_status.source_id = sources.id
+			`);
+
+		return result.rows;
+	} catch (err) {
+		logger.error('[getSourcesWithStatus]', err);
+	}
+
+	return result;
+};
+
 
 /**
  * Add new Source
@@ -75,6 +103,9 @@ const addSource = async (source) => {
 
 		logger.info('[addSource]', result.rows[0]);
 
+		// TODO: Dispatch 'slug' of new Source
+		// And run job for it
+
 		return result.rows[0];
 	} catch (err) {
 		logger.error('[addSource]', err);
@@ -85,5 +116,6 @@ const addSource = async (source) => {
 export {
 	checkSourceExist,
 	getSources,
+	getSourcesWithStatus,
 	addSource,
 };

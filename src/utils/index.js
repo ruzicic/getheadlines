@@ -3,30 +3,30 @@ import { URL } from 'url';
 import sanitizeHtml from 'sanitize-html';
 
 /**
- * Return Current DateTime in specific format
+ * Return DateTime in choosen format
  *
- * @method getCurrentDatetime
- * @param {String} format - Output format
+ * @method formatDateTime
+ * @param {Date} d Date object. Default new Date().
+ * @param {String} f Output format. Default UNIX timestamp in seconds
  * @return {Number} Unix Timestamp
  */
-const getCurrentDatetime = (format = 'seconds') => {
-	let now;
+const formatDateTime = (d = new Date(), f = 'seconds') => {
+	const now = moment(d);
 
-	switch (format) {
+	switch (f) {
 	case 'seconds':
-		now = moment().format('X');
-		break;
+		return now.format('X');
 
 	case 'miliseconds':
-		now = moment().format('x');
-		break;
+		return now.format('x');
+
+	// Example: "Sunday, February 14th 2010, 3:25:50 pm"
+	case 'detailed':
+		return now.format('dddd, MMMM Do YYYY, h:mm:ss a');
 
 	default:
-		now = moment().format('X');
-		break;
+		return now.format('X');
 	}
-
-	return now;
 };
 
 /**
@@ -70,8 +70,41 @@ const cleanHTML = (data) => {
 	return sanitizeHtml(data, config);
 };
 
+/**
+ * Convert number of minutes to crone pattern
+ *
+ * @param {Number} period Refresh interval in minutes. Default 5.
+ * @return {String} crone pattern.
+ */
+const getCronePattern = (period = 5) => {
+	const value = parseFloat(period);
+
+	// second | minute | hour | date | month | day of week
+	const map = Object.freeze({
+		1: '00 */1 * * * *',
+		5: '00 */5 * * * *',
+		10: '00 */10 * * * *',
+		15: '00 */15 * * * *',
+		30: '00 */30 * * * *',
+		60: '00 00 */1 * * *',
+		120: '00 00 */2 * * *',
+		180: '00 00 */3 * * *',
+		240: '00 00 */4 * * *',
+		300: '00 00 */5 * * *',
+		360: '00 00 */6 * * *',
+		720: '00 00 */12 * * *',
+		1440: '00 00 00 * * *',
+	});
+
+	const closest = Object.keys(map).reduce((prev, curr) =>
+		(Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev));
+
+	return map[closest];
+};
+
 export {
-	getCurrentDatetime,
+	formatDateTime,
 	isValidUrl,
 	cleanHTML,
+	getCronePattern,
 };

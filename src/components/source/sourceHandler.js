@@ -5,7 +5,29 @@ import * as SourceController from './sourceController';
 
 const getAll = async (req, res) => {
 	try {
-		const sources = await SourceController.getSources();
+		const rawSources = await SourceController.getSources();
+		const sources = rawSources.map((raw) => {
+			const {
+				slug: id,
+				name,
+				description,
+				homepage,
+				language,
+				country,
+				category,
+			} = raw;
+
+			return {
+				id,
+				name,
+				description,
+				homepage,
+				language,
+				country,
+				category,
+			};
+		});
+
 		return res
 			.status(200)
 			.json({
@@ -25,6 +47,7 @@ const getAll = async (req, res) => {
 	}
 };
 
+// TODO: Make it accept source or []source
 const add = async (req, res) => {
 	const valid = SourceSchema.validate(req.body);
 
