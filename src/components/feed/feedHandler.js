@@ -2,21 +2,38 @@ import logger from '../../../lib/logger';
 import * as FeedController from './feedController';
 
 const get = async (req, res) => {
+	const {
+		sources,
+		includeContent,
+		language,
+		pageSize,
+		page,
+	} = res.locals;
+
 	try {
-		const rawFeeds = await FeedController.getFeeds();
-		const feeds = rawFeeds.data.map((feed) => {
+		const rawFeeds = await FeedController.getFeeds({
+			sources,
+			language,
+			pageSize,
+			page,
+		});
+
+		const feeds = rawFeeds.data.map((rawFeed) => {
 			const {
 				title,
 				pub_date: timestamp,
 				url,
 				description,
 				author,
-				source_name: sourceName,
-				source_id: sourceId,
-			} = feed;
+				name: sourceName,
+				slug: sourceId,
+				content,
+			} = rawFeed;
 
+			// Convert timestamp to ISO Date
 			const publishedAt = new Date(parseFloat(timestamp)).toISOString();
-			return {
+
+			const feed = {
 				title,
 				publishedAt,
 				url,
@@ -27,6 +44,11 @@ const get = async (req, res) => {
 					name: sourceName,
 				},
 			};
+
+			// Optionally include feed content, depending on user's query
+			if (includeContent) Object.assign(feed, { content });
+
+			return feed;
 		});
 
 		return res
@@ -34,6 +56,13 @@ const get = async (req, res) => {
 			.json({
 				status: 'ok',
 				totalResults: rawFeeds.total,
+				query: {
+					sources,
+					includeContent,
+					language,
+					pageSize,
+					page,
+				},
 				feeds,
 			})
 			.end();

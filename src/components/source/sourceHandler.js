@@ -2,6 +2,7 @@ import logger from '../../../lib/logger';
 import * as SourceStatus from './sourceStatus';
 import * as SourceSchema from './sourceSchema';
 import * as SourceController from './sourceController';
+import { formatSchemaErrors } from '../../utils/schema';
 
 const getAll = async (req, res) => {
 	try {
@@ -47,7 +48,6 @@ const getAll = async (req, res) => {
 	}
 };
 
-// TODO: Make it accept source or []source
 const add = async (req, res) => {
 	const valid = SourceSchema.validate(req.body);
 
@@ -58,8 +58,7 @@ const add = async (req, res) => {
 			.json({
 				status: 'error',
 				code: 'invalidSourceObject',
-				// TODO: https://github.com/epoberezkin/ajv-errors
-				message: SourceSchema.validate.errors,
+				message: formatSchemaErrors(SourceSchema.validate.errors),
 			})
 			.end();
 	}

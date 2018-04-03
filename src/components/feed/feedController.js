@@ -82,22 +82,35 @@ const saveFeeds = async (source, feeds) => {
 	return insertResult.rows;
 };
 
-const getFeeds = async () => {
+const getFeeds = async ({ sources, pageSize, page }) => {
 	let data = [];
 	let total = 0;
+
+	// Check 'sources' array and create WHERE conditions
+	const condition = [...sources].reduce((res, curr, i) => {
+		if (typeof curr !== 'string') return res;
+		return (i === 0 ? `WHERE sources.slug = '${curr}'` : `${res} OR sources.slug = '${curr}'`);
+	}, '');
 
 	try {
 		const result = await pool.query(`
 			SELECT
-				F.title, F.pub_date, F.url, F.description, F.author,
-				S.name as source_name, S.slug as source_id
-			FROM feeds AS F
-			INNER JOIN sources AS S
-			ON S.id = F.source_id
+				feeds.title, feeds.pub_date, feeds.url, feeds.description, feeds.author, feeds.content,
+				sources.name, sources.slug,
+					count(*) OVER() AS total_results
+			FROM feeds
+			INNER JOIN sources
+				ON sources.id = feeds.source_id
+			${condition}
+			LIMIT ${pageSize} OFFSET ${page}
 		`);
 
 		data = [...result.rows];
-		total = result.rowCount;
+
+		// If there are results, get total
+		if (result.rows.length > 0) {
+			total = result.rows[0].total_results;
+		}
 	} catch (err) {
 		logger.error('[getFeeds]', err);
 		throw err;

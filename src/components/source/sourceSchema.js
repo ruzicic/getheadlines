@@ -1,33 +1,40 @@
 import Ajv from 'ajv';
 
-const ajv = Ajv({ allErrors: true });
+const ajv = Ajv({ allErrors: true, removeAdditional: 'all' });
 
 const sourceSchema = {
 	type: 'object',
 	properties: {
 		name: {
 			type: 'string',
+			description: 'The name of the news source',
 		},
 		description: {
 			type: 'string',
+			description: 'A description of the news source',
 		},
 		slug: {
 			type: 'string',
+			description: 'The identifier of the news source. You can use this with our other endpoints.',
 			lowercase: true,
 		},
 		homepage: {
 			type: 'string',
+			description: 'The homepage of the news source',
 			format: 'url',
 		},
 		url: {
 			type: 'string',
+			description: 'The URL of the homepage.',
 			format: 'url',
 		},
 		image: {
 			type: 'string',
+			description: 'The logo of the news source.',
 		},
 		language: {
 			type: 'string',
+			description: 'The language that this news source writes in.',
 			enum: ['en', 'sr'],
 			lowercase: true,
 			minLength: 2,
@@ -35,12 +42,14 @@ const sourceSchema = {
 		},
 		country: {
 			type: 'string',
+			description: 'The country this news source is based in (or primarily writes about).',
 			lowercase: true,
 			minLength: 2,
 			maxLength: 2,
 		},
 		category: {
 			type: 'string',
+			description: 'The type of news to expect from this news source.',
 			enum: [
 				'business',
 				'entertainment',
@@ -54,6 +63,7 @@ const sourceSchema = {
 		},
 		period: {
 			type: 'number',
+			description: 'The time period in which the news from this news source will be refreshed',
 		},
 	},
 	required: [
