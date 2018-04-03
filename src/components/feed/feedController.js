@@ -82,4 +82,31 @@ const saveFeeds = async (source, feeds) => {
 	return insertResult.rows;
 };
 
-export { saveFeeds };
+const getFeeds = async () => {
+	let data = [];
+	let total = 0;
+
+	try {
+		const result = await pool.query(`
+			SELECT
+				F.title, F.pub_date, F.url, F.description, F.author,
+				S.name as source_name, S.slug as source_id
+			FROM feeds AS F
+			INNER JOIN sources AS S
+			ON S.id = F.source_id
+		`);
+
+		data = [...result.rows];
+		total = result.rowCount;
+	} catch (err) {
+		logger.error('[getFeeds]', err);
+		throw err;
+	}
+
+	return {
+		total,
+		data,
+	};
+};
+
+export { saveFeeds, getFeeds };
