@@ -1,8 +1,8 @@
 {
 	"name": "getheadlines",
-	"version": "1.0.0",
-	"description": "",
-	"main": "./app.js",
+	"version": "2.0.0",
+	"description": "Automates XML/RSS feed parsing to JSON and exposes data via REST API",
+	"main": "./bin/www/index.js",
 	"scripts": {
 		"start:watch": "NODE_CONFIG_DIR=config/environments NODE_ENV=development nodemon bin/www --exec babel-node",
 		"start": "NODE_CONFIG_DIR=config/environments NODE_ENV=development babel-node bin/www",
@@ -18,11 +18,11 @@
 	},
 	"keywords": [],
 	"author": "Mladen Ruzicic <ruzicic@gmail.com>",
-	"license": "ISC",
+	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/cedevita/getheadlines/issues"
 	},
-	"homepage": "https://github.com/cedevita/getheadlines#readme",
+	"homepage": "https://getheadlines.io",
 	"devDependencies": {
 		"babel-cli": "^6.26.0",
 		"babel-preset-env": "^1.6.1",
