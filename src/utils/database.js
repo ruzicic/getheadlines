@@ -16,7 +16,7 @@ const dbConfig = {
 const pool = new Pool(dbConfig);
 
 pool.on('error', (error, client) => {
-	// handle this in the same way you would treat process.on('uncaughtException')
+	// TODO: handle this in the same way you would treat process.on('uncaughtException')
 	// it is supplied the error as well as the idle client which received the error
 	logger.error('PG POOL Connection error', error, client);
 });

@@ -8,7 +8,7 @@ const getAll = async (req, res) => {
 			jobs = [...jobs, {
 				id: name,
 				status: job.running ? 'running' : 'not running',
-				started: new Date(job.createdAt).toUTCString(),
+				started: new Date(job.createdAt).toString(),
 			}];
 		});
 

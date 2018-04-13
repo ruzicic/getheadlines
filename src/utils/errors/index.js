@@ -9,6 +9,15 @@ import { logger } from '../../../lib/logger';
 const dev = (err, req, res, next) => {
 	logger.error(err);
 
+	if (err.name === 'UnauthorizedError') {
+		res.status(500).json({
+			status: 'error',
+			code: 'unauthorizedError',
+			message: err.stack || err,
+		}).end();
+		return;
+	}
+
 	res.status(500).json({
 		status: 'error',
 		code: 'unexpectedError',
@@ -19,6 +28,15 @@ const dev = (err, req, res, next) => {
 // eslint-disable-next-line no-unused-vars
 const prod = (err, req, res, next) => {
 	logger.error(err);
+
+	if (err.name === 'UnauthorizedError') {
+		res.status(500).json({
+			status: 'error',
+			code: 'UnauthorizedError',
+			message: 'Invalid token',
+		}).end();
+		return;
+	}
 
 	res.status(500).json({
 		status: 'error',
