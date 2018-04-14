@@ -1,0 +1,4 @@
+{
+	"validate": "default.json config loaded",
+    "port": 4000
+}

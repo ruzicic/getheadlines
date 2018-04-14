@@ -1,59 +1,78 @@
 {
 	"name": "getheadlines",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "Automates XML/RSS feed parsing to JSON and exposes data via REST API",
-	"main": "./bin/www/index.js",
+	"keywords": [
+		"rss2json",
+		"rss",
+		"parser"
+	],
+	"author": "Mladen Ruzicic <ruzicic@gmail.com>",
+	"homepage": "https://getheadlines.io",
+	"main": "./src/index.js",
 	"scripts": {
-		"start:watch": "NODE_CONFIG_DIR=config/environments NODE_ENV=development nodemon bin/www --exec babel-node",
-		"start": "NODE_CONFIG_DIR=config/environments NODE_ENV=development babel-node bin/www",
-		"clean": "rm -rf ./dist/",
-		"build": "npm run clean && babel src -d dist/ --copy-files",
-		"prod": "NODE_CONFIG_DIR=config/environments NODE_ENV=production node bin/www",
-		"lint": "eslint src lib bin",
-		"test": "NODE_CONFIG_DIR=config/environments NODE_ENV=development mocha --require babel-core/register src/**/**.spec.js --recursive --timeout 5000"
+		"dev": "NODE_CONFIG_DIR=./src/config/env NODE_ENV=development nodemon --exec npm run babel-node -- ./src",
+		"build": "babel src --source-maps -D -d dist",
+		"start": "NODE_CONFIG_DIR=./src/config/env NODE_ENV=production node dist",
+		"babel-node": "babel-node",
+		"prestart": "npm run --silent build",
+		"lint": "eslint --fix src",
+		"test": "NODE_CONFIG_DIR=./src/config/env NODE_ENV=test mocha --require babel-core/register src/server --recursive --timeout 5000"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/cedevita/getheadlines.git"
 	},
-	"keywords": [],
-	"author": "Mladen Ruzicic <ruzicic@gmail.com>",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/cedevita/getheadlines/issues"
 	},
-	"homepage": "https://getheadlines.io",
-	"devDependencies": {
-		"babel-cli": "^6.26.0",
-		"babel-preset-env": "^1.6.1",
-		"chai": "^4.1.2",
-		"eslint": "^4.18.2",
-		"eslint-config-airbnb-base": "^12.1.0",
-		"eslint-plugin-import": "^2.9.0",
-		"mocha": "^5.0.4",
-		"nodemon": "^1.17.1"
+	"private": false,
+	"engines": {
+		"node": ">=8.11.1",
+		"npm": ">=5.8.0"
 	},
 	"dependencies": {
-		"ajv": "^6.3.0",
-		"babel-polyfill": "^6.26.0",
+		"ajv": "^6.4.0",
 		"body-parser": "^1.18.2",
 		"compression": "^1.7.2",
 		"config": "^1.30.0",
 		"cors": "^2.8.4",
-		"cron": "^1.3.0",
-		"express": "^4.16.2",
+		"debug": "^3.1.0",
+		"express": "^4.16.3",
+		"express-winston": "^2.5.1",
 		"helmet": "^3.12.0",
-		"jsonwebtoken": "^8.2.1",
 		"method-override": "^2.3.10",
-		"node-readability": "^3.0.0",
+		"morgan": "^1.9.0",
 		"passport": "^0.4.0",
-		"passport-jwt": "^4.0.0",
-		"passport-local": "^1.0.0",
 		"pg": "^7.4.1",
 		"pg-pool": "^2.0.3",
-		"rss-parser": "^3.1.2",
 		"sanitize-html": "^1.18.2",
-		"scrape-it": "^5.0.2",
-		"winston": "^2.4.0"
+		"winston": "^3.0.0-rc4"
+	},
+	"devDependencies": {
+		"@types/express": "^4.11.1",
+		"@types/node": "^9.6.5",
+		"babel-cli": "^6.26.0",
+		"babel-preset-env": "^1.6.1",
+		"chai": "^4.1.2",
+		"eslint": "^4.19.1",
+		"eslint-config-airbnb-base": "^12.1.0",
+		"eslint-plugin-import": "^2.11.0",
+		"husky": "^1.0.0-rc.1",
+		"lint-staged": "^7.0.4",
+		"mocha": "^5.1.0",
+		"nodemon": "^1.17.3"
+	},
+	"lint-staged": {
+		"*.js": [
+			"lint",
+			"git add"
+		]
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
 	}
 }

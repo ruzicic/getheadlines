@@ -1,5 +1,6 @@
 node_modules
 dist
-.vscode
 *.log
+logs
 package-lock.*
+.DS_Store
