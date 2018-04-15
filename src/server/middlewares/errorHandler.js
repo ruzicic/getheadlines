@@ -1,41 +1,39 @@
 import logger from '../../config/logger';
-import httpStatus from '../utils/errors/httpStatusEnum';
+import HTTP_ERRORS from '../utils/errors/errorsEnum';
 
 /**
  * End request with a friendly JSON response,
  * including Error Stack Trace
- * @param {ApiError|AppError} err Instance of either ApiError or AppError
+ * @param {ApiError} err Instance of ApiError
  * @param {*} req
  * @param {*} res
  * @param {*} next
  */
 function developmentErrorHandler(err, req, res, next) {
-	logger.error('[developmentErrorHandler]', err);
-
 	const statusCode = err.status || 500;
+	logger.error(`error#${statusCode} 💀 "${err.message}":`, err.stack);
 
 	res.status(statusCode).json({
 		status: 'error',
-		message: err.message || httpStatus[500],
+		message: err.message || HTTP_ERRORS.internalServerError,
 		stack: err.stack || err,
 	}).end();
 }
 
 /**
  * End request with a friendly JSON response
- * @param {ApiError|AppError} err Instance of either ApiError or AppError
+ * @param {ApiError} err Instance of ApiError
  * @param {*} req
  * @param {*} res
  * @param {*} next
  */
 function productionErrorHandler(err, req, res, next) {
-	logger.error('[productionErrorHandler]', err);
-
 	const statusCode = err.status || 500;
+	logger.error(`error#${statusCode} "${err.message}":`, err.stack);
 
 	res.status(statusCode).json({
 		status: 'error',
-		message: err.message || httpStatus[500],
+		message: err.message || HTTP_ERRORS.internalServerError,
 	}).end();
 }
 

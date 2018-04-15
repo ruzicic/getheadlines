@@ -1,11 +1,11 @@
 import { pool } from '../../utils/database';
-import { AppError } from '../../utils/errors/appError';
+import logger from '../../../config/logger';
 
 /**
  * Check if Source with URL already exist in database
  * @method checkSourceExist
  * @param {String} url
- * @return {Promise<Boolean, AppError>}
+ * @return {Promise<Boolean, ApiError>}
  */
 async function checkSourceExist(url) {
 	try {
@@ -16,14 +16,15 @@ async function checkSourceExist(url) {
 
 		return result.rows[0].exists;
 	} catch (err) {
-		throw new AppError(`Error checking if source with url "${url}" exist`);
+		logger.error(`Error checking if source with url "${url}" exist`, err);
+		throw err;
 	}
 }
 
 /**
  * Get All Sources
  * @method getSources
- * @return {Promise<Array, AppError>} List of all available sources
+ * @return {Promise<Array, ApiError>} List of all available sources
  */
 async function getSources() {
 	// TODO: Add pagination
@@ -35,14 +36,15 @@ async function getSources() {
 
 		return result.rows;
 	} catch (err) {
-		throw new AppError('Could not get Sources');
+		logger.error('Could not get Sources', err);
+		throw err;
 	}
 }
 
 /**
  * Get All Sources with status
  * @method getSourcesWithStatus
- * @return {Promise<Array, AppError>} List of all available sources with their status
+ * @return {Promise<Array, ApiError>} List of all available sources with their status
  */
 async function getSourcesWithStatus() {
 	// TODO: Add pagination
@@ -58,7 +60,8 @@ async function getSourcesWithStatus() {
 
 		return result.rows;
 	} catch (err) {
-		throw new AppError('Could not get sources with status');
+		logger.error('Could not get sources with status', err);
+		throw err;
 	}
 }
 
@@ -66,7 +69,7 @@ async function getSourcesWithStatus() {
  * Add new source to database and return it
  * @method addSource
  * @param {Object} source
- * @return {Promise<Object, AppError>} Created source
+ * @return {Promise<Object, ApiError>} Created source
  */
 async function addSource(source) {
 	try {
@@ -90,7 +93,8 @@ async function addSource(source) {
 
 		return result.rows[0];
 	} catch (err) {
-		throw new AppError('Could not add new source');
+		logger.error('Could not add new source', err);
+		throw err;
 	}
 }
 

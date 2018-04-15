@@ -2,7 +2,6 @@ import config from 'config';
 import http from 'http';
 import app from './config/express';
 import logger from './config/logger';
-// import { AppError } from './server/utils/errors/appError';
 
 const debug = require('debug')('getheadlines:server');
 

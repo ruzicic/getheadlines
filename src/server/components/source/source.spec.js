@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 // import * as SourceHandler from './sourceHandler';
 import * as SourceController from './sourceController';
-import { AppError } from '../../utils/errors/appError';
 
 const MOCK = {
 	name: 'MOCHA',
@@ -36,7 +35,7 @@ describe('Source', () => {
 		SourceController.addSource(MOCK).then(() => {
 			// Should never fullfill
 		}, (err) => {
-			expect(err).to.be.instanceof(AppError);
+			expect(err).to.be.instanceof(Error);
 			done();
 		});
 	});

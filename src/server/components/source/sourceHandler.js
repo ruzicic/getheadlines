@@ -4,6 +4,7 @@ import * as SourceSchema from './sourceSchema';
 import * as SourceController from './sourceController';
 import { formatSchemaErrors } from '../../utils/schema';
 import { ApiError } from '../../utils/errors/apiError';
+import HTTP_ERRORS from '../../utils/errors/errorsEnum';
 
 /**
  * Returns list of Sources
@@ -45,7 +46,7 @@ async function getAll(req, res, next) {
 			})
 			.end();
 	} catch (err) {
-		return next(new ApiError('Could not get Sources.'));
+		return next(err);
 	}
 }
 
@@ -53,35 +54,29 @@ async function getAll(req, res, next) {
  * Creates new Source and returns it's Id
  * @param req
  * @param res
+ * @param next
  * @returns {*}
  */
-async function add(req, res) {
+async function add(req, res, next) {
 	const valid = SourceSchema.validate(req.body);
 
 	// Validate request body using JSON schema
 	if (!valid) {
-		return res
-			.status(422)
-			.json({
-				status: 'error',
-				code: 'invalidSourceObject',
-				message: formatSchemaErrors(SourceSchema.validate.errors),
-			})
-			.end();
+		logger.error('[source.add]', formatSchemaErrors(SourceSchema.validate.errors));
+		return next(new ApiError(HTTP_ERRORS.parameterInvalid));
 	}
 
 	// Check if source with provided url already exist
-	const sourceExist = await SourceController.checkSourceExist(req.body.url);
-	if (sourceExist) {
-		return res
-			.status(409)
-			.json({
-				status: 'error',
-				code: 'sourceAlreadyExist',
-				message: `Source "${req.body.name}" already exist. Id and URL must be unique.`,
-			})
-			.end();
+	try {
+		const sourceExist = await SourceController.checkSourceExist(req.body.url);
+		if (sourceExist) {
+			logger.error(`Source "${req.body.name}" already exist. Id and URL must be unique.`);
+			return next(new ApiError(HTTP_ERRORS.alreadyExist));
+		}
+	} catch (err) {
+		return next(err);
 	}
+
 
 	try {
 		const source = await SourceController.addSource(req.body);
@@ -94,14 +89,8 @@ async function add(req, res) {
 			},
 		}).end();
 	} catch (err) {
-		logger.error(`[source] getAll: ${err}`);
-		return res
-			.status(500)
-			.json({
-				status: 'error',
-				code: 'unexpectedError',
-			})
-			.end();
+		logger.error('[source.add]', err);
+		return next(err);
 	}
 }
 

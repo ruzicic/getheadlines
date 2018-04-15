@@ -9,10 +9,7 @@ import helmet from 'helmet';
 // Import passport from 'passport';
 
 import { router } from '../server/routes';
-// import logger from './logger';
 import * as ErrorHandler from '../server/middlewares/errorHandler';
-import { AppError } from '../server/utils/errors/appError';
-import { ApiError } from '../server/utils/errors/apiError';
 
 // Import User from '../server/models/user.model'
 
@@ -59,20 +56,12 @@ app.use(cors());
 // Mount all routes on /api path
 app.use('/api', router);
 
-// If error is not an instanceOf ApiError or AppError, convert it.
-app.use((err, req, res, next) => {
-	if (!(err instanceof ApiError) && !(err instanceof AppError)) {
-		const appError = new AppError(err.message, err.status);
-		return next(appError);
-	}
-
-	return next(err);
-});
-
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
-	const errorNotFound = new AppError('Not found', 404);
-	return next(errorNotFound);
+	const err = new Error('Not found');
+	err.status = 404;
+
+	return next(err);
 });
 
 // Log error in winston transports, except when running tests
