@@ -1,13 +1,15 @@
 import { expect } from 'chai';
-// import * as SourceHandler from './sourceHandler';
+import request from 'supertest';
+import app from '../../../config/express';
 import * as SourceController from './sourceController';
 
 const MOCK = {
-	name: 'MOCHA',
-	description: 'Mocha test',
-	slug: 'mocha-test',
-	homepage: 'https://google.rs',
-	url: 'https://google.rs',
+	name: 'Not Blank',
+	description: 'Not Blank',
+	slug: 'not-blank',
+	homepage: 'https://example.com',
+	url: 'https://example.com',
+	image: '',
 	language: 'sr',
 	country: 'sr',
 	category: 'general',
@@ -15,28 +17,54 @@ const MOCK = {
 };
 
 describe('Source', () => {
-	// it('Should add new source to database and return it', async () => {
-	// 	const source = await SourceController.addSource(MOCK);
+	describe('POST /api/sources', () => {
+		beforeEach((done) => {
+			SourceController.deleteSource(MOCK.url).then(() => done());
+		});
 
-	// 	expect(source).to.be.an('object');
-	// 	expect(source).to.have.property('id');
-	// 	expect(source).to.have.property('slug');
-	// 	expect(source).to.have.property('url');
-	// });
+		it('Should add new source', (done) => {
+			request(app)
+				.post('/api/sources')
+				.send(MOCK)
+				.expect(201)
+				.expect((res) => {
+					expect(res.body.status).to.be.equal('ok');
+					expect(res.body.message.id).to.be.equal(MOCK.slug);
+				})
+				// eslint-disable-next-line no-unused-vars
+				.end((err, res) => {
+					if (err) {
+						return done(err);
+					}
 
-	it('it should CONFIRM source exist', async () => {
-		const exist = await SourceController.checkSourceExist(MOCK.url);
-
-		// eslint-disable-next-line no-unused-expressions
-		expect(exist).to.be.true;
+					return done();
+				});
+		});
 	});
 
-	it('it should FAIL TO ADD existing source', (done) => {
-		SourceController.addSource(MOCK).then(() => {
-			// Should never fullfill
-		}, (err) => {
-			expect(err).to.be.instanceof(Error);
-			done();
+	describe('DELETE /api/sources', () => {
+		beforeEach((done) => {
+			SourceController.deleteSource(MOCK.url)
+				.then(() => SourceController.addSource(MOCK)
+					.then(() => done()));
+		});
+
+		it('Should delete source', (done) => {
+			request(app)
+				.delete('/api/sources')
+				.query({ url: MOCK.url })
+				.expect(200)
+				.expect((res) => {
+					expect(res.body.status).to.be.equal('ok');
+				})
+				// eslint-disable-next-line no-unused-vars
+				.end((err, res) => {
+					if (err) {
+						return done(err);
+					}
+
+					return done();
+				});
 		});
 	});
 });

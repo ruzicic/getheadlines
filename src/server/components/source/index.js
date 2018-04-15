@@ -9,4 +9,7 @@ sourceRouter.get('/', SourceHandler.getAll);
 // Add New Source
 sourceRouter.post('/', SourceHandler.add);
 
+// Delete Source
+sourceRouter.delete('/', SourceHandler.remove);
+
 export { sourceRouter };

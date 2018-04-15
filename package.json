@@ -64,7 +64,8 @@
 		"husky": "^1.0.0-rc.1",
 		"lint-staged": "^7.0.4",
 		"mocha": "^5.1.0",
-		"nodemon": "^1.17.3"
+		"nodemon": "^1.17.3",
+		"supertest": "^3.0.0"
 	},
 	"lint-staged": {
 		"*.js": [

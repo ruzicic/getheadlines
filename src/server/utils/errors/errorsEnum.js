@@ -40,6 +40,12 @@ export default {
 		code: 401,
 	},
 
+	// Requested source doesn't exist
+	sourceNotFound: {
+		type: 'SourceNotFound',
+		code: 404,
+	},
+
 	// Requested feeds from too many sources
 	sourcesTooMany: {
 		type: 'SourcesTooMany',

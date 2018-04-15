@@ -98,11 +98,30 @@ async function addSource(source) {
 	}
 }
 
-// TODO: Add Delete Source
+/**
+ * Delete source by url
+ * @method deleteSource
+ * @param {String} url Source's url
+ * @return {Promise<Number, Error>} Returns number of deleted rows
+ */
+async function deleteSource(url) {
+	try {
+		const result = await pool.query(
+			'DELETE FROM sources WHERE url = ($1) RETURNING *',
+			[url],
+		);
+
+		return result.rowCount;
+	} catch (err) {
+		logger.error(`Could not delete source with url "${url}"`, err);
+		throw err;
+	}
+}
 
 export {
 	checkSourceExist,
 	getSources,
 	getSourcesWithStatus,
 	addSource,
+	deleteSource,
 };
