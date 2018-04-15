@@ -11,7 +11,7 @@ import HTTP_ERRORS from '../utils/errors/errorsEnum';
  */
 function developmentErrorHandler(err, req, res, next) {
 	const statusCode = err.status || 500;
-	logger.error(`error#${statusCode} 💀 "${err.message}":`, err.stack);
+	logger.error(`${statusCode}: ${err.message}. [${req.method}] ${req.originalUrl} (${req.ip})`);
 
 	res.status(statusCode).json({
 		status: 'error',
@@ -29,7 +29,7 @@ function developmentErrorHandler(err, req, res, next) {
  */
 function productionErrorHandler(err, req, res, next) {
 	const statusCode = err.status || 500;
-	logger.error(`error#${statusCode} "${err.message}":`, err.stack);
+	logger.error(`${statusCode}: ${err.message}. [${req.method}] ${req.originalUrl} (${req.ip})`);
 
 	res.status(statusCode).json({
 		status: 'error',

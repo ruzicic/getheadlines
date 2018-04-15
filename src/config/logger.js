@@ -1,7 +1,9 @@
 import path from 'path';
 import winston from 'winston';
 
-const { createLogger, transports } = winston;
+const { createLogger, transports, format } = winston;
+// eslint-disable-next-line object-curly-newline
+const { combine, timestamp, json, simple, colorize } = format;
 
 const logger = createLogger({
 	transports: [
@@ -9,19 +11,13 @@ const logger = createLogger({
 			name: 'all',
 			level: 'info',
 			filename: path.join('logs', 'all.json'),
-			format: winston.format.combine(
-				winston.format.timestamp(),
-				winston.format.json(),
-			),
+			format: combine(timestamp(), json()),
 		}),
 		new transports.File({
 			name: 'errors',
 			level: 'error',
 			filename: path.join('logs', 'error.json'),
-			format: winston.format.combine(
-				winston.format.timestamp(),
-				winston.format.json(),
-			),
+			format: combine(timestamp(), json()),
 		}),
 	],
 });
@@ -31,11 +27,9 @@ if (process.env.NODE_ENV !== 'production') {
 	logger.add(new transports.Console({
 		name: 'console',
 		level: 'silly',
-		silent: process.env.NODE_ENV === 'test', // do not log while running tests
-		format: winston.format.combine(
-			winston.format.colorize({ all: false }),
-			winston.format.simple(),
-		),
+		// Important: Do NOT log while running tests
+		silent: process.env.NODE_ENV === 'test',
+		format: combine(colorize({ all: false }), simple()),
 	}));
 }
 
