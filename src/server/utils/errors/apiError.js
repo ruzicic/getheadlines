@@ -1,5 +1,3 @@
-import HTTP_ERRORS from './errorsEnum';
-
 /**
  * Creates an API error
  * @extends Error
@@ -13,8 +11,11 @@ export class ApiError extends Error {
 			Error.captureStackTrace(this, ApiError);
 		}
 
+		// Get code and type from error.name, or set defaults
+		const { code = 500, type = 'InternalServerError' } = name;
+
 		this.name = name;
-		this.status = HTTP_ERRORS[name].code || 500;
-		this.message = HTTP_ERRORS[name].type || 'InternalServerError';
+		this.status = code;
+		this.message = type;
 	}
 }
