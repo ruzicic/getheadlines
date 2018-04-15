@@ -2,6 +2,7 @@ import config from 'config';
 import http from 'http';
 import app from './config/express';
 import logger from './config/logger';
+import { initializeApp } from './server/main';
 
 const debug = require('debug')('getheadlines:server');
 
@@ -71,7 +72,7 @@ function onListening() {
 	logger.info(`App running on ${bind} (${process.env.NODE_ENV}).`);
 
 	// Initialize App after Express start
-	// initializeApp();
+	initializeApp();
 
 	if (process.env.NODE_ENV === 'DEBUG') {
 		debug(`App running on ${bind}.`);
