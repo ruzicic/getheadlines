@@ -8,35 +8,23 @@ import HTTP_ERRORS from '../../utils/errors/errorsEnum';
 
 /**
  * Returns list of Sources
- * @param req
- * @param res
- * @param next
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
  * @returns {*}
  */
 async function getAll(req, res, next) {
 	try {
 		const rawSources = await SourceController.getSources();
-		const sources = rawSources.map((raw) => {
-			const {
-				slug: id,
-				name,
-				description,
-				homepage,
-				language,
-				country,
-				category,
-			} = raw;
-
-			return {
-				id,
-				name,
-				description,
-				homepage,
-				language,
-				country,
-				category,
-			};
-		});
+		const sources = rawSources.map(r => ({
+			id: r.slug,
+			name: r.name,
+			description: r.description,
+			homepage: r.description,
+			language: r.language,
+			country: r.country,
+			category: r.category,
+		}));
 
 		return res
 			.status(200)
@@ -52,9 +40,9 @@ async function getAll(req, res, next) {
 
 /**
  * Creates new Source and returns it's Id
- * @param req
- * @param res
- * @param next
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
  * @returns {*}
  */
 async function add(req, res, next) {

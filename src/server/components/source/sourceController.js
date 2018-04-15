@@ -5,7 +5,7 @@ import logger from '../../../config/logger';
  * Check if Source with URL already exist in database
  * @method checkSourceExist
  * @param {String} url
- * @return {Promise<Boolean, ApiError>}
+ * @return {Promise<Boolean, Error>}
  */
 async function checkSourceExist(url) {
 	try {
@@ -24,7 +24,7 @@ async function checkSourceExist(url) {
 /**
  * Get All Sources
  * @method getSources
- * @return {Promise<Array, ApiError>} List of all available sources
+ * @return {Promise<Array, Error>} List of all available sources
  */
 async function getSources() {
 	// TODO: Add pagination
@@ -44,7 +44,7 @@ async function getSources() {
 /**
  * Get All Sources with status
  * @method getSourcesWithStatus
- * @return {Promise<Array, ApiError>} List of all available sources with their status
+ * @return {Promise<Array, Error>} List of all available sources with their status
  */
 async function getSourcesWithStatus() {
 	// TODO: Add pagination
@@ -69,7 +69,7 @@ async function getSourcesWithStatus() {
  * Add new source to database and return it
  * @method addSource
  * @param {Object} source
- * @return {Promise<Object, ApiError>} Created source
+ * @return {Promise<Object, Error>} Created source
  */
 async function addSource(source) {
 	try {

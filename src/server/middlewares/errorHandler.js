@@ -5,9 +5,9 @@ import HTTP_ERRORS from '../utils/errors/errorsEnum';
  * End request with a friendly JSON response,
  * including Error Stack Trace
  * @param {ApiError} err Instance of ApiError
- * @param {*} req
- * @param {*} res
- * @param {*} next
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
  */
 function developmentErrorHandler(err, req, res, next) {
 	const statusCode = err.status || 500;
@@ -23,9 +23,9 @@ function developmentErrorHandler(err, req, res, next) {
 /**
  * End request with a friendly JSON response
  * @param {ApiError} err Instance of ApiError
- * @param {*} req
- * @param {*} res
- * @param {*} next
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
  */
 function productionErrorHandler(err, req, res, next) {
 	const statusCode = err.status || 500;

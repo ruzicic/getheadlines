@@ -20,7 +20,7 @@ export default {
 	 */
 	parameterInvalid: {
 		type: 'ParameterInvalid',
-		code: 400,
+		code: 422,
 	},
 	parameterMissing: {
 		type: 'ParameterMissing',
