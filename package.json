@@ -11,7 +11,7 @@
 	"homepage": "https://getheadlines.io",
 	"main": "./src/index.js",
 	"scripts": {
-		"dev": "NODE_CONFIG_DIR=./src/config/env NODE_ENV=development nodemon --exec npm run babel-node -- ./src",
+		"dev": "JWT_SECRET=secret NODE_CONFIG_DIR=./src/config/env NODE_ENV=development nodemon --exec npm run babel-node -- ./src",
 		"build": "babel src --source-maps -D -d dist",
 		"start": "NODE_CONFIG_DIR=./src/config/env NODE_ENV=production node dist",
 		"babel-node": "babel-node",
@@ -34,6 +34,7 @@
 	},
 	"dependencies": {
 		"ajv": "^6.4.0",
+		"ajv-keywords": "^3.1.0",
 		"body-parser": "^1.18.2",
 		"compression": "^1.7.2",
 		"config": "^1.30.0",
@@ -42,10 +43,10 @@
 		"debug": "^3.1.0",
 		"express": "^4.16.3",
 		"helmet": "^3.12.0",
+		"jsonwebtoken": "^8.2.1",
 		"method-override": "^2.3.10",
 		"morgan": "^1.9.0",
 		"node-readability": "^3.0.0",
-		"passport": "^0.4.0",
 		"pg": "^7.4.1",
 		"pg-pool": "^2.0.3",
 		"rss-parser": "^3.1.2",

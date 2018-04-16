@@ -1,16 +1,14 @@
 import express from 'express';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
-import compress from 'compression';
+import compression from 'compression';
 import methodOverride from 'method-override';
 import cors from 'cors';
 import helmet from 'helmet';
-// Import passport from 'passport';
-
+import { authRouter } from '../server/components/auth';
 import { router } from '../server/routes';
+import { guard } from '../server/middlewares/guard';
 import * as ErrorHandler from '../server/middlewares/errorHandler';
-
-// Import User from '../server/models/user.model'
 
 const app = express();
 const env = process.env.NODE_ENV;
@@ -22,25 +20,20 @@ if (env === 'development') {
 // Parse body params and attach them to req.body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(compress());
+app.use(compression());
 app.use(methodOverride());
 
-// App.use(passport.initialize());
-
-// configure passport for Auth
-// passport.use(User.createStrategy())
-// passport.serializeUser(User.serializeUser())
-// passport.deserializeUser(User.deserializeUser())
-
-// secure apps by setting various HTTP headers
+// Secure App by setting various HTTP headers
 app.use(helmet());
 
-// Enable CORS - Cross Origin Resource Sharing
+// Enable CORS
 app.use(cors());
 
+// Auth routes (do not require token to access)
+app.use('/api/auth', authRouter);
+
 // Mount all routes on /api path
-app.use('/api', router);
+app.use('/api', guard, router);
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {

@@ -6,6 +6,10 @@ export default {
 		type: 'BadRequest',
 		code: 400,
 	},
+	unauthorized: {
+		type: 'Unauthorized',
+		code: 401,
+	},
 	alreadyExist: {
 		type: 'AlreadyExist',
 		code: 409,
