@@ -31,7 +31,7 @@ async function checkUserExist(email) {
 async function getUserByEmail(email) {
 	try {
 		const result = await pool.query(
-			'SELECT * FROM users WHERE email = ($1)',
+			'SELECT id, name, email, registered FROM users WHERE email = ($1)',
 			[email],
 		);
 
@@ -92,9 +92,51 @@ async function addUser(user) {
 	}
 }
 
+/**
+ * Delete user by Id
+ * @method deleteUser
+ * @param {Number} id User Id
+ * @return {Promise<Number, Error>} Returns number of deleted rows
+ */
+async function deleteUser(id) {
+	try {
+		const result = await pool.query(
+			'DELETE FROM users WHERE id = ($1) RETURNING *',
+			[id],
+		);
+
+		return result.rowCount;
+	} catch (err) {
+		logger.error(`Could not delete user with Id "${id}"`, err);
+		throw err;
+	}
+}
+
+/**
+ * Delete user by email
+ * @method deleteUserByEmail
+ * @param {String} email User's email
+ * @return {Promise<Number, Error>} Returns number of deleted rows
+ */
+async function deleteUserByEmail(email) {
+	try {
+		const result = await pool.query(
+			'DELETE FROM users WHERE email = ($1) RETURNING *',
+			[email],
+		);
+
+		return result.rowCount;
+	} catch (err) {
+		logger.error(`Could not delete user with email "${email}"`, err);
+		throw err;
+	}
+}
+
 export {
 	checkUserExist,
 	getUserByEmail,
 	getUserById,
 	addUser,
+	deleteUser,
+	deleteUserByEmail,
 };

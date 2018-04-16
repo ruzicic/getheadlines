@@ -40,6 +40,12 @@ export default {
 		code: 401,
 	},
 
+	// Requested user doesn't exist
+	userNotFound: {
+		type: 'UserNotFound',
+		code: 404,
+	},
+
 	// Requested source doesn't exist
 	sourceNotFound: {
 		type: 'SourceNotFound',
