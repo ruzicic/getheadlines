@@ -7,7 +7,7 @@ const initializeApp = async () => {
 		const sources = await SourceController.getSourcesWithStatus();
 		sources.forEach(JobController.scheduleJob);
 	} catch (err) {
-		logger.error('Could not INITIALIZE APP', err);
+		logger.error('Could not Initialize App!', err);
 		throw err;
 	}
 

@@ -47,7 +47,6 @@ async function getSources() {
  * @return {Promise<Array, Error>} List of all available sources with their status
  */
 async function getSourcesWithStatus() {
-	// TODO: Add pagination
 	try {
 		const result = await pool.query(`
 			SELECT

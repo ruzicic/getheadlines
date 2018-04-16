@@ -78,12 +78,7 @@ async function addUser(user) {
 			VALUES
 				($1, $2, $3, $4)
 			RETURNING *
-		`, [
-			user.name,
-			user.email,
-			user.password,
-			now,
-		]);
+		`, [user.name, user.email, user.password, now]);
 
 		return result.rows[0];
 	} catch (err) {
