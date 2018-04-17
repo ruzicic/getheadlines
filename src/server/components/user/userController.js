@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { pool } from '../../utils/database';
 import logger from '../../../config/logger';
 import { getCurrentTime } from '../../utils';
@@ -31,7 +32,7 @@ async function checkUserExist(email) {
 async function getUserByEmail(email) {
 	try {
 		const result = await pool.query(
-			'SELECT id, name, email, registered FROM users WHERE email = ($1)',
+			'SELECT id, name, email, password, registered FROM users WHERE email = ($1)',
 			[email],
 		);
 
@@ -70,6 +71,16 @@ async function getUserById(id) {
  */
 async function addUser(user) {
 	const now = getCurrentTime();
+	const saltRounds = 10;
+	let cryptedPass;
+
+	// Hash User's password
+	try {
+		cryptedPass = await bcrypt.hash(user.password, saltRounds);
+	} catch (err) {
+		logger.error('Error hashing users password', err);
+		throw err;
+	}
 
 	try {
 		const result = await pool.query(`
@@ -78,7 +89,7 @@ async function addUser(user) {
 			VALUES
 				($1, $2, $3, $4)
 			RETURNING *
-		`, [user.name, user.email, user.password, now]);
+		`, [user.name, user.email, cryptedPass, now]);
 
 		return result.rows[0];
 	} catch (err) {

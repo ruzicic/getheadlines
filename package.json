@@ -34,7 +34,9 @@
 	},
 	"dependencies": {
 		"ajv": "^6.4.0",
+		"ajv-errors": "^1.0.0",
 		"ajv-keywords": "^3.1.0",
+		"bcrypt": "^2.0.0",
 		"body-parser": "^1.18.2",
 		"compression": "^1.7.2",
 		"config": "^1.30.0",

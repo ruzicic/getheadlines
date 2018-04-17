@@ -10,6 +10,10 @@ export default {
 		type: 'Unauthorized',
 		code: 401,
 	},
+	invalidPassword: {
+		type: 'InvalidPassword',
+		code: 401,
+	},
 	alreadyExist: {
 		type: 'AlreadyExist',
 		code: 409,

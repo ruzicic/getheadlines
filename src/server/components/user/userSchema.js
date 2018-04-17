@@ -1,9 +1,14 @@
 import Ajv from 'ajv';
 
-const ajv = Ajv({ allErrors: true, removeAdditional: 'all' });
+const ajv = Ajv({
+	allErrors: true,
+	jsonPointers: true,
+});
 
 const userSchema = {
 	type: 'object',
+	// Remove any extra properties
+	additionalProperties: false,
 	properties: {
 		name: {
 			type: 'string',

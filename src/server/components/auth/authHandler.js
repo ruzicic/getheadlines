@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import logger from '../../../config/logger';
 import * as AuthSchema from './authSchema';
 import * as UserController from '../user/userController';
@@ -20,6 +21,7 @@ async function login(req, res, next) {
 
 	// Validate request body using JSON schema
 	const valid = AuthSchema.validate(req.body);
+	logger.error('[AuthSchema]', AuthSchema.validate.errors);
 	if (!valid) {
 		return next(new ApiError(HTTP_ERRORS.parameterInvalid));
 	}
@@ -35,24 +37,35 @@ async function login(req, res, next) {
 		return next(err);
 	}
 
-	// Get user and sign jwt token
+	// Get user from db
+	let user;
 	try {
-		const user = await UserController.getUserByEmail(req.body.email);
-
-		// From now on we'll identify the user by the id and
-		// the id is the only personalized value that goes into the token
-		const token = generateToken(user.id);
-
-		return res.status(200).json({
-			status: 'ok',
-			message: {
-				token,
-			},
-		}).end();
+		user = await UserController.getUserByEmail(req.body.email);
 	} catch (err) {
 		logger.error(`Could not get user with email "${req.body.email}"`, err);
 		return next(err);
 	}
+
+	// Check if provided password is valid
+	try {
+		const validPassword = await bcrypt.compare(req.body.password, user.password);
+		if (!validPassword) {
+			return next(new ApiError(HTTP_ERRORS.invalidPassword));
+		}
+	} catch (err) {
+		logger.error('Could not compare hashed password', err);
+		return next(err);
+	}
+
+	// From now on we'll identify the user by the id and
+	// the id is the only personalized value that goes into the token
+	const token = generateToken(user.id);
+	return res.status(200).json({
+		status: 'ok',
+		message: {
+			token,
+		},
+	}).end();
 }
 
 export { login };

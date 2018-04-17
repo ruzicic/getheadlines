@@ -1,9 +1,17 @@
 import Ajv from 'ajv';
+import ajvErrors from 'ajv-errors';
 
-const ajv = Ajv({ allErrors: true, removeAdditional: 'all' });
+const ajv = Ajv({
+	allErrors: true,
+	jsonPointers: true,
+});
+
+ajvErrors(ajv);
 
 const authSchema = {
 	type: 'object',
+	// Remove any extra properties
+	additionalProperties: false,
 	properties: {
 		email: {
 			type: 'string',
@@ -19,6 +27,11 @@ const authSchema = {
 		},
 	},
 	required: ['email', 'password'],
+	errorMessage: {
+		type: 'Exected object with email and password properties.',
+		required: 'Required properties are both email and password.',
+		additionalProperties: 'Request must contain email and password properties only.',
+	},
 };
 
 const validate = ajv.compile(authSchema);

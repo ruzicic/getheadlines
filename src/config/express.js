@@ -5,9 +5,8 @@ import compression from 'compression';
 import methodOverride from 'method-override';
 import cors from 'cors';
 import helmet from 'helmet';
-import { authRouter } from '../server/components/auth';
-import { router } from '../server/routes';
-import { guard } from '../server/middlewares/guard';
+
+import routes from '../server/routes';
 import * as ErrorHandler from '../server/middlewares/errorHandler';
 
 const app = express();
@@ -29,11 +28,8 @@ app.use(helmet());
 // Enable CORS
 app.use(cors());
 
-// Auth routes (do not require token to access)
-app.use('/api/auth', authRouter);
-
 // Mount all routes on /api path
-app.use('/api', guard, router);
+app.use('/api', routes);
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {

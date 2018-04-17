@@ -20,13 +20,17 @@ async function get(req, res, next) {
 	}
 
 	try {
-		const user = await UserController.getUserByEmail(email);
+		const { name, registered } = await UserController.getUserByEmail(email);
 
 		return res
 			.status(200)
 			.json({
 				status: 'ok',
-				user,
+				user: {
+					name,
+					email,
+					registered,
+				},
 			})
 			.end();
 	} catch (err) {
