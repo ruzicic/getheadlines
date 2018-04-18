@@ -1,6 +1,6 @@
 import { verifyToken } from '../components/auth/authController';
 import { ApiError } from '../utils/errors/apiError';
-import HTTP_ERRORS from '../utils/errors/errorsEnum';
+import { HTTP_ERRORS } from '../utils/errors/errorsEnum';
 
 /**
  * Find JSON Web token in request header/body/query
@@ -37,7 +37,7 @@ async function guard(req, res, next) {
 	const token = getToken(req);
 
 	if (!token) {
-		return next(new ApiError(HTTP_ERRORS.apiKeyMissing));
+		return next(new ApiError(HTTP_ERRORS.ApiKeyMissing));
 	}
 
 	try {
@@ -47,7 +47,7 @@ async function guard(req, res, next) {
 
 		return next();
 	} catch (err) {
-		return next(new ApiError(HTTP_ERRORS.apiKeyInvalid));
+		return next(new ApiError(HTTP_ERRORS.ApiKeyInvalid));
 	}
 }
 

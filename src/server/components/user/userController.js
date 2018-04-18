@@ -5,11 +5,11 @@ import { getCurrentTime } from '../../utils';
 
 /**
  * Check if User with provided email already exist in database
- * @method checkUserExist
+ * @method checkUserEmailExist
  * @param {String} email
  * @return {Promise<Boolean, Error>}
  */
-async function checkUserExist(email) {
+async function checkUserEmailExist(email) {
 	try {
 		const result = await pool.query(
 			'SELECT exists( SELECT true FROM users WHERE email = ($1))',
@@ -19,6 +19,26 @@ async function checkUserExist(email) {
 		return result.rows[0].exists;
 	} catch (err) {
 		logger.error(`Error checking if user "${email}" exist.`, err);
+		throw err;
+	}
+}
+
+/**
+ * Check if User with provided Id already exist in database
+ * @method checkUserIdExist
+ * @param {String} id
+ * @return {Promise<Boolean, Error>}
+ */
+async function checkUserIdExist(id) {
+	try {
+		const result = await pool.query(
+			'SELECT exists( SELECT true FROM users WHERE id = ($1))',
+			[id],
+		);
+
+		return result.rows[0].exists;
+	} catch (err) {
+		logger.error(`Error checking if user with id "${id}" exist.`, err);
 		throw err;
 	}
 }
@@ -139,7 +159,8 @@ async function deleteUserByEmail(email) {
 }
 
 export {
-	checkUserExist,
+	checkUserEmailExist,
+	checkUserIdExist,
 	getUserByEmail,
 	getUserById,
 	addUser,

@@ -1,10 +1,9 @@
 import bcrypt from 'bcrypt';
 import logger from '../../../config/logger';
-import * as AuthSchema from './authSchema';
 import * as UserController from '../user/userController';
 import { generateToken } from './authController';
 import { ApiError } from '../../utils/errors/apiError';
-import HTTP_ERRORS from '../../utils/errors/errorsEnum';
+import { HTTP_ERRORS } from '../../utils/errors/errorsEnum';
 
 /**
  * Login user and return token
@@ -14,23 +13,11 @@ import HTTP_ERRORS from '../../utils/errors/errorsEnum';
  * @returns {*}
  */
 async function login(req, res, next) {
-	// Check if both email and password exist
-	if (!req.body.email || !req.body.password) {
-		return next(new ApiError(HTTP_ERRORS.parameterMissing));
-	}
-
-	// Validate request body using JSON schema
-	const valid = AuthSchema.validate(req.body);
-	logger.error('[AuthSchema]', AuthSchema.validate.errors);
-	if (!valid) {
-		return next(new ApiError(HTTP_ERRORS.parameterInvalid));
-	}
-
 	// Check if user with provided emai exist
 	try {
-		const userExist = await UserController.checkUserExist(req.body.email);
+		const userExist = await UserController.checkUserEmailExist(req.body.email);
 		if (!userExist) {
-			return next(new ApiError(HTTP_ERRORS.userNotFound));
+			return next(new ApiError(HTTP_ERRORS.UserNotFound));
 		}
 	} catch (err) {
 		logger.error(`Could not check if user with email "${req.body.email}" exist`, err);
@@ -50,20 +37,21 @@ async function login(req, res, next) {
 	try {
 		const validPassword = await bcrypt.compare(req.body.password, user.password);
 		if (!validPassword) {
-			return next(new ApiError(HTTP_ERRORS.invalidPassword));
+			return next(new ApiError(HTTP_ERRORS.InvalidPassword));
 		}
 	} catch (err) {
 		logger.error('Could not compare hashed password', err);
 		return next(err);
 	}
 
-	// From now on we'll identify the user by the id and
-	// the id is the only personalized value that goes into the token
-	const token = generateToken(user.id);
+	/**
+	 * From now on we'll identify the user by the Id and
+	 * the id is the only personalized value that goes into the token
+	 */
 	return res.status(200).json({
 		status: 'ok',
 		message: {
-			token,
+			token: generateToken(user.id),
 		},
 	}).end();
 }

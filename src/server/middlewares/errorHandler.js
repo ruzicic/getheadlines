@@ -1,5 +1,5 @@
 import logger from '../../config/logger';
-import HTTP_ERRORS from '../utils/errors/errorsEnum';
+import { HTTP_ERRORS } from '../utils/errors/errorsEnum';
 
 /**
  * End request with a friendly JSON response,
@@ -15,7 +15,7 @@ function developmentErrorHandler(err, req, res, next) {
 
 	res.status(statusCode).json({
 		status: 'error',
-		message: err.message || HTTP_ERRORS.internalServerError,
+		message: err.message || HTTP_ERRORS.InternalServerError,
 		stack: err.stack || err,
 	}).end();
 }
@@ -33,7 +33,7 @@ function productionErrorHandler(err, req, res, next) {
 
 	res.status(statusCode).json({
 		status: 'error',
-		message: err.message || HTTP_ERRORS.internalServerError,
+		message: err.message || HTTP_ERRORS.InternalServerError,
 	}).end();
 }
 

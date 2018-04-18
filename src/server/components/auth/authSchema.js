@@ -1,16 +1,7 @@
-import Ajv from 'ajv';
-import ajvErrors from 'ajv-errors';
+import { HTTP_ERRORS } from '../../utils/errors/errorsEnum';
 
-const ajv = Ajv({
-	allErrors: true,
-	jsonPointers: true,
-});
-
-ajvErrors(ajv);
-
-const authSchema = {
+export default {
 	type: 'object',
-	// Remove any extra properties
 	additionalProperties: false,
 	properties: {
 		email: {
@@ -20,20 +11,15 @@ const authSchema = {
 		},
 		password: {
 			type: 'string',
-			description: 'User\'s password.',
 			minLength: 8,
 			maxLength: 64,
-			invalidMessage: 'Password must contain minimum eight characters',
+			description: 'User\'s password.',
 		},
 	},
 	required: ['email', 'password'],
 	errorMessage: {
-		type: 'Exected object with email and password properties.',
-		required: 'Required properties are both email and password.',
-		additionalProperties: 'Request must contain email and password properties only.',
+		type: HTTP_ERRORS.ParameterInvalid.type,
+		required: HTTP_ERRORS.ParameterMissing.type,
+		additionalProperties: HTTP_ERRORS.UnknownPropertyName.type,
 	},
 };
-
-const validate = ajv.compile(authSchema);
-
-export { validate };

@@ -1,9 +1,14 @@
 import Ajv from 'ajv';
+import ajvErrors from 'ajv-errors';
+import { HTTP_ERRORS } from '../../utils/errors/errorsEnum';
 
-const ajv = Ajv({ allErrors: true, removeAdditional: 'all' });
+const ajv = Ajv({ allErrors: true, jsonPointers: true });
+
+ajvErrors(ajv);
 
 const feedReqParams = {
 	type: 'object',
+	additionalProperties: false,
 	properties: {
 		sources: {
 			type: 'array',
@@ -30,7 +35,7 @@ const feedReqParams = {
 			type: 'number',
 			description: 'The number of results to return per page. 20 is the default, 100 is the maximum',
 			maximum: 100,
-			minimum: 10,
+			minimum: 1,
 		},
 		page: {
 			type: 'number',
@@ -45,8 +50,13 @@ const feedReqParams = {
 		'pageSize',
 		'page',
 	],
+	errorMessage: {
+		type: HTTP_ERRORS.ParameterInvalid.type,
+		required: HTTP_ERRORS.ParameterMissing.type,
+		additionalProperties: HTTP_ERRORS.UnknownPropertyName.type,
+	},
 };
 
-const validateFeedRequest = ajv.compile(feedReqParams);
+const validate = ajv.compile(feedReqParams);
 
-export { validateFeedRequest };
+export { validate };

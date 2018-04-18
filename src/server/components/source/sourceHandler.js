@@ -1,10 +1,8 @@
 import logger from '../../../config/logger';
 import * as SourceStatus from './sourceStatus';
-import * as SourceSchema from './sourceSchema';
 import * as SourceController from './sourceController';
-import { formatSchemaErrors } from '../../utils/schema';
 import { ApiError } from '../../utils/errors/apiError';
-import HTTP_ERRORS from '../../utils/errors/errorsEnum';
+import { HTTP_ERRORS } from '../../utils/errors/errorsEnum';
 import { isValidUrl } from '../../utils';
 
 /**
@@ -47,19 +45,11 @@ async function getAll(req, res, next) {
  * @returns {*}
  */
 async function add(req, res, next) {
-	const valid = SourceSchema.validate(req.body);
-
-	// Validate request body using JSON schema
-	if (!valid) {
-		logger.error('[source.add]', formatSchemaErrors(SourceSchema.validate.errors));
-		return next(new ApiError(HTTP_ERRORS.parameterInvalid));
-	}
-
 	// Check if source with provided url already exist
 	try {
 		const sourceExist = await SourceController.checkSourceExist(req.body.url);
 		if (sourceExist) {
-			return next(new ApiError(HTTP_ERRORS.alreadyExist));
+			return next(new ApiError(HTTP_ERRORS.AlreadyExist));
 		}
 	} catch (err) {
 		return next(err);
@@ -93,14 +83,14 @@ async function remove(req, res, next) {
 
 	// Check if valid URL provided in res.query
 	if (!url || !isValidUrl(url)) {
-		return next(new ApiError(HTTP_ERRORS.badRequest));
+		return next(new ApiError(HTTP_ERRORS.BadRequest));
 	}
 
 	// Check if source with provided url exist
 	try {
 		const sourceExist = await SourceController.checkSourceExist(url);
 		if (!sourceExist) {
-			return next(new ApiError(HTTP_ERRORS.sourceNotFound));
+			return next(new ApiError(HTTP_ERRORS.SourceNotFound));
 		}
 	} catch (err) {
 		return next(err);

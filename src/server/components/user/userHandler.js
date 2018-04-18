@@ -1,42 +1,8 @@
 import logger from '../../../config/logger';
-import * as UserSchema from './userSchema';
 import * as UserController from './userController';
 import { ApiError } from '../../utils/errors/apiError';
-import HTTP_ERRORS from '../../utils/errors/errorsEnum';
-
-/**
- * Get user by email
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @param {Function} next - Express next middleware function
- * @returns {*}
- */
-async function get(req, res, next) {
-	const { email } = req.query;
-
-	// Check if email is provided in res.query
-	if (!email) {
-		return next(new ApiError(HTTP_ERRORS.badRequest));
-	}
-
-	try {
-		const { name, registered } = await UserController.getUserByEmail(email);
-
-		return res
-			.status(200)
-			.json({
-				status: 'ok',
-				user: {
-					name,
-					email,
-					registered,
-				},
-			})
-			.end();
-	} catch (err) {
-		return next(err);
-	}
-}
+import { HTTP_ERRORS } from '../../utils/errors/errorsEnum';
+import { isNumber } from '../../utils';
 
 /**
  * Add new user
@@ -46,19 +12,11 @@ async function get(req, res, next) {
  * @returns {*}
  */
 async function add(req, res, next) {
-	const valid = UserSchema.validate(req.body);
-
-	// Validate request body using JSON schema
-	if (!valid) {
-		// formatSchemaErrors(UserSchema.validate.errors)
-		return next(new ApiError(HTTP_ERRORS.parameterInvalid));
-	}
-
 	// Check if user with provided email already exist
 	try {
-		const userExist = await UserController.checkUserExist(req.body.email);
+		const userExist = await UserController.checkUserEmailExist(req.body.email);
 		if (userExist) {
-			return next(new ApiError(HTTP_ERRORS.alreadyExist));
+			return next(new ApiError(HTTP_ERRORS.AlreadyExist));
 		}
 	} catch (err) {
 		logger.error(`Could not check if "${req.body.email}" exist`, err);
@@ -81,35 +39,112 @@ async function add(req, res, next) {
 }
 
 /**
- * Delete User by url
+ * Get user (self)
  * @param {Object} req - Express request object
  * @param {Object} res - Express response object
  * @param {Function} next - Express next middleware function
  * @returns {*}
  */
-async function remove(req, res, next) {
-	const { email } = req.query;
-
-	// Check if email is provided in res.query
-	if (!email) {
-		return next(new ApiError(HTTP_ERRORS.badRequest));
+async function getSelf(req, res, next) {
+	// Id is attached by guard middleware to req.user object
+	const { id } = req.user;
+	if (!isNumber(id)) {
+		logger.warn('[get.user] Somehow guard was passed without req.user!', req);
+		return next(new ApiError(HTTP_ERRORS.BadRequest));
 	}
 
-	// Check if user with provided email exist
 	try {
-		const userExist = await UserController.checkUserExist(email);
+		const { name, email, registered } = await UserController.getUserById(id);
+
+		return res
+			.status(200)
+			.json({
+				status: 'ok',
+				user: {
+					name,
+					email,
+					registered,
+				},
+			})
+			.end();
+	} catch (err) {
+		return next(err);
+	}
+}
+
+/**
+ * Get user by id
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ * @returns {*}
+ */
+async function get(req, res, next) {
+	// Validate id from query
+	const { id } = req.query;
+	if (!isNumber(id)) {
+		return next(new ApiError(HTTP_ERRORS.ParameterInvalid));
+	}
+
+	// Check if user exist
+	try {
+		const userExist = await UserController.checkUserIdExist(id);
 		if (!userExist) {
-			return next(new ApiError(HTTP_ERRORS.userNotFound));
+			return next(new ApiError(HTTP_ERRORS.UserNotFound));
 		}
 	} catch (err) {
 		return next(err);
 	}
 
 	try {
-		await UserController.deleteUserByEmail(email);
+		const { name, email, registered } = await UserController.getUserById(id);
+
+		return res
+			.status(200)
+			.json({
+				status: 'ok',
+				user: {
+					name,
+					email,
+					registered,
+				},
+			})
+			.end();
+	} catch (err) {
+		return next(err);
+	}
+}
+
+/**
+ * Delete User (self)
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ * @returns {*}
+ */
+async function removeSelf(req, res, next) {
+	// Id is attached by guard middleware to req.user object
+	const { id } = req.user;
+	if (!isNumber(id)) {
+		logger.warn('[get.user] Somehow guard was passed without req.user!', req);
+		return next(new ApiError(HTTP_ERRORS.BadRequest));
+	}
+
+	// Check if user exist
+	try {
+		const userExist = await UserController.checkUserIdExist(id);
+		if (!userExist) {
+			return next(new ApiError(HTTP_ERRORS.UserNotFound));
+		}
+	} catch (err) {
+		return next(err);
+	}
+
+	try {
+		await UserController.deleteUser(id);
 		return res.status(200).json({
 			status: 'ok',
-			message: `User with email "${email}" deleted.`,
+			message: `User with id "${id}" deleted.`,
 		}).end();
 	} catch (err) {
 		return next(err);
@@ -117,7 +152,8 @@ async function remove(req, res, next) {
 }
 
 export {
-	get,
 	add,
-	remove,
+	getSelf,
+	get,
+	removeSelf,
 };

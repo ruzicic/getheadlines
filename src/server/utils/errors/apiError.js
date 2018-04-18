@@ -1,3 +1,5 @@
+import { HTTP_ERRORS } from './errorsEnum';
+
 /**
  * Creates an API error
  * @extends Error
@@ -12,7 +14,7 @@ export class ApiError extends Error {
 		}
 
 		// Get code and type from error.name, or set defaults
-		const { code = 500, type = 'InternalServerError' } = name;
+		const { code = 500, type = HTTP_ERRORS.InternalServerError } = name;
 
 		this.name = name;
 		this.status = code;

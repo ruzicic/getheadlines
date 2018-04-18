@@ -1,10 +1,8 @@
-// import moment from 'moment';
 import { URL } from 'url';
 import sanitizeHtml from 'sanitize-html';
 
 /**
  * Get current time as UNIX timestamp
- *
  * @method getCurrentTime
  * @return {Number} Unix Timestamp
  */
@@ -12,7 +10,6 @@ const getCurrentTime = () => new Date().getTime();
 
 /**
  * Check if provided string is a valid URL
- *
  * @param {String} string
  * @return {Boolean}
  */
@@ -25,9 +22,15 @@ const isValidUrl = (string) => {
 };
 
 /**
+ * Check if provided value is a valid Number
+ * @param {*} value
+ * @return {Boolean}
+ */
+const isNumber = value => !Number.isNaN(parseFloat(value));
+
+/**
  * Sanitize HTML
  * https://github.com/punkave/sanitize-html
- *
  * @method cleanHtml
  * @param {String} data (Dirty) HTML
  * @returns {String} safe HTML
@@ -53,7 +56,6 @@ const cleanHTML = (data) => {
 
 /**
  * Convert number of minutes to crone pattern
- *
  * @param {Number} period Refresh interval in minutes. Default 5.
  * @return {String} crone pattern.
  */
@@ -86,6 +88,7 @@ const getCronePattern = (period = 5) => {
 export {
 	getCurrentTime,
 	isValidUrl,
+	isNumber,
 	cleanHTML,
 	getCronePattern,
 };

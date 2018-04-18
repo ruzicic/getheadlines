@@ -1,6 +1,6 @@
 import * as FeedSchema from '../components/feed/feedSchema';
 import { ApiError } from '../utils/errors/apiError';
-import HTTP_ERRORS from '../utils/errors/errorsEnum';
+import { HTTP_ERRORS } from '../utils/errors/errorsEnum';
 
 /**
  * Paginate Feeds Middleware
@@ -17,7 +17,7 @@ function paginateFeeds(req, res, next) {
 		page: req.query.page ? JSON.parse(req.query.page) : 0,
 	};
 
-	const valid = FeedSchema.validateFeedRequest(query);
+	const valid = FeedSchema.validate(query);
 	if (valid) {
 		res.locals.sources = query.sources;
 		res.locals.includeContent = query.includeContent;
@@ -29,8 +29,7 @@ function paginateFeeds(req, res, next) {
 	}
 
 	// TODO: Handle 'sourcesTooMany' error
-	// formatSchemaErrors(FeedSchema.validateFeedRequest.errors));
-	return next(new ApiError(HTTP_ERRORS.parameterInvalid));
+	return next(new ApiError(HTTP_ERRORS.ParameterInvalid));
 }
 
 export { paginateFeeds };

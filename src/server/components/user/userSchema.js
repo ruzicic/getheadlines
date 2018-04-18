@@ -1,13 +1,7 @@
-import Ajv from 'ajv';
+import { HTTP_ERRORS } from '../../utils/errors/errorsEnum';
 
-const ajv = Ajv({
-	allErrors: true,
-	jsonPointers: true,
-});
-
-const userSchema = {
+export default {
 	type: 'object',
-	// Remove any extra properties
 	additionalProperties: false,
 	properties: {
 		name: {
@@ -30,8 +24,9 @@ const userSchema = {
 		},
 	},
 	required: ['email', 'password'],
+	errorMessage: {
+		type: HTTP_ERRORS.ParameterInvalid.type,
+		required: HTTP_ERRORS.ParameterMissing.type,
+		additionalProperties: HTTP_ERRORS.UnknownPropertyName.type,
+	},
 };
-
-const validate = ajv.compile(userSchema);
-
-export { validate };

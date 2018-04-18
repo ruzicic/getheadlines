@@ -1,9 +1,8 @@
-import Ajv from 'ajv';
+import { HTTP_ERRORS } from '../../utils/errors/errorsEnum';
 
-const ajv = Ajv({ allErrors: true, removeAdditional: 'all' });
-
-const sourceSchema = {
+export default {
 	type: 'object',
+	additionalProperties: false,
 	properties: {
 		name: {
 			type: 'string',
@@ -76,8 +75,9 @@ const sourceSchema = {
 		'category',
 		'period',
 	],
+	errorMessage: {
+		type: HTTP_ERRORS.ParameterInvalid.type,
+		required: HTTP_ERRORS.ParameterMissing.type,
+		additionalProperties: HTTP_ERRORS.UnknownPropertyName.type,
+	},
 };
-
-const validate = ajv.compile(sourceSchema);
-
-export { validate };
