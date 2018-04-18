@@ -1,14 +1,11 @@
+import config from 'config';
 import { expect } from 'chai';
 import request from 'supertest';
 import app from '../../../config/express';
 import * as UserController from './userController';
 import { HTTP_ERRORS } from '../../utils/errors/errorsEnum';
 
-const MOCK = {
-	name: 'TEST_USER',
-	email: 'test@user.com',
-	password: 'qwerty12345',
-};
+const USER_MOCK = config.get('mock.user');
 let token;
 
 function loginUser() {
@@ -16,8 +13,8 @@ function loginUser() {
 		request(app)
 			.post('/api/auth/login')
 			.send({
-				email: MOCK.email,
-				password: MOCK.password,
+				email: USER_MOCK.email,
+				password: USER_MOCK.password,
 			})
 			.expect(200)
 			.end((err, res) => {
@@ -31,17 +28,17 @@ function loginUser() {
 describe('User', () => {
 	describe('POST /api/user', () => {
 		beforeEach((done) => {
-			UserController.deleteUserByEmail(MOCK.email).then(() => done());
+			UserController.deleteUserByEmail(USER_MOCK.email).then(() => done());
 		});
 
 		it('Should add new user', (done) => {
 			request(app)
 				.post('/api/user')
-				.send(MOCK)
+				.send(USER_MOCK)
 				.expect(201)
 				.expect((res) => {
 					expect(res.body.status).to.be.equal('ok');
-					expect(res.body.message.email).to.be.equal(MOCK.email);
+					expect(res.body.message.email).to.be.equal(USER_MOCK.email);
 				})
 				// eslint-disable-next-line no-unused-vars
 				.end((err, res) => {
@@ -56,13 +53,13 @@ describe('User', () => {
 
 	describe('GET /api/user', () => {
 		before((done) => {
-			UserController.deleteUserByEmail(MOCK.email)
-				.then(() => UserController.addUser(MOCK)
+			UserController.deleteUserByEmail(USER_MOCK.email)
+				.then(() => UserController.addUser(USER_MOCK)
 					.then(() => done()));
 		});
 
 		after((done) => {
-			UserController.deleteUserByEmail(MOCK.email)
+			UserController.deleteUserByEmail(USER_MOCK.email)
 				.then(() => done());
 		});
 
@@ -91,8 +88,8 @@ describe('User', () => {
 				.set('Authorization', `Bearer ${token}`)
 				.expect((res) => {
 					expect(res.body.status).to.be.equal('ok');
-					expect(res.body.user.name).to.be.equal(MOCK.name);
-					expect(res.body.user.email).to.be.equal(MOCK.email);
+					expect(res.body.user.name).to.be.equal(USER_MOCK.name);
+					expect(res.body.user.email).to.be.equal(USER_MOCK.email);
 					expect(res.body.user).to.haveOwnProperty('registered');
 				})
 				// eslint-disable-next-line no-unused-vars
@@ -108,8 +105,8 @@ describe('User', () => {
 
 	describe('DELETE /api/user', () => {
 		before((done) => {
-			UserController.deleteUserByEmail(MOCK.email)
-				.then(() => UserController.addUser(MOCK)
+			UserController.deleteUserByEmail(USER_MOCK.email)
+				.then(() => UserController.addUser(USER_MOCK)
 					.then(() => done()));
 		});
 

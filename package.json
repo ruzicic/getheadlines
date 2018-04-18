@@ -17,7 +17,7 @@
 		"babel-node": "babel-node",
 		"prestart": "npm run --silent build",
 		"lint": "eslint --fix src",
-		"test": "JWT_SECRET=secret NODE_CONFIG_DIR=./src/config/env NODE_ENV=test mocha --require babel-core/register src/server --recursive --timeout 5000"
+		"test": "JWT_SECRET=secret NODE_CONFIG_DIR=./src/config/env NODE_ENV=test ./node_modules/.bin/mocha --require babel-core/register src/server --recursive --timeout 5000"
 	},
 	"repository": {
 		"type": "git",
