@@ -2,12 +2,31 @@ import { expect } from 'chai';
 import request from 'supertest';
 import app from '../../../config/express';
 import * as UserController from './userController';
+import { HTTP_ERRORS } from '../../utils/errors/errorsEnum';
 
 const MOCK = {
 	name: 'TEST_USER',
 	email: 'test@user.com',
 	password: 'qwerty12345',
 };
+let token;
+
+function loginUser() {
+	return (done) => {
+		request(app)
+			.post('/api/auth/login')
+			.send({
+				email: MOCK.email,
+				password: MOCK.password,
+			})
+			.expect(200)
+			.end((err, res) => {
+				// eslint-disable-next-line prefer-destructuring
+				token = res.body.message.token;
+				return done();
+			});
+	};
+}
 
 describe('User', () => {
 	describe('POST /api/user', () => {
@@ -36,22 +55,44 @@ describe('User', () => {
 	});
 
 	describe('GET /api/user', () => {
-		beforeEach((done) => {
+		before((done) => {
 			UserController.deleteUserByEmail(MOCK.email)
 				.then(() => UserController.addUser(MOCK)
 					.then(() => done()));
 		});
 
-		it('Should get user', (done) => {
+		after((done) => {
+			UserController.deleteUserByEmail(MOCK.email)
+				.then(() => done());
+		});
+
+		it('Should require authorization', (done) => {
 			request(app)
 				.get('/api/user')
-				.query({ email: MOCK.email })
-				.expect(200)
+				.expect(HTTP_ERRORS.ApiKeyMissing.code)
+				.expect((res) => {
+					expect(res.body.status).to.be.equal('error');
+					expect(res.body.message).to.be.equal(HTTP_ERRORS.ApiKeyMissing.type);
+				})
+				// eslint-disable-next-line no-unused-vars
+				.end((err, res) => {
+					if (err) {
+						return done(err);
+					}
+
+					return done();
+				});
+		});
+
+		before(loginUser());
+		it('Should get user (self)', (done) => {
+			request(app)
+				.get('/api/user')
+				.set('Authorization', `Bearer ${token}`)
 				.expect((res) => {
 					expect(res.body.status).to.be.equal('ok');
 					expect(res.body.user.name).to.be.equal(MOCK.name);
 					expect(res.body.user.email).to.be.equal(MOCK.email);
-					expect(res.body.user).to.haveOwnProperty('id');
 					expect(res.body.user).to.haveOwnProperty('registered');
 				})
 				// eslint-disable-next-line no-unused-vars
@@ -66,16 +107,17 @@ describe('User', () => {
 	});
 
 	describe('DELETE /api/user', () => {
-		beforeEach((done) => {
+		before((done) => {
 			UserController.deleteUserByEmail(MOCK.email)
 				.then(() => UserController.addUser(MOCK)
 					.then(() => done()));
 		});
 
-		it('Should delete user', (done) => {
+		before(loginUser());
+		it('Should delete user (self)', (done) => {
 			request(app)
 				.delete('/api/user')
-				.query({ email: MOCK.email })
+				.set('Authorization', `Bearer ${token}`)
 				.expect(200)
 				.expect((res) => {
 					expect(res.body.status).to.be.equal('ok');

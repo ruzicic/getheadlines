@@ -54,16 +54,19 @@ async function getSelf(req, res, next) {
 	}
 
 	try {
-		const { name, email, registered } = await UserController.getUserById(id);
+		const userRaw = await UserController.getUserById(id);
+		if (!userRaw) {
+			return next(new ApiError(HTTP_ERRORS.UserNotFound));
+		}
 
 		return res
 			.status(200)
 			.json({
 				status: 'ok',
 				user: {
-					name,
-					email,
-					registered,
+					name: userRaw.name,
+					email: userRaw.email,
+					registered: userRaw.registered,
 				},
 			})
 			.end();
