@@ -7,7 +7,10 @@
 		"rss",
 		"parser"
 	],
-	"author": "Mladen Ruzicic <ruzicic@gmail.com>",
+	"author": {
+		"name": "Mladen Ruzicic",
+		"email": "ruzicic@gmail.com"
+	},
 	"homepage": "https://getheadlines.io",
 	"main": "./src/index.js",
 	"scripts": {
