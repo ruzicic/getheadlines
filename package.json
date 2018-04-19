@@ -11,13 +11,13 @@
 	"homepage": "https://getheadlines.io",
 	"main": "./src/index.js",
 	"scripts": {
-		"dev": "JWT_SECRET=secret NODE_CONFIG_DIR=./src/config/env NODE_ENV=development nodemon --exec npm run babel-node -- ./src",
+		"dev": "nodemon --exec npm run babel-node -- ./src",
 		"build": "babel src --source-maps -D -d dist",
-		"start": "NODE_CONFIG_DIR=./src/config/env NODE_ENV=production node dist",
+		"start": " NODE_ENV=production node dist",
 		"babel-node": "babel-node",
 		"prestart": "npm run --silent build",
 		"lint": "eslint --fix src",
-		"test": "JWT_SECRET=secret NODE_CONFIG_DIR=./src/config/env NODE_ENV=test ./node_modules/.bin/mocha --require babel-core/register src/server --recursive --timeout 5000"
+		"test": "NODE_ENV=test ./node_modules/.bin/mocha --require babel-core/register src/server --recursive --timeout 5000"
 	},
 	"repository": {
 		"type": "git",
@@ -43,6 +43,7 @@
 		"cors": "^2.8.4",
 		"cron": "^1.3.0",
 		"debug": "^3.1.0",
+		"dotenv": "^5.0.1",
 		"express": "^4.16.3",
 		"helmet": "^3.12.0",
 		"jsonwebtoken": "^8.2.1",

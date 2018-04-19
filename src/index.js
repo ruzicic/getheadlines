@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import config from 'config';
 import http from 'http';
 import app from './config/express';
