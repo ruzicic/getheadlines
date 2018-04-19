@@ -1,80 +1,106 @@
 FORMAT: 1A
-HOST: http://polls.apiblueprint.org/
+HOST: https://api.getheadlines.io/
 
-# getheadlines
+# Get Headlines
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+Automates XML/RSS feed parsing into JSON and exposes data via REST API
 
-## Questions Collection [/questions]
+## User [/user]
 
-### List All Questions [GET]
+### Get User (self) [GET]
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer TOKEN
 
 + Response 200 (application/json)
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
+        {
+            "status": "ok",
+            "user": {
+                "name": "User Name",
+                "email" "user@gmail.com",
+                "registered": 1524179174
             }
-        ]
+            
+        }
 
-### Create a New Question [POST]
-
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+### Add New User [POST]
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+            "name": "User Name",
+            "email": "user@gmail.com",
+            "password": "StrongPassword"
         }
 
 + Response 201 (application/json)
 
-    + Headers
-
-            Location: /questions/2
+    Returned if a user was successfully created.
 
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+                "status": "ok",
+                "user": {
+                    "email" "user@gmail.com"
+                }
+                
+            }
+            
++ Response 409 (application/json)
+
+    Returned if a user with given email already exist.
+    
+    + Body
+
+            {
+                "status": "error",
+                "message": "AlreadyExist"
+                
+            }
+
++ Response 400 (application/json)
+
+    Returned if email or password are not provided.
+    
+    + Body
+
+            {
+                "status": "error",
+                "message": "ParameterMissing"
+                
+            }
+            
++ Response 422 (application/json)
+
+    Returned if provided parameters are not valid. (ex. Invalid email, or password less than 8 characters)
+    
+    + Body
+
+            {
+                "status": "error",
+                "message": "ParameterInvalid"
+                
+            }
+            
+### Delete User (self) [DELETE]
+
++ Request
+
+    + Headers
+
+            Authorization: Bearer TOKEN
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status": "ok",
+                "message": "User with id 1 deleted."
+                
             }
