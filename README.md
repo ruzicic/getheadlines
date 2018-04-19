@@ -1,14 +1,9 @@
-<h1 align="center">
-Get Headlines
-</h1>
-
-<p align="center">
+# Get Headlines
 Automates XML/RSS feed parsing to JSON and exposes data via REST API
-</p>
 
-<p align="center">
+<p align="left">
   <a href="https://opensource.org/licenses/MIT" target="_blank">
-    <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License">
+    <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License">
   </a>
 </p>
 
@@ -49,11 +44,9 @@ ALTER USER new_user WITH ENCRYPTED PASSWORD 'password';
 GRANT ALL PRIVILEGES ON DATABASE getheadlines TO new_user;
 ```
 
-- Environment variables 
+- Environment variables - rename `.env.example` to `.env`
 
 ```bash
-# .env.example -> Rename to .env
-
 # Environment
 NODE_ENV=development
 
@@ -64,14 +57,14 @@ NODE_CONFIG_DIR=./src/config/env
 JWT_SECRET=secret
 ```
 
-- Configuration file `./src/config/env/development.json`
+- Configuration file `src/config/env/development.json`
 
 ```json
 {
 	"db": {
 		"database": "DATABASE_NAME",
-		"host": "localhost",
-		"port": 5432,
+		"host": "DATABASE_HOST",
+		"port": "DATABASE_PORT",
 		"username": "YOUR_USERNAME",
 		"password": "YOUR_PASSWORD"
 	}
@@ -100,7 +93,7 @@ npm run dev
 npm run test
 ```
 
-*Note*: Update `./src/config/env/test.json` before running tests
+*Note*: Update `src/config/env/test.json` before running tests
 
 ## Contributing
 
