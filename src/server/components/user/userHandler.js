@@ -133,16 +133,6 @@ async function removeSelf(req, res, next) {
 		return next(new ApiError(HTTP_ERRORS.BadRequest));
 	}
 
-	// Check if user exist
-	try {
-		const userExist = await UserController.checkUserIdExist(id);
-		if (!userExist) {
-			return next(new ApiError(HTTP_ERRORS.UserNotFound));
-		}
-	} catch (err) {
-		return next(err);
-	}
-
 	try {
 		await UserController.deleteUser(id);
 		return res.status(200).json({
