@@ -26,7 +26,6 @@ COPY THE ERROR MESSAGE, INCLUDING STACK TRACE HERE
 Tell us which operating system you are using, as well as which versions of Node.js, npm/yarn.
  
 # Other information
-- Configuration file (`default.json`, `development.json`,..)
 - Command-Line Arguments
 - Relevant Links
 

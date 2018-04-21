@@ -35,41 +35,16 @@ psql
 createuser --interactive
 
 --Create database
-createdb getheadlines
+createdb getheadlines_dev
 
 --Set password for new user
-ALTER USER new_user WITH ENCRYPTED PASSWORD 'password';
+ALTER USER YOUR_USER WITH ENCRYPTED PASSWORD 'YOUR_PASSWORD';
 
 --Grant all privileges of the database to the user
-GRANT ALL PRIVILEGES ON DATABASE getheadlines TO new_user;
+GRANT ALL PRIVILEGES ON DATABASE getheadlines_dev TO YOUR_USER;
 ```
 
-- Environment variables - rename `.env.example` to `.env`
-
-```bash
-# Environment
-NODE_ENV=development
-
-# node-config Configuration Files directory
-NODE_CONFIG_DIR=./src/config/env
-
-# JSON Web Token 'secretOrPrivateKey'
-JWT_SECRET=secret
-```
-
-- Configuration file `src/config/env/development.json`
-
-```json
-{
-	"db": {
-		"database": "DATABASE_NAME",
-		"host": "DATABASE_HOST",
-		"port": "DATABASE_PORT",
-		"username": "YOUR_USERNAME",
-		"password": "YOUR_PASSWORD"
-	}
-}
-```
+- Environment variables - rename `.env.example` to `.env` and ***update to fit your preferences***
 
 ### Development
 
