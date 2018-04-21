@@ -1,5 +1,4 @@
 import { query } from '../../utils/database';
-import { getCurrentTime } from '../../utils';
 import logger from '../../../config/logger';
 
 /**
@@ -11,22 +10,16 @@ import logger from '../../../config/logger';
  * @return {Object} Source Status
  */
 const setInitialSourceStatus = async ({ id, slug }, period) => {
-	const now = getCurrentTime();
-
 	try {
 		const result = await query(`
 			INSERT INTO source_status
-				(source_id, period, updated)
+				(source_id, period)
 			VALUES
-				($1, $2, $3)
+				($1, $2)
 			RETURNING *
-		`, [id,
-			period,
-			now,
-		]);
+		`, [id, period]);
 
-		logger.info('[setInitialSourceStatus]', result.rows[0]);
-
+		// logger.info('[setInitialSourceStatus]', result.rows[0]);
 		return result.rows[0];
 	} catch (err) {
 		logger.error('[setInitialSourceStatus]', err);
@@ -41,8 +34,6 @@ const setInitialSourceStatus = async ({ id, slug }, period) => {
  * @return {Object} Source Status
  */
 const updateSourceStatus = async ({ id, period, active }) => {
-	const now = getCurrentTime();
-
 	if (!id || period || active) {
 		throw new Error('[updateSourceStatus] requires ID, period and active properties');
 	}
@@ -51,10 +42,10 @@ const updateSourceStatus = async ({ id, period, active }) => {
 		const result = await query(`
 			UPDATE source_status
 			SET
-				period = ($2), active = ($3), updated = ($4)
+				period = ($2), active = ($3)
 			WHERE source_id = ($1)
 			RETURNING *
-		`, [id, period, active, now]);
+		`, [id, period, active]);
 
 		logger.info('[updateSourceStatus]', result.rows[0]);
 
@@ -73,16 +64,14 @@ const updateSourceStatus = async ({ id, period, active }) => {
  * @return {Object} Source Status
  */
 const refreshSourceStatus = async (id, lastFetch) => {
-	const now = getCurrentTime();
-
 	try {
 		const result = await query(`
 			UPDATE source_status
 			SET
-				last_fetch = ($2), updated = ($3)
+				last_fetch = ($2)
 			WHERE source_id = ($1)
 			RETURNING *
-		`, [id, lastFetch, now]);
+		`, [id, lastFetch]);
 
 		return result.rows[0];
 	} catch (err) {
