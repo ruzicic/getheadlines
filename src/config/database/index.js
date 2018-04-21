@@ -17,11 +17,13 @@ const readFile = util.promisify(fs.readFile);
 		// Drop tables
 		const dropScript = await readFile(path.join(__dirname, 'drop_tables.sql'));
 		await client.query(dropScript.toString());
+
 		console.log('Tables dropped.');
 
 		// Create tables
 		const createScript = await readFile(path.join(__dirname, 'create_tables.sql'));
 		await client.query(createScript.toString());
+
 		console.log('Tables created.');
 	} catch (err) {
 		console.error(err);
