@@ -10,9 +10,10 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- User verification
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE TABLE IF NOT EXISTS user_verification (
 	user_id serial REFERENCES users (id) ON DELETE CASCADE,
-	code text NOT NULL,
+	code UUID DEFAULT gen_random_uuid(),
 	created TIMESTAMPTZ DEFAULT current_timestamp,
 	PRIMARY KEY (user_id)
 );
