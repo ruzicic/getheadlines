@@ -89,9 +89,9 @@ async function getUserById(id) {
  * @return {Promise<Object, Error>} User
  */
 async function addUser(user) {
-	const now = new Date();
 	const saltRounds = 10;
 	let cryptedPass;
+	let newUser;
 
 	// Hash User's password
 	try {
@@ -104,17 +104,27 @@ async function addUser(user) {
 	try {
 		const result = await query(`
 			INSERT INTO users
-				(name, email, password, registered)
+				(name, email, password)
 			VALUES
-				($1, $2, $3, $4)
+				($1, $2, $3)
 			RETURNING *
-		`, [user.name, user.email, cryptedPass, now]);
+		`, [user.name, user.email, cryptedPass]);
 
-		return result.rows[0];
+		[newUser] = result.rows;
 	} catch (err) {
 		logger.error(`Error adding user "${user.email}"`, err);
 		throw err;
 	}
+
+	// Add user to user_verification (for email confirmation)
+	try {
+		await query('INSERT INTO user_verification (user_id) VALUES ($1)', [newUser.id]);
+	} catch (err) {
+		logger.error(`Error adding to user_verification "${user.email}"`, err);
+		throw err;
+	}
+
+	return newUser;
 }
 
 /**
