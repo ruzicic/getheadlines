@@ -26,7 +26,7 @@ function loginUser() {
 
 describe('User', () => {
 	describe('POST /api/user', () => {
-		beforeEach((done) => {
+		before((done) => {
 			UserController.deleteUserByEmail(USER_MOCK.email).then(() => done());
 		});
 
@@ -55,11 +55,6 @@ describe('User', () => {
 			UserController.deleteUserByEmail(USER_MOCK.email)
 				.then(() => UserController.addUser(USER_MOCK)
 					.then(() => done()));
-		});
-
-		after((done) => {
-			UserController.deleteUserByEmail(USER_MOCK.email)
-				.then(() => done());
 		});
 
 		it('Should require authorization', (done) => {
