@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS user_verification;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS source_status;
 DROP TABLE IF EXISTS feeds;
