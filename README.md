@@ -46,6 +46,11 @@ GRANT ALL PRIVILEGES ON DATABASE getheadlines_dev TO YOUR_USER;
 
 - Environment variables - rename `.env.example` to `.env` and ***update to fit your preferences***
 
+After everything is set, to set necessary tables and test data, run:
+```bash
+npm run init:db
+```
+
 ### Development
 
 ```bash
@@ -67,8 +72,6 @@ npm run dev
 ```bash
 npm run test
 ```
-
-*Note*: Update `src/config/env/test.json` before running tests
 
 ## Contributing
 
