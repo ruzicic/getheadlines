@@ -8,6 +8,7 @@ import helmet from 'helmet';
 
 import routes from '../server/routes';
 import * as ErrorHandler from '../server/middlewares/errorHandler';
+import { defaultRateLimit } from '../server/middlewares/rateLimit';
 
 const app = express();
 const env = process.env.NODE_ENV;
@@ -27,9 +28,10 @@ app.use(helmet());
 
 // Enable CORS
 app.use(cors());
+app.enable('trust proxy');
 
 // Mount all routes on /api path
-app.use('/api', routes);
+app.use('/api', defaultRateLimit, routes);
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
