@@ -1,11 +1,10 @@
-import config from 'config';
 import { expect } from 'chai';
 import request from 'supertest';
 import app from '../../../config/express';
 import * as UserController from './userController';
 import { HTTP_ERRORS } from '../../utils/errors/errorsEnum';
+import { USER_MOCK } from '../../../../test/mocks';
 
-const USER_MOCK = config.get('mock.user');
 let token;
 
 function loginUser() {

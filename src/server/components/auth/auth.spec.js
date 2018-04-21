@@ -1,10 +1,8 @@
-import config from 'config';
 import { expect } from 'chai';
 import request from 'supertest';
 import app from '../../../config/express';
 import * as UserController from '../user/userController';
-
-const USER_MOCK = config.get('mock.user');
+import { USER_MOCK } from '../../../../test/mocks';
 
 describe('Auth', () => {
 	before((done) => {
