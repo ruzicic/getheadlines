@@ -1,4 +1,4 @@
-import { pool } from '../../utils/database';
+import { query } from '../../utils/database';
 import logger from '../../../config/logger';
 import * as SourceStatus from '../source/sourceStatus';
 import { getCurrentTime } from '../../utils';
@@ -65,7 +65,7 @@ async function saveFeeds(source, feeds) {
 
 	// Save feeds
 	try {
-		insertResult = await pool.query(queryText, values);
+		insertResult = await query(queryText, values);
 		lastFetch = getCurrentTime();
 	} catch (err) {
 		logger.error('Could not save feeds', err);
@@ -100,7 +100,7 @@ async function getFeeds({ sources, pageSize, page }) {
 	}, '');
 
 	try {
-		const result = await pool.query(`
+		const result = await query(`
 			SELECT
 				feeds.title, feeds.pub_date, feeds.url, feeds.description, feeds.author, feeds.content,
 				sources.name, sources.slug,

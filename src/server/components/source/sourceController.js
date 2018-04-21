@@ -1,4 +1,4 @@
-import { pool } from '../../utils/database';
+import { query } from '../../utils/database';
 import logger from '../../../config/logger';
 
 /**
@@ -9,7 +9,7 @@ import logger from '../../../config/logger';
  */
 async function checkSourceExist(url) {
 	try {
-		const result = await pool.query(
+		const result = await query(
 			'SELECT exists( SELECT true FROM sources WHERE url = ($1))',
 			[url],
 		);
@@ -29,7 +29,7 @@ async function checkSourceExist(url) {
 async function getSources() {
 	// TODO: Add pagination
 	try {
-		const result = await pool.query(`
+		const result = await query(`
 			SELECT id, name, description, slug, homepage, url, language, country, category
 			FROM sources
 			`);
@@ -48,7 +48,7 @@ async function getSources() {
  */
 async function getSourcesWithStatus() {
 	try {
-		const result = await pool.query(`
+		const result = await query(`
 			SELECT
 				sources.id, sources.name, sources.slug, sources.url,
 				source_status.period, source_status.active, source_status.last_fetch, source_status.updated
@@ -72,7 +72,7 @@ async function getSourcesWithStatus() {
  */
 async function addSource(source) {
 	try {
-		const result = await pool.query(`
+		const result = await query(`
 			INSERT INTO sources
 				(name, description, slug, homepage, url, image, language, country, category)
 			VALUES
@@ -105,7 +105,7 @@ async function addSource(source) {
  */
 async function deleteSource(url) {
 	try {
-		const result = await pool.query(
+		const result = await query(
 			'DELETE FROM sources WHERE url = ($1) RETURNING *',
 			[url],
 		);

@@ -1,4 +1,4 @@
-import { pool } from '../../utils/database';
+import { query } from '../../utils/database';
 import { getCurrentTime } from '../../utils';
 import logger from '../../../config/logger';
 
@@ -14,7 +14,7 @@ const setInitialSourceStatus = async ({ id, slug }, period) => {
 	const now = getCurrentTime();
 
 	try {
-		const result = await pool.query(`
+		const result = await query(`
 			INSERT INTO source_status
 				(source_id, period, updated)
 			VALUES
@@ -48,7 +48,7 @@ const updateSourceStatus = async ({ id, period, active }) => {
 	}
 
 	try {
-		const result = await pool.query(`
+		const result = await query(`
 			UPDATE source_status
 			SET
 				period = ($2), active = ($3), updated = ($4)
@@ -76,7 +76,7 @@ const refreshSourceStatus = async (id, lastFetch) => {
 	const now = getCurrentTime();
 
 	try {
-		const result = await pool.query(`
+		const result = await query(`
 			UPDATE source_status
 			SET
 				last_fetch = ($2), updated = ($3)

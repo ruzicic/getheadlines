@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
-import { pool } from '../../utils/database';
 import logger from '../../../config/logger';
+import { query } from '../../utils/database';
 import { getCurrentTime } from '../../utils';
 
 /**
@@ -11,7 +11,7 @@ import { getCurrentTime } from '../../utils';
  */
 async function checkUserEmailExist(email) {
 	try {
-		const result = await pool.query(
+		const result = await query(
 			'SELECT exists( SELECT true FROM users WHERE email = ($1))',
 			[email],
 		);
@@ -31,7 +31,7 @@ async function checkUserEmailExist(email) {
  */
 async function checkUserIdExist(id) {
 	try {
-		const result = await pool.query(
+		const result = await query(
 			'SELECT exists( SELECT true FROM users WHERE id = ($1))',
 			[id],
 		);
@@ -51,7 +51,7 @@ async function checkUserIdExist(id) {
  */
 async function getUserByEmail(email) {
 	try {
-		const result = await pool.query(
+		const result = await query(
 			'SELECT id, name, email, password, registered FROM users WHERE email = ($1)',
 			[email],
 		);
@@ -71,7 +71,7 @@ async function getUserByEmail(email) {
  */
 async function getUserById(id) {
 	try {
-		const result = await pool.query(
+		const result = await query(
 			'SELECT * FROM users WHERE id = ($1)',
 			[id],
 		);
@@ -103,7 +103,7 @@ async function addUser(user) {
 	}
 
 	try {
-		const result = await pool.query(`
+		const result = await query(`
 			INSERT INTO users
 				(name, email, password, registered)
 			VALUES
@@ -126,7 +126,7 @@ async function addUser(user) {
  */
 async function deleteUser(id) {
 	try {
-		const result = await pool.query(
+		const result = await query(
 			'DELETE FROM users WHERE id = ($1) RETURNING *',
 			[id],
 		);
@@ -146,7 +146,7 @@ async function deleteUser(id) {
  */
 async function deleteUserByEmail(email) {
 	try {
-		const result = await pool.query(
+		const result = await query(
 			'DELETE FROM users WHERE email = ($1) RETURNING *',
 			[email],
 		);
