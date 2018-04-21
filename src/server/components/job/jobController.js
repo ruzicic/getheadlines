@@ -25,7 +25,7 @@ function fetchAndSaveFeed(source) {
 }
 
 async function scheduleJob(source) {
-	// Skip Source if active = false
+	// Skip Source if not active
 	if (!source.active) {
 		return false;
 	}

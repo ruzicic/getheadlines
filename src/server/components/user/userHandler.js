@@ -2,7 +2,6 @@ import logger from '../../../config/logger';
 import * as UserController from './userController';
 import { ApiError } from '../../utils/errors/apiError';
 import { HTTP_ERRORS } from '../../utils/errors/errorsEnum';
-import { isNumber } from '../../utils';
 
 /**
  * Add new user
@@ -48,10 +47,6 @@ async function add(req, res, next) {
 async function getSelf(req, res, next) {
 	// Id is attached by guard middleware to req.user object
 	const { id } = req.user;
-	if (!isNumber(id)) {
-		logger.warn('[get.user] Somehow guard was passed without req.user!', req);
-		return next(new ApiError(HTTP_ERRORS.BadRequest));
-	}
 
 	try {
 		const userRaw = await UserController.getUserById(id);
@@ -85,9 +80,6 @@ async function getSelf(req, res, next) {
 async function get(req, res, next) {
 	// Validate id from query
 	const { id } = req.query;
-	if (!isNumber(id)) {
-		return next(new ApiError(HTTP_ERRORS.ParameterInvalid));
-	}
 
 	// Check if user exist
 	try {
@@ -128,10 +120,6 @@ async function get(req, res, next) {
 async function removeSelf(req, res, next) {
 	// Id is attached by guard middleware to req.user object
 	const { id } = req.user;
-	if (!isNumber(id)) {
-		logger.warn('[get.user] Somehow guard was passed without req.user!', req);
-		return next(new ApiError(HTTP_ERRORS.BadRequest));
-	}
 
 	try {
 		await UserController.deleteUser(id);

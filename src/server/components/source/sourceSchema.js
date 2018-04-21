@@ -34,7 +34,7 @@ export default {
 		language: {
 			type: 'string',
 			description: 'The language that this news source writes in.',
-			enum: ['en', 'sr'],
+			enum: ['en', 'de', 'it', 'fr', 'sr', 'ba', 'hr'],
 			lowercase: true,
 			minLength: 2,
 			maxLength: 2,

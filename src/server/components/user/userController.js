@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import logger from '../../../config/logger';
 import { query } from '../../utils/database';
-import { getCurrentTime } from '../../utils';
 
 /**
  * Check if User with provided email already exist in database
@@ -12,7 +11,7 @@ import { getCurrentTime } from '../../utils';
 async function checkUserEmailExist(email) {
 	try {
 		const result = await query(
-			'SELECT exists( SELECT true FROM users WHERE email = ($1))',
+			'SELECT exists( SELECT true FROM users WHERE email = lower($1))',
 			[email],
 		);
 
@@ -90,7 +89,7 @@ async function getUserById(id) {
  * @return {Promise<Object, Error>} User
  */
 async function addUser(user) {
-	const now = getCurrentTime();
+	const now = new Date();
 	const saltRounds = 10;
 	let cryptedPass;
 
