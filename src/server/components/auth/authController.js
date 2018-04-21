@@ -20,7 +20,7 @@ function generateToken(userId) {
 	};
 
 	const options = {
-		expiresIn: 3600,
+		expiresIn: '7d', // zeit/ms
 		algorithm: 'HS256',
 	};
 
