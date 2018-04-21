@@ -27,7 +27,7 @@ const get = async (req, res, next) => {
 		const feeds = rawFeeds.data.map((rawFeed) => {
 			const {
 				title,
-				pub_date: timestamp,
+				pub_date: publishedAt,
 				url,
 				description,
 				author,
@@ -35,9 +35,6 @@ const get = async (req, res, next) => {
 				slug: sourceId,
 				content,
 			} = rawFeed;
-
-			// Convert timestamp to ISO Date
-			const publishedAt = new Date(parseFloat(timestamp)).toISOString();
 
 			const feed = {
 				title,

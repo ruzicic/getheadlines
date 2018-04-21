@@ -62,6 +62,7 @@ async function getSelf(req, res, next) {
 					name: userRaw.name,
 					email: userRaw.email,
 					registered: userRaw.registered,
+					verified: userRaw.verified,
 				},
 			})
 			.end();

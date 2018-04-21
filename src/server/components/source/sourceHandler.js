@@ -19,7 +19,7 @@ async function getAll(req, res, next) {
 			id: r.slug,
 			name: r.name,
 			description: r.description,
-			homepage: r.description,
+			homepage: r.homepage,
 			language: r.language,
 			country: r.country,
 			category: r.category,

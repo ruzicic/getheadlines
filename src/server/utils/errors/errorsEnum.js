@@ -43,6 +43,10 @@ export const HTTP_ERRORS = {
 		type: 'ApiKeyMissing',
 		code: 401,
 	},
+	ApiKeyExpired: {
+		type: 'ApiKeyExpired',
+		code: 401,
+	},
 	UserNotFound: {
 		type: 'UserNotFound',
 		code: 404,

@@ -47,6 +47,10 @@ async function guard(req, res, next) {
 
 		return next();
 	} catch (err) {
+		if (err.name === 'TokenExpiredError') {
+			return next(new ApiError(HTTP_ERRORS.ApiKeyExpired));
+		}
+
 		return next(new ApiError(HTTP_ERRORS.ApiKeyInvalid));
 	}
 }

@@ -9,6 +9,15 @@ CREATE TABLE IF NOT EXISTS users (
 	admin boolean DEFAULT 'false'
 );
 
+-- User verification
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE TABLE IF NOT EXISTS user_verification (
+	user_id serial REFERENCES users (id) ON DELETE CASCADE,
+	code UUID DEFAULT gen_random_uuid(),
+	created TIMESTAMPTZ DEFAULT current_timestamp,
+	PRIMARY KEY (user_id)
+);
+
 -- Sources
 CREATE TABLE IF NOT EXISTS sources (
 	id serial PRIMARY KEY,
@@ -56,6 +65,6 @@ INSERT INTO sources (name, description, slug, homepage, url, image, language, co
 
 -- Source status
 INSERT INTO source_status (source_id, period, active) VALUES
-  (1, 5, true),
-  (2, 5, true),
-  (3, 5, true);
+  (1, 15, true),
+  (2, 15, true),
+  (3, 15, true);

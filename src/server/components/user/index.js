@@ -12,7 +12,8 @@ userRouter.post('/', validateSchema('user'), UserHandler.add);
 userRouter.get('/', guard, UserHandler.getSelf);
 
 // Get User by id
-userRouter.get('/:id', guard, UserHandler.get);
+// TODO: Implement adminOnly middleware
+// userRouter.get('/:id', guard, UserHandler.get);
 
 // Delete User (self)
 userRouter.delete('/', guard, UserHandler.removeSelf);
