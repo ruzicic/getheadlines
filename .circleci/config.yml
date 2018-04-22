@@ -2,8 +2,18 @@ version: 2
 jobs:
   build:
       docker:
-        - image: circleci/node:8.11
-        - image: circleci/postgres:latest
+       - image: circleci/node:8.11
+         environment:
+            PGHOST: localhost
+            PGPORT: '5432'
+            PGDATABASE: circle_test
+            PGUSER: circleuser
+            PGPASSWORD: circlepassword
+       - image: circleci/postgres:latest
+         environment:
+           POSTGRES_USER: circleuser
+           POSTGRES_DB: circle_test
+           POSTGRES_PASSWORD: circlepassword
 
       working_directory: ~/repo
 
