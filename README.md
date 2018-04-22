@@ -1,7 +1,8 @@
 # Get Headlines
-Automates XML/RSS feed parsing to JSON and exposes data via REST API
 
 [![CircleCI](https://circleci.com/gh/cedevita/getheadlines/tree/master.svg?style=svg)](https://circleci.com/gh/cedevita/getheadlines/tree/master)
+
+Automates XML/RSS feed parsing to JSON and exposes data via REST API
 
 ## Table of Contents
 - [Getting Started](#getting-started)
@@ -42,7 +43,7 @@ GRANT ALL PRIVILEGES ON DATABASE getheadlines_dev TO YOUR_USER;
 
 - Environment variables - rename `.env.example` to `.env` and ***update to fit your preferences***
 
-After everything is set, to set necessary tables and test data, run:
+After everything is set, run script to create necessary tables and test data:
 ```bash
 npm run init:db
 ```
