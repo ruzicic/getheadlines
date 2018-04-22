@@ -21,3 +21,4 @@ jobs:
         - checkout
         - run: npm install
         - run: npm run init:db
+        - run: npm run test
