@@ -1,58 +1,20 @@
 version: 2
 jobs:
-	build:
-
-	# https://circleci.com/docs/2.0/circleci-images/
-	docker:
-
-		# NodeJS
-		- image: circleci/node:8.11
-
-		# PostgreSQL
-		- image: circleci/postgres:latest
-		environment:
-			POSTGRES_USER: root
-			POSTGRES_DB: circle_test
-
-	working_directory: ~/repo
-
-	steps:
-		- checkout
-
-		# Download and cache dependencies
-		- restore_cache:
-			keys:
-			- v1-dependencies-{{ checksum "package.json" }}
-			# fallback to using the latest cache if no exact match is found
-			- v1-dependencies-
-
-      	- run: npm install
-
-		- save_cache:
-			paths:
-				- node_modules
-			key: v1-dependencies-{{ checksum "package.json" }}
-
-		- run:
-			name: Waiting for Postgres to be ready
-			command: |
-				for i in `seq 1 10`;
-				do
-				nc -z localhost 5432 && echo Success && exit 0
-				echo -n .
-				sleep 1
-				done
-				echo Failed waiting for Postgres && exit 1
-
-	  	- run: init:db
-			environment:
-				PGHOST=localhost
-				PGDATABASE=circle_test
-				PGPORT=5432
-				PGUSER=root
-				PGPASSWORD=
-
-		# run tests
-		- run: npm run test
-
-
+  build:
+    working_directory: ~/tmp
+    docker:
+      - image: circleci/node:8.11
+	  - image: circleci/postgres:latest
+	    environment:
+		  POSTGRES_USER: root
+		  POSTGRES_DB: circle_test
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm init:db
+	    environment:
+		  PGHOST=localhost
+		  PGDATABASE=circle_test
+		  PGPORT=5432
+		  PGUSER=root
+		  PGPASSWORD=
