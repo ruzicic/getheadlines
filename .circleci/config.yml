@@ -1,58 +1,29 @@
 version: 2
 jobs:
-	build:
+  build:
+      docker:
+       - image: circleci/node:8.11
+         environment:
+            PGHOST: localhost
+            PGPORT: '5432'
+            PGDATABASE: circle_test
+            PGUSER: circleuser
+            PGPASSWORD: circlepassword
+            JWT_SECRET: secret
+       - image: circleci/postgres:latest
+         environment:
+           POSTGRES_USER: circleuser
+           POSTGRES_DB: circle_test
+           POSTGRES_PASSWORD: circlepassword
 
-	# https://circleci.com/docs/2.0/circleci-images/
-	docker:
+      working_directory: ~/repo
 
-		# NodeJS
-		- image: circleci/node:8.11
-
-		# PostgreSQL
-		- image: circleci/postgres:latest
-		environment:
-			POSTGRES_USER: root
-			POSTGRES_DB: circle_test
-
-	working_directory: ~/repo
-
-	steps:
-		- checkout
-
-		# Download and cache dependencies
-		- restore_cache:
-			keys:
-			- v1-dependencies-{{ checksum "package.json" }}
-			# fallback to using the latest cache if no exact match is found
-			- v1-dependencies-
-
-      	- run: npm install
-
-		- save_cache:
-			paths:
-				- node_modules
-			key: v1-dependencies-{{ checksum "package.json" }}
-
-		- run:
-			name: Waiting for Postgres to be ready
-			command: |
-				for i in `seq 1 10`;
-				do
-				nc -z localhost 5432 && echo Success && exit 0
-				echo -n .
-				sleep 1
-				done
-				echo Failed waiting for Postgres && exit 1
-
-	  	- run: init:db
-			environment:
-				PGHOST=localhost
-				PGDATABASE=circle_test
-				PGPORT=5432
-				PGUSER=root
-				PGPASSWORD=
-
-		# run tests
-		- run: npm run test
-
-
+      steps:
+        - checkout
+        - run: npm install
+        - run: npm run init:db
+        - run:
+            name: Run mocha tests
+            environment:
+              NODE_ENV: test
+            command: npm run test
