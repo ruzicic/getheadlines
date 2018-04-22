@@ -1,11 +1,7 @@
 # Get Headlines
 Automates XML/RSS feed parsing to JSON and exposes data via REST API
 
-<p align="left">
-  <a href="https://opensource.org/licenses/MIT" target="_blank">
-    <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="MIT License">
-  </a>
-</p>
+[![CircleCI](https://circleci.com/gh/cedevita/getheadlines/tree/master.svg?style=svg)](https://circleci.com/gh/cedevita/getheadlines/tree/master)
 
 ## Table of Contents
 - [Getting Started](#getting-started)
