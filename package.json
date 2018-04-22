@@ -20,7 +20,7 @@
 		"babel-node": "babel-node",
 		"prestart": "npm run --silent build",
 		"lint": "eslint --fix src",
-		"test": "NODE_ENV=test ./node_modules/.bin/mocha src/server",
+		"test": "NODE_ENV=test ./node_modules/.bin/mocha ./src/server ./test",
 		"init:db": "node ./src/config/database"
 	},
 	"repository": {
