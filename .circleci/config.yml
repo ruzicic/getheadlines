@@ -10,4 +10,4 @@ jobs:
       steps:
         - checkout
         - run: npm install
-        - run: npm init:db
+        - run: npm run init:db
