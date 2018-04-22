@@ -13,9 +13,3 @@ jobs:
       - checkout
       - run: npm install
       - run: npm init:db
-        environment:
-          PGHOST=localhost
-          PGDATABASE=circle_test
-          PGPORT=5432
-          PGUSER=root
-          PGPASSWORD=
