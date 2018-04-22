@@ -16,7 +16,7 @@
 	"scripts": {
 		"dev": "nodemon --exec npm run babel-node -- ./src",
 		"build": "babel src --source-maps -D -d dist",
-		"start": " NODE_ENV=production node dist",
+		"start": "NODE_ENV=production node dist",
 		"babel-node": "babel-node",
 		"prestart": "npm run --silent build",
 		"lint": "eslint --fix src",
