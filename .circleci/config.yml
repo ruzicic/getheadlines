@@ -9,6 +9,7 @@ jobs:
             PGDATABASE: circle_test
             PGUSER: circleuser
             PGPASSWORD: circlepassword
+            JWT_SECRET: secret
        - image: circleci/postgres:latest
          environment:
            POSTGRES_USER: circleuser
@@ -21,4 +22,8 @@ jobs:
         - checkout
         - run: npm install
         - run: npm run init:db
-        - run: npm run test
+        - run:
+          name: Run tests
+          environment:
+            NODE_ENV: test
+          command: npm run test
