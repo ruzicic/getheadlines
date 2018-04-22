@@ -31,3 +31,6 @@ jobs:
             environment:
               NODE_ENV: test
             command: npm run test
+        - run:
+           name: Build
+           command: npm run build
