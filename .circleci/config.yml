@@ -1,15 +1,13 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/tmp
-    docker:
-      - image: circleci/node:8.11
-      - image: circleci/postgres:latest
-        environment:
-          POSTGRES_USER: root
-          POSTGRES_DB: circle_test
+      docker:
+        - image: circleci/node:8.11
+        - image: circleci/postgres:latest
 
-    steps:
-      - checkout
-      - run: npm install
-      - run: npm init:db
+      working_directory: ~/repo
+
+      steps:
+        - checkout
+        - run: npm install
+        - run: npm init:db
