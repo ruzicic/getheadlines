@@ -4,17 +4,18 @@ jobs:
     working_directory: ~/tmp
     docker:
       - image: circleci/node:8.11
-	  - image: circleci/postgres:latest
-	    environment:
-		  POSTGRES_USER: root
-		  POSTGRES_DB: circle_test
+      - image: circleci/postgres:latest
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circle_test
+
     steps:
       - checkout
       - run: npm install
       - run: npm init:db
-	    environment:
-		  PGHOST=localhost
-		  PGDATABASE=circle_test
-		  PGPORT=5432
-		  PGUSER=root
-		  PGPASSWORD=
+        environment:
+          PGHOST=localhost
+          PGDATABASE=circle_test
+          PGPORT=5432
+          PGUSER=root
+          PGPASSWORD=
