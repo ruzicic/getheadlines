@@ -19,13 +19,7 @@ Automates XML/RSS feed parsing to JSON and exposes data via REST API
 
 - PostgreSQL
 
-```bash
-# Install PostgreSQL
-sudo apt-get install postgresql
-
-# Enter the PostgreSQL shell
-psql
-```
+If you don't already have PostgreSQL installed, [download](https://www.postgresql.org/download/) and install it now.
 
 ```sql
 --Create user
