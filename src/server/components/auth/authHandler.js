@@ -52,6 +52,7 @@ async function login(req, res, next) {
 		status: 'ok',
 		message: {
 			token: generateToken(user.id),
+			expiresIn: '7 days',
 		},
 	}).end();
 }

@@ -79,12 +79,11 @@ async function getSelf(req, res, next) {
  * @returns {*}
  */
 async function get(req, res, next) {
-	// Validate id from query
-	const { id } = req.query;
+	const { userId } = req.params;
 
 	// Check if user exist
 	try {
-		const userExist = await UserController.checkUserIdExist(id);
+		const userExist = await UserController.checkUserIdExist(userId);
 		if (!userExist) {
 			return next(new ApiError(HTTP_ERRORS.UserNotFound));
 		}
@@ -93,7 +92,13 @@ async function get(req, res, next) {
 	}
 
 	try {
-		const { name, email, registered } = await UserController.getUserById(id);
+		const {
+			name,
+			email,
+			registered,
+			verified,
+			admin,
+		} = await UserController.getUserById(userId);
 
 		return res
 			.status(200)
@@ -103,6 +108,8 @@ async function get(req, res, next) {
 					name,
 					email,
 					registered,
+					verified,
+					admin,
 				},
 			})
 			.end();

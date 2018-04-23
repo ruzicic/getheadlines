@@ -41,7 +41,7 @@ const get = async (req, res, next) => {
 				publishedAt,
 				url,
 				description,
-				author,
+				author: author || sourceName,
 				source: {
 					id: sourceId,
 					name: sourceName,
