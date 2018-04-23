@@ -11,6 +11,10 @@ export const HTTP_ERRORS = {
 		type: 'InvalidPassword',
 		code: 401,
 	},
+	InsufficientPermissions: {
+		type: 'InsufficientPermissions',
+		code: 403,
+	},
 	AlreadyExist: {
 		type: 'AlreadyExist',
 		code: 409,
