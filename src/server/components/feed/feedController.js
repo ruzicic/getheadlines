@@ -3,6 +3,37 @@ import logger from '../../../config/logger';
 import * as SourceStatus from '../source/sourceStatus';
 
 /**
+ * Remove X number of Feeds for Provider,
+ * leaving only fixed number in database
+ *
+ * @param {Number} sourceId Source Id
+ * @param {Number} amountToKeep Number of Feeds from Provider to keep
+ */
+async function clearOldFeeds(sourceId, amountToKeep = 100) {
+	const queryText = `
+		DELETE
+		FROM feeds
+		WHERE source_id = ${sourceId}
+		AND id NOT IN (
+			SELECT id
+			FROM feeds
+			WHERE source_id = ${sourceId}
+			ORDER BY id LIMIT ${amountToKeep}
+		);
+	`;
+
+	try {
+		const res = await query(queryText);
+		logger.info(`[clearOldFeeds] Total ${res.rowCount}`);
+
+		return res;
+	} catch (err) {
+		logger.error('[clearOldFeeds] Could not clear old feeds', err);
+		throw err;
+	}
+}
+
+/**
  * Save Feeds
  * For better performance, we are not going to call Save Feeds often, but insted INSERT/UPDATE
  * multiple rows at once.
@@ -66,6 +97,14 @@ async function saveFeeds(source, feeds) {
 		lastFetch = new Date();
 	} catch (err) {
 		logger.error('Could not save feeds', err);
+		throw err;
+	}
+
+	// Clear old feeds (we're saving a limited number of feeds per source)
+	try {
+		await clearOldFeeds(source.id);
+	} catch (err) {
+		logger.error('Could not clear old feeds', err);
 		throw err;
 	}
 
