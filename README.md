@@ -4,7 +4,9 @@
 	<img width="50%" src="getheadlines-logo.svg" alt="Get Headlines logo">
 </p>
 
-**Get Headlines** automates XML/RSS feed parsing to JSON and exposes data via REST API.
+<p align="center">
+Automates XML/RSS feed parsing to JSON and exposes data via REST API.
+</p>
 
 ## Table of Contents
 - [Getting Started](#getting-started)
