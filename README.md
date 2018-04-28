@@ -1,8 +1,12 @@
-# Get Headlines
-
 [![CircleCI](https://circleci.com/gh/cedevita/getheadlines/tree/master.svg?style=svg)](https://circleci.com/gh/cedevita/getheadlines/tree/master)
 
+# Get Headlines 
+
 Automates XML/RSS feed parsing to JSON and exposes data via REST API
+
+<p align="center">
+	<img width="50%" src="getheadlines-logo.svg" alt="Get Headlines logo">
+</p>
 
 ## Table of Contents
 - [Getting Started](#getting-started)
@@ -11,7 +15,6 @@ Automates XML/RSS feed parsing to JSON and exposes data via REST API
 	- [Running the tests](#running-the-tests)
 - [Contributing](#contributing)
 - [License](#license)
-
 
 ## Getting Started
 
